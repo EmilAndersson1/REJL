@@ -24,7 +24,7 @@ public class Main {
 
         // Används för marshalling/unmarshalling: java-objekt <--> JSON
         Gson gson = new Gson();
-
+        
         /*
          * (CORS är ett problem när vi använder lokala HTML-filer så vi låter Spark agera webbserver och serva oss en html-fil.)
          *
