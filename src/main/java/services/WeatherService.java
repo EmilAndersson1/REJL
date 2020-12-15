@@ -40,10 +40,15 @@ public class WeatherService {
      */
     public static void getWeather() {
 
+        Gson gson = new Gson();
+
         HttpResponse<JsonNode> response = Unirest.get("https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=60.10&lon=9.58")
                 .header("Accept", "application/json")
                 .asJson();
-        System.out.println(response.getBody().getObject().toString());
+        JSONObject json = response.getBody().getObject();
+        Weather weather = gson.fromJson(json, Weather.class);
+//        System.out.println(response.getBody().getObject().toString());
+        System.out.println(weather);
 //        JsonNode json = response.getBody();
 //        JSONObject weather = json.getObject();
 //        System.out.println(weather.toString());
