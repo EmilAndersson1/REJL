@@ -1,5 +1,6 @@
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import services.WeatherService;
 import spark.ModelAndView;
 import spark.template.pebble.PebbleTemplateEngine;
 
@@ -15,6 +16,8 @@ import static spark.Spark.*;
 public class Main {
 
     public static void main(String[] args) {
+
+//        WeatherService.getWeather();
 
         // Visa information i webbläsare lokalt: "http://localhost:5555"
         port(5555);
