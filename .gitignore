@@ -1,5 +1,5 @@
 # Default ignored files
-/workspace.xml
+/.idea/workspace.xml
 
 # https://stackoverflow.com/questions/51792830/what-files-in-a-maven-project-should-be-committed-to-git?fbclid=IwAR19CAoJ-eZ73kx17ZlmnhWwJERN6xTWT-7FXDwHr0oNmN-yOs4LTGLCZCU
 # Compiled class file
@@ -27,7 +27,7 @@
 hs_err_pid*
 
 # Maven stuff
-target/
+/target/
 pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.versionsBackup
