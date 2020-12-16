@@ -4,12 +4,10 @@ import kong.unirest.HttpResponse;
 import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
 import kong.unirest.json.JSONObject;
-import model.Location;
+import model.CurrentWeather;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
-import java.util.Arrays;
 
 /**
  * Service for communication with a Weather API. Currently: YR API
@@ -52,18 +50,11 @@ public class WeatherService {
         JsonNode jsonNode       = response.getBody();
         JSONObject jsonObject   = jsonNode.getObject();
 
-        // Specify what field to find in the JSON object.
-        String key = testKey(); //TODO: What parameters are we looking for?
-
-        // Retrieve wanted fields from the JSONObject.
-        JSONObject jsonField    = jsonObject.getJSONObject(key);
-        String json             = jsonField.toString();
-
         // Gson instance for marshalling and unmarshalling.
         GsonBuilder builder = new GsonBuilder();
         Gson gson           = builder.create();
 
-        weather = testAndPrintMarshalling(json, gson); //TODO: Swap for some more valuable code.
+        weather = returnAndPrintWeather(jsonObject, gson); //TODO: Swap for some more valuable code.
 
         // Close Unirest connection.
         Unirest.shutDown();
@@ -71,37 +62,62 @@ public class WeatherService {
         return weather;
     }
 
-    //TODO: Remove this method.
-    private String testKey() {
-        return "geometry";
+    //TODO: This is good for retrieving a decent weather parameter.
+    // Maybe have to make a search to correct time forecast*.
+    private CurrentWeather returnAndPrintWeather(JSONObject jsonObject, Gson gson) {
+//        System.out.println(jsonObject.toString(1));
+
+        // Retrieve wanted fields from the JSONObject.
+        JSONObject jsonField = jsonObject
+                .getJSONObject("properties")
+                .getJSONArray("timeseries")
+                .getJSONObject(0)   //TODO: *Sök upp en tid som matchar. YR använder cachade rapporter, ej liveuppdatering.
+                .getJSONObject("data")
+                .getJSONObject("next_1_hours")
+                .getJSONObject("summary");
+        String json = jsonField.toString();
+
+        System.out.println("\nTEST WEATHER from json to java:");
+        CurrentWeather currentWeather = gson.fromJson(json, CurrentWeather.class); //Unmarshalling: JSON --> java Object
+        System.out.println(currentWeather.symbol_code);
+
+        System.out.println("\nTEST WEATHER back to json from java:");
+        String javaBackToJson = gson.toJson(currentWeather); //Marshalling: java Object --> JSON
+        System.out.println(javaBackToJson);
+
+        return currentWeather;
     }
 
-    //TODO: Remove this method.
-    private Location testAndPrintMarshalling(String json, Gson gson) {
-
-        System.out.println("\nTEST unmarshalling from json to java:");
-        // Unmarshalling: JSON --> java Object
-        Location location = gson.fromJson(json, Location.class);
-        try {
-//            System.out.println(location.type); // The unmarshalling workes fine anyway - ignores fields that is not present in the java objekt.
-            System.out.println(Arrays.toString(location.coordinates));
-            System.out.println("SUCCESS!");
-        } catch (Exception e) {
-            System.out.println("Något problem vid unmarshalling!");
-            e.printStackTrace();
-        }
-
-        System.out.println("\nTEST marshalling back to json from java:");
-        // Marshalling: java Object --> JSON
-        String javaBackToJson = gson.toJson(location);
-        try {
-            System.out.println(javaBackToJson);
-            System.out.println("SUCCESS!");
-        } catch (Exception e) {
-            System.out.println("Något problem vid marshalling!");
-            e.printStackTrace();
-        }
-
-        return location;
-    }
+//    //TODO: Remove this method.
+//    private Location testAndPrintMarshalling(JSONObject jsonObject, Gson gson) {
+//
+//        // Retrieve wanted fields from the JSONObject.
+//        JSONObject jsonField    = jsonObject.getJSONObject("geometry");
+//        String json             = jsonField.toString();
+//
+//        System.out.println("\nTEST unmarshalling from json to java:");
+//        // Unmarshalling: JSON --> java Object
+//        Location location = gson.fromJson(json, Location.class);
+//        try {
+////            System.out.println(location.type); // The unmarshalling workes fine anyway - ignores fields that is not present in the java objekt.
+//            System.out.println(Arrays.toString(location.coordinates));
+//            System.out.println("SUCCESS!");
+//        } catch (Exception e) {
+//            System.out.println("Något problem vid unmarshalling!");
+//            e.printStackTrace();
+//        }
+//
+//        System.out.println("\nTEST marshalling back to json from java:");
+//        // Marshalling: java Object --> JSON
+//        String javaBackToJson = gson.toJson(location);
+//        try {
+//            System.out.println(javaBackToJson);
+//            System.out.println("SUCCESS!");
+//        } catch (Exception e) {
+//            System.out.println("Något problem vid marshalling!");
+//            e.printStackTrace();
+//        }
+//
+//        return location;
+//    }
 }

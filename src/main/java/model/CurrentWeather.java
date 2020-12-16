@@ -1,12 +1,13 @@
 package model;
 
+/**
+ * A java bean to represent a current weather.
+ */
 public class CurrentWeather {
 
-    public CurrentWeather() {
-        // Empty --> Bean
-    }
+    // Empty constructor --> Bean
+    public CurrentWeather() {}
 
-    public String cloudiness = "";
-
-
+    // Variable name has to match corresponding json field name.
+    public String symbol_code = "";
 }

@@ -9,8 +9,6 @@ import static spark.Spark.*;
 /**
  * Visa information på en html-sida med hjälp av ramverket Spark.
  *
- * TODO: hämta information från webb-API:er
- *
  * @author "REJL"
  */
 public class APIServer {
@@ -31,20 +29,39 @@ public class APIServer {
         // Plats för css-filer typ
         staticFiles.location("/static");
 
+        //TODO: This is just an idea for a method. Does it work like this maybe?
+        // This method sholuld be called from a frontend through some javascript/jQuery/ajax-method.
+        get("/front?lat=:latitude&lon=:longitude", (req, res) -> {
+
+            // Can we get coordinates from frontend by it adding query parameters in the uri?
+            // And then pick it up like this somehow?
+            String lat = req.queryMap().get("latitude").value();
+            String lon = req.queryMap().get("longitude").value();
+
+            // Call a method that generates a Spotify json-response based on lon and lat variables vi weatherService.
+            // SomeClass.generateMusic();
+
+            // Is this the way to send back a response to frontend?
+            res.body("Some generated Spotify json-object");
+
+            return new PebbleTemplateEngine().render(
+                    new ModelAndView(null, "templates/index.html"));
+        });
+
         /*
-         * (CORS är ett problem när vi använder lokala HTML-filer så vi låter Spark agera webbserver och serva oss en html-fil.)
-         *
-         * Visa index.html via "http://localhost:5555/front"
+         * TEST
+         * (CORS är ett problem när vi använder lokala HTML-filer så vi låter Spark
+         * agera webbserver och serva oss en html-fil.)
          */
         get("/front", (req, res) -> {
             return new PebbleTemplateEngine().render(
-                    new ModelAndView(null, "templates/testing.html"));
+                    new ModelAndView(null, "templates/index.html"));
         });
 
-        //
+        // TEST
         get("/", (req, res) -> "Start REJL");
 
-        // test
+        // TEST
         get("/hello", (req, res) -> "Hello World");
     }
 }
