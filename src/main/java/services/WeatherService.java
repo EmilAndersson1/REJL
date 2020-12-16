@@ -1,159 +1,107 @@
 package services;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.util.Map;
-
 import kong.unirest.HttpResponse;
 import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
 import kong.unirest.json.JSONObject;
-import model.Weather;
-import org.apache.http.HttpEntity;
-import org.apache.http.StatusLine;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.HttpClients;
+import model.Location;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.util.Arrays;
+
 /**
- * Service for communication with Spotify API.
+ * Service for communication with a Weather API. Currently: YR API
+ *
+ * The retrieved JSON code is to be represented in a java object for easier manipulation in java.
  *
  */
 public class WeatherService {
 
+    /*
+    Hardcoded main method for TESTING.
+    The getWeather method is supposed to be called from a control class.
+    TODO: Remove main method.
+     */
     public static void main(String[] args) {
-        getWeather();
+        new WeatherService().getWeather("-16.516667", "-68.166667");
     }
 
     /**
-     *  1. A small program that retrieves information about today from an external API
+     *  Retrieve some information about the weather based on a location.
      *
-     *  2. and presents this info in a more readable way as a console print out.
-     *
-     * The main method that's used to run the program.
-     *
+     * @param latitud Latitude coordinate.
+     * @param longitud Longitude coordinate.
      */
-    public static void getWeather() {
+    public Object getWeather(String latitud, String longitud) {
 
-        Gson gson = new Gson();
+        Object weather = null;
 
-        HttpResponse<JsonNode> response = Unirest.get("https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=60.10&lon=9.58")
+        // Base url of weather API.
+        String url = "https://api.met.no/weatherapi/locationforecast/2.0/compact?";
+
+        // Use Unirest library to get information from API.
+        HttpResponse<JsonNode> response = Unirest.get(url)
                 .header("Accept", "application/json")
+                .queryString("lat", latitud)                // Build on base url
+                .queryString("lon", longitud)               // Build on base url
                 .asJson();
-        JSONObject json = response.getBody().getObject();
-        Weather weather = gson.fromJson(json, Weather.class);
-//        System.out.println(response.getBody().getObject().toString());
-        System.out.println(weather);
-//        JsonNode json = response.getBody();
-//        JSONObject weather = json.getObject();
-//        System.out.println(weather.toString());
+
+        // Retrieve the parsed JSONObject from the response.
+        JsonNode jsonNode       = response.getBody();
+        JSONObject jsonObject   = jsonNode.getObject();
+
+        // Specify what field to find in the JSON object.
+        String key = testKey(); //TODO: What parameters are we looking for?
+
+        // Retrieve wanted fields from the JSONObject.
+        JSONObject jsonField    = jsonObject.getJSONObject(key);
+        String json             = jsonField.toString();
+
+        // Gson instance for marshalling and unmarshalling.
+        GsonBuilder builder = new GsonBuilder();
+        Gson gson           = builder.create();
+
+        weather = testAndPrintMarshalling(json, gson); //TODO: Swap for some more valuable code.
+
+        // Close Unirest connection.
         Unirest.shutDown();
 
-        //        HttpResponse<JsonNode> response;
-//        response = Unirest.get("https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=60.10&lon=9.58")
-//                .queryString("format", "json") // Unirest bygger helst sin egen query string
-//                .asJson(); // Berätta för Unirest att vi får tillbaka JSON.
-
-////        DateTime today = new DateTime();
-////        String baseUrl = "http://api.dryg.net/dagar/v2/";
-//        String baseUrl = "https://api.met.no/weatherapi/locationforecast/2.0/compact?"; //lat=-16.516667&lon=-68.166667&altitude=4150
-//        String url = null;
-//
-//        HttpClient httpclient = null;
-//        HttpGet httpGet = null;
-//        HttpResponse response = null;
-//        StatusLine status = null;
-//        HttpEntity entity = null;
-//        InputStream data = null;
-//        Reader reader = null;
-//
-//        GsonBuilder builder = new GsonBuilder();
-//        Gson json = builder.create();
-//
-////        EnvelopeBean envelope = null;
-//        Weather weather = null;
-//
-//        url = baseUrl + "lat=60.10&lon=9.58"; // Build a url.
-//
-//        try {
-//            // Create the client that will call the API
-//            httpclient = HttpClients.createDefault();
-//            httpGet = new HttpGet(url);
-//
-//            // Call the API and verify that all went well
-//            response = httpclient.execute(httpGet);
-//            status = response.getStatusLine();
-//
-//            if (status.getStatusCode() == 200) {
-//
-//                // All went well. Let's fetch the data
-//                entity = response.getEntity();
-//                data = entity.getContent();
-//
-//                try {
-//                    // Attempt to parse the data as JSON
-//                    reader = new InputStreamReader(data);
-//                    json = builder.create();
-//                    weather = json.fromJson(reader, Weather.class);
-//
-//                    // Yep, that went well. Let's print today's information.
-//                    // As the API will return a list of days, we'll need to
-//                    // fetch "today", which will be the first and only object.
-//                    for (Map.Entry<String, DayBean> entry :
-//                            envelope.days.entrySet()) {
-//                        printDay(entry.getValue());
-//                    }
-//
-//                } catch (Exception e) {
-//                    // Something didn't went well. No calls for us.
-//                    e.printStackTrace();
-//                    System.out.println("Det blev fel. Gå hem och sov.");
-//                }
-//            } else {
-//                // Something didn't went well. No calls for us.
-//                System.out.println("API:t svarade inte, så du är nog ledig.");
-//            }
-//        } catch (IOException e) {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//        }
+        return weather;
     }
 
-//    /**
-//     * Prints info about today. This method makes no effort trying to be of
-//     * great coding standard. In fact, it looks like crap, but works well
-//     * enough for this example.
-//     *
-//     * @param bean The bean containing all information about today.
-//     */
-//    public static void printDay(DayBean bean) {
-//        int nbrOfNames = 0;
-//
-//        System.out.println("Idag är det " + bean.getDate());
-//        System.out.println("Det är en " + bean.getDayOfWeek());
-//        if (bean.dayIsOff()) {
-//            System.out.println("Du är ledig idag.");
-//        } else {
-//            System.out.println("Du är inte ledig idag.");
-//        }
-//        if (bean.isHoliday()) {
-//            System.out.println("Det är en röd dag.");
-//        } else {
-//            System.out.println("Det är en helt vanlig dag.");
-//        }
-//        System.out.print("Idag har ");
-//        for (String name : bean.todaysNames) {
-//            if (nbrOfNames > 0) {
-//                System.out.print(" och ");
-//            }
-//            System.out.print(name);
-//            ++nbrOfNames;
-//        }
-//        System.out.println(" namnsdag.");
-//    }
+    //TODO: Remove this method.
+    private String testKey() {
+        return "geometry";
+    }
+
+    //TODO: Remove this method.
+    private Location testAndPrintMarshalling(String json, Gson gson) {
+
+        System.out.println("\nTEST unmarshalling from json to java:");
+        // Unmarshalling: JSON --> java Object
+        Location location = gson.fromJson(json, Location.class);
+        try {
+//            System.out.println(location.type); // The unmarshalling workes fine anyway - ignores fields that is not present in the java objekt.
+            System.out.println(Arrays.toString(location.coordinates));
+            System.out.println("SUCCESS!");
+        } catch (Exception e) {
+            System.out.println("Något problem vid unmarshalling!");
+            e.printStackTrace();
+        }
+
+        System.out.println("\nTEST marshalling back to json from java:");
+        // Marshalling: java Object --> JSON
+        String javaBackToJson = gson.toJson(location);
+        try {
+            System.out.println(javaBackToJson);
+            System.out.println("SUCCESS!");
+        } catch (Exception e) {
+            System.out.println("Något problem vid marshalling!");
+            e.printStackTrace();
+        }
+
+        return location;
+    }
 }

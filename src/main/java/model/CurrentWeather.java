@@ -1,8 +1,8 @@
 package model;
 
-public class Weather {
+public class CurrentWeather {
 
-    public Weather() {
+    public CurrentWeather() {
         // Empty --> Bean
     }
 

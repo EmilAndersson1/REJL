@@ -1,5 +1,5 @@
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import Controllers.DataHandler;
+import model.Location;
 import services.WeatherService;
 import spark.ModelAndView;
 import spark.template.pebble.PebbleTemplateEngine;
@@ -13,20 +13,23 @@ import static spark.Spark.*;
  *
  * @author "REJL"
  */
-public class Main {
+public class APIServer {
 
     public static void main(String[] args) {
 
-//        WeatherService.getWeather();
+        // Some hard coded stuff.
+        WeatherService weatherService = new WeatherService();
+        Location location = (Location) weatherService.getWeather("-16.516667", "-68.166667");
+        DataHandler dataHandler = new DataHandler();
+        String mood = dataHandler.getMoodFromWeather(location);
+        System.out.println("Current weather mood: " + mood);
+
 
         // Visa information i webbläsare lokalt: "http://localhost:5555"
         port(5555);
 
         // Plats för css-filer typ
         staticFiles.location("/static");
-
-        // Används för marshalling/unmarshalling: java-objekt <--> JSON
-        Gson gson = new Gson();
 
         /*
          * (CORS är ett problem när vi använder lokala HTML-filer så vi låter Spark agera webbserver och serva oss en html-fil.)
@@ -35,7 +38,7 @@ public class Main {
          */
         get("/front", (req, res) -> {
             return new PebbleTemplateEngine().render(
-                    new ModelAndView(null, "templates/index.html"));
+                    new ModelAndView(null, "templates/testing.html"));
         });
 
         //
