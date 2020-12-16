@@ -11,20 +11,9 @@ import com.google.gson.GsonBuilder;
 
 /**
  * Service for communication with a Weather API. Currently: YR API
- *
- * The retrieved JSON code is to be represented in a java object for easier manipulation in java.
- *
+ * The retrieved JSON code is represented in a bean (java object) for easier manipulation in java.
  */
 public class WeatherService {
-
-    /*
-    Hardcoded main method for TESTING.
-    The getWeather method is supposed to be called from a control class.
-    TODO: Remove main method.
-     */
-    public static void main(String[] args) {
-        new WeatherService().getWeather("-16.516667", "-68.166667");
-    }
 
     /**
      *  Retrieve some information about the weather based on a location.
@@ -64,10 +53,11 @@ public class WeatherService {
 
     //TODO: This is good for retrieving a decent weather parameter.
     // Maybe have to make a search to correct time forecast*.
+    // Maybe useful for real. Clean up though.
     private CurrentWeather returnAndPrintWeather(JSONObject jsonObject, Gson gson) {
-//        System.out.println(jsonObject.toString(1));
+//        System.out.println(jsonObject.toString(1)); // prints a complete beautified json.
 
-        // Retrieve wanted fields from the JSONObject.
+        // Retrieve wanted fields from the JSONObject. Parsing the JSON tree.
         JSONObject jsonField = jsonObject
                 .getJSONObject("properties")
                 .getJSONArray("timeseries")
@@ -76,6 +66,9 @@ public class WeatherService {
                 .getJSONObject("next_1_hours")
                 .getJSONObject("summary");
         String json = jsonField.toString();
+
+        System.out.println("\nTEST WEATHER json:");
+        System.out.println(jsonField);
 
         System.out.println("\nTEST WEATHER from json to java:");
         CurrentWeather currentWeather = gson.fromJson(json, CurrentWeather.class); //Unmarshalling: JSON --> java Object
@@ -88,7 +81,10 @@ public class WeatherService {
         return currentWeather;
     }
 
-//    //TODO: Remove this method.
+
+
+    //Blä
+//    //TODO: Remove this method. Keep for now...
 //    private Location testAndPrintMarshalling(JSONObject jsonObject, Gson gson) {
 //
 //        // Retrieve wanted fields from the JSONObject.

@@ -1,19 +1,26 @@
 package Controllers;
 
-import model.Location;
+import model.CurrentWeather;
 
 /**
- * Takes some weather data and creates a Spotify object.
+ * Takes some weather data and creates //TODO: a Spotify object. Something real.
  */
 public class DataHandler {
 
-    public String getMoodFromWeather(Location location) {
+    // Currently just for testing.
+    public String getMoodFromWeather(CurrentWeather weather) {
 
-        if (location.coordinates[0]==-16.516667 && location.coordinates[1]==-68.166667) {
-            return "Happy";
+        String mood = "Valance ";
+
+        if ( (weather.symbol_code.contains("rain")) || (weather.symbol_code.contains("cloud") )) {
+            mood += "< 0.5\n:(";
         } else {
-            return "Sad";
+            mood += ">= 0.5\n:)";
         }
+
+        mood += "\n";
+
+        return mood;
     }
 
 }
