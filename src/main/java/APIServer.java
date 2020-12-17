@@ -34,23 +34,30 @@ public class APIServer {
         // Plats för css-filer typ
         staticFiles.location("/static");
 
-        //TODO: This is just an idea for a method. Does it work like this maybe? Very sketchy, not tested...
-        // A method like this should be called from a frontend through some javascript/jQuery/ajax-method.
-        get("/front?lat=:latitude&lon=:longitude", (req, res) -> {
+        /**
+         *
+         *  Put latitude and longitude in url in web browser, test coordinates below.
+         *  http://localhost:5555/front/latitude/longitude
+         */
+        get("/front/:latitude/:longitude", (req, res) -> {
 
-            // Can we get coordinates from frontend by it adding query parameters in the uri?
-            // And then pick it up like this somehow?
-            String lat = req.queryMap().get("latitude").value();
-            String lon = req.queryMap().get("longitude").value();
+            String latitude = req.params(":latitude");
+            String longitude = req.params(":longitude");
 
-            // Call a method that generates a Spotify json-response based on lon and lat variables vi weatherService.
-            // SomeClass.generateMusic();
+            CurrentWeather weatherAtRequestLocation = (CurrentWeather) weatherService.getWeather(latitude, longitude);
+            // TEST VALUES WITH high probability of clear skies (opposite of Malmö...):
+            //Yuma, Arizona:    32.671519/-114.612754
+            //Sowdari, Sudan:   15.611943/28.599067
+            String moodAtRequestLocation = dataHandler.getMoodFromWeather(weatherAtRequestLocation);
 
-            // Is this the way to send back a response to frontend?
-            res.body("Some generated Spotify json-object");
+            if (latitude.equals("32.671519")) {
+                moodAtRequestLocation = "Current mood in Yuma, Arizona:" + moodAtRequestLocation;
+            } else if (latitude.equals("15.611943")) {
+                moodAtRequestLocation = "Current mood in Sowdari, Sudan:" + moodAtRequestLocation;
+            }
+            moodAtRequestLocation += ". Current mood in Malmö:" + mood;
 
-            return new PebbleTemplateEngine().render(
-                    new ModelAndView(null, "templates/index.html"));
+            return moodAtRequestLocation;
         });
 
         /*
