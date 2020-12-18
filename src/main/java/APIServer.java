@@ -39,7 +39,7 @@ public class APIServer {
          *  Put latitude and longitude in url in web browser, test coordinates below.
          *  http://localhost:5555/front/latitude/longitude
          */
-        get("/front/:latitude/:longitude", (req, res) -> {
+        get("/:latitude/:longitude", (req, res) -> {
 
             String latitude = req.params(":latitude");
             String longitude = req.params(":longitude");
@@ -66,11 +66,9 @@ public class APIServer {
          * (CORS är ett problem när vi använder lokala HTML-filer så vi låter Spark
          * agera webbserver och serva oss en html-fil.) <- tveksamt om vi behöver bry oss om detta.
          */
-        get("/front", (req, res) -> {
+        get("/", (req, res) -> {
             return new PebbleTemplateEngine().render(
                     new ModelAndView(null, "templates/index.html"));
         });
-        get("/", (req, res) -> "Start REJL");
-        get("/hello", (req, res) -> "Hello World");
     }
 }
