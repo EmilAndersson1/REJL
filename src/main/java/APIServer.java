@@ -37,12 +37,13 @@ public class APIServer {
         /**
          *
          *  Put latitude and longitude in url in web browser, test coordinates below.
-         *  http://localhost:5555/front/latitude/longitude
+         *  http://localhost:5555/latitude/longitude
          */
         get("/:latitude/:longitude", (req, res) -> {
 
             String latitude = req.params(":latitude");
             String longitude = req.params(":longitude");
+            
 
             CurrentWeather weatherAtRequestLocation = (CurrentWeather) weatherService.getWeather(latitude, longitude);
             // TEST VALUES WITH high probability of clear skies (opposite of Malmö...):
@@ -58,6 +59,7 @@ public class APIServer {
             moodAtRequestLocation += ". Current mood in Malmö:" + mood;
 
             return moodAtRequestLocation;
+            
         });
 
         /*
