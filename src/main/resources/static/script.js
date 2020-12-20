@@ -1,8 +1,21 @@
+var coord = document.getElementById("coords");
+var city = document.getElementById("city");
+var country = document.getElementById("country");
+var currentWeather = document.getElementById("current_weather");
+var temp = document.getElementById("temp");
+
+
+
 function getLocation() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(fetchCoords);
+
+    //When the button is clicked it it no longer shows
+    $(".button").hide();
+
+    
   } else {
-    x.innerHTML = "Geolocation is not supported by this browser.";
+    coord.innerHTML = "Geolocation is not supported by this browser.";
   }
 }
 
@@ -17,23 +30,18 @@ function fetchCoords(position) {
   })
 }
 
-var coord = document.getElementById("coords");
-var city = document.getElementById("city");
-var country = document.getElementById("country");
-var currentWeather = document.getElementById("current_weather");
-var temp = document.getElementById("temp");
-
 function showData(position) {
   coord.innerHTML = "Latitude: " + position.coords.latitude +
   "<br>Longitude: " + position.coords.longitude;
 
-  city.innerHTML = ""
+  city.innerHTML = "Stad" 
 
-  country.innerHTML = ""
+  country.innerHTML = ", Land"
 
-  currentWeather.innerHTML = ""
+  currentWeather.innerHTML = "Soligt"
 
-  temp.innerHTML = ""
+  temp.innerHTML = "35C"
+
 }
 
 /*

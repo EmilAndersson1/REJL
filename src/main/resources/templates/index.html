@@ -11,18 +11,33 @@
 </head>
 <body>
     <div class="container">
-        <nav class="navbar navbar-expand-lg navbar-light">
-        <a class="navbar-brand" id="logo" href="/">REJL</a>
-        </nav>
-
-        <input type="button" onclick="getLocation()" value="klicka här pls">
-
-        <p id="coords"></p>
-        <p id="city"></p>
-        <p id="country"></p>
-        <p id="current_weather"></p>
-        <p id="temp"></p>
+        <div class="row d-flex justify-content-center pt-3">
+            <div class="d-flex justify-content-center pb-5">
+                <a href="/" class="pb-5" id="logo">REJL</a>
+            </div>
+            <div class="d-flex justify-content-center pt-5">
+                <button class="button" id="coordBtn" onclick="getLocation()">Click me!</button>
+              </div>
+            
+            <div class="d-flex justify-content-center pt-5 weather-data">
+                <p id="city"></p>
+                <p id="country"></p> 
+            </div> 
+            <div class="d-flex justify-content-center weather-data">
+                <p id="coords"></p> 
+            </div> 
+            <div class="d-flex justify-content-center weather-data">
+                <p id="current_weather"></p>
+            </div>  
+            <div class="d-flex justify-content-center weather-data">
+                <p id="temp"></p>
+            </div>
+            
+        </div>
+         
+        
         <!--
+            spotify embeded player
         <div class="row justify-content-center">
             <div class="col">
                 <iframe src="https://open.spotify.com/embed/playlist/0kOSVeQLU48Z4Ue2CIQ93y" width="800" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>  
