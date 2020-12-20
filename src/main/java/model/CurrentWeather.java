@@ -10,4 +10,11 @@ public class CurrentWeather {
 
     // Variable name has to match corresponding json field name.
     public String symbol_code = "";
+
+    @Override
+    public String toString() {
+        return "CurrentWeather{" +
+                "symbol_code='" + symbol_code + '\'' +
+                '}';
+    }
 }
