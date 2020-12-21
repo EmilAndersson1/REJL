@@ -4,16 +4,11 @@ var country = document.getElementById("country");
 var currentWeather = document.getElementById("current_weather");
 var temp = document.getElementById("temp");
 
- 
-
-function getLocation() {
+function getCurrentLocation() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(fetchCoords);
-
     //When the button is clicked it it no longer shows
-    $(".button").hide();
-
-    
+    $("#map").hide();
   } else {
     coord.innerHTML = "Geolocation is not supported by this browser.";
   }
@@ -29,9 +24,6 @@ function fetchCoords(position) {
     showData(position);
   })
 }
-
-
-
 
 
 function showData(position) {
