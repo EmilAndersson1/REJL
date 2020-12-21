@@ -30,6 +30,10 @@ function fetchCoords(position) {
   })
 }
 
+
+
+
+
 function showData(position) {
   coord.innerHTML = "Latitude: " + position.coords.latitude +
   "<br>Longitude: " + position.coords.longitude;
