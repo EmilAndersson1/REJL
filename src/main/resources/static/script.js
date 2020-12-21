@@ -4,7 +4,7 @@ var country = document.getElementById("country");
 var currentWeather = document.getElementById("current_weather");
 var temp = document.getElementById("temp");
 
-
+ 
 
 function getLocation() {
   if (navigator.geolocation) {
