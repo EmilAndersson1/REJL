@@ -21,14 +21,25 @@ public class APIServer {
         port(5555); //Webbläsare: "http://localhost:5555"
         staticFiles.location("/static"); // Plats för css-filer typ
 
+        // Get weather based on location coordinates from frontend.
+        // Return json weather.
         get("/:latitude/:longitude", (req, res) -> {
 
             String latitude = req.params(":latitude");
             String longitude = req.params(":longitude");
-            
 
-            return dataHandler.testGetWeatherAndSong(latitude, longitude);
+            return dataHandler.getWeather(latitude, longitude);
         });
+
+        // Get tracks based on weather.
+        get("/:weather", (req, res) -> {
+
+            String weather = req.params(":weather");
+
+            return dataHandler.getTracks(weather);
+        });
+
+
 
         get("/", (req, res) -> {
             return new PebbleTemplateEngine().render(

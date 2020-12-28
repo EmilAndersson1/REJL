@@ -5,15 +5,15 @@ public class Track {
     public Track() {
     }
 
-    public String name          = "";
+    public String id            = "";
 
-    public String preview_url   = "";
+    public String name          = "";
 
     @Override
     public String toString() {
         return "Track{" +
-                "name='" + name + '\'' +
-                ", preview_url='" + preview_url + '\'' +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
                 '}';
     }
 }
