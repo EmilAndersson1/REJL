@@ -10,7 +10,7 @@ import model.CurrentWeather;
 import com.google.gson.Gson;
 
 /**
- * Service for communication with a Weather API. Currently: YR API
+ * Service for communication with a Weather API: YR.
  * The retrieved JSON code is represented in a bean (java object) for easier manipulation in java.
  */
 public class WeatherService extends APIService{
@@ -41,12 +41,4 @@ public class WeatherService extends APIService{
 
         return gson.fromJson(jsonFieldObject.toString(), CurrentWeather.class);
     }
-
-//    //TODO: Remove this method. Keep for now...
-//    private Location testAndPrintMarshalling(Gson gson, JSONObject jsonObject) {
-//        JSONObject jsonField    = jsonObject.getJSONObject("geometry");
-//        String json             = jsonField.toString();
-//
-//        return gson.fromJson(json, Location.class);
-//    }
 }

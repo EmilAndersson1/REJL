@@ -24,23 +24,18 @@ public class APIServer {
         // Get weather based on location coordinates from frontend.
         // Return json weather.
         get("/:latitude/:longitude", (req, res) -> {
-
             String latitude = req.params(":latitude");
             String longitude = req.params(":longitude");
-
             return dataHandler.getWeather(latitude, longitude);
         });
 
         // Get tracks based on weather.
         get("/:weather", (req, res) -> {
-
             String weather = req.params(":weather");
-
             return dataHandler.getTracks(weather);
         });
 
-
-
+        // Generate a starting page.
         get("/", (req, res) -> {
             return new PebbleTemplateEngine().render(
                     new ModelAndView(null, "templates/index.html"));

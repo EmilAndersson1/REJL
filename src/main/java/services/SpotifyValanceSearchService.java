@@ -19,12 +19,19 @@ public class SpotifyValanceSearchService extends APIService {
 
     @Override
     public HttpResponse<JsonNode> response(DataHandler dataHandler) {
-        float valance = dataHandler.getValance();
-        float minValance = valance - 0.050f;
-        float maxValance = valance + 0.050f;
-        System.out.println("TEST Valance: " + valance);
-        System.out.println("TEST Min Valance: " + minValance);
-        System.out.println("TEST Max Valance: " + maxValance);
+        float valence = dataHandler.getValance();
+        float interval = 0.200f;
+        float minValence = valence - interval/2;
+        float maxValence = minValence + interval;
+        try {
+            assert (minValence>=0.000f) && (maxValence<=1.000f);
+        } catch (Exception e) {
+            System.out.println("Valence is broken...");
+            e.printStackTrace();
+        }
+        System.out.println("TEST Valance: " + valence);
+        System.out.println("TEST Min Valance: " + minValence);
+        System.out.println("TEST Max Valance: " + maxValence);
         return Unirest.get("https://api.spotify.com/v1/recommendations")
                 .header("Accept", "application/json")
                 .header("Authorization", "Bearer " + dataHandler.getAuthorizationToken().access_token)
@@ -35,8 +42,8 @@ public class SpotifyValanceSearchService extends APIService {
                 .queryString("seed_artists", "6uothxMWeLWIhsGeF7cyo4") //dataHandler.getArtists()) //Enya hardcoded
 //                .queryString("seed_genres", dataHandler.getGeres())
 //                .queryString("seed_tracks", dataHandler.getTracks())
-                .queryString("min_valence", minValance)
-                .queryString("max_valence", maxValance)
+                .queryString("min_valence", minValence)
+                .queryString("max_valence", maxValence)
                 .asJson();
     }
 

@@ -16,6 +16,8 @@ public class Token {
 
     public String scope        = "";
 
+    public String refresh_token = "";
+
     @Override
     public String toString() {
         return "Token{" +
