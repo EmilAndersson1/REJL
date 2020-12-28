@@ -25,6 +25,32 @@ function fetchCoords(position) {
   })
 }
 
+function fetchCoordsMap(position) {
+  latMap = JSON.stringify(position)
+  parsed = JSON.parse(latMap)
+  $.ajax({
+    method: "GET",
+    url: "http://localhost:5555/" + parsed.lat + "/" + parsed.lng
+  }) 
+    showDataMap(parsed);
+    $("#map").hide();
+}
+
+
+function showDataMap(parsed) {
+  coord.innerHTML = "Latitude: " + parsed.lat +
+  "<br>Longitude: " + parsed.lng;
+
+  city.innerHTML = "Stad" 
+
+  country.innerHTML = ", Land"
+
+  currentWeather.innerHTML = "Soligt"
+
+  temp.innerHTML = "35C"
+
+}
+
 
 function showData(position) {
   coord.innerHTML = "Latitude: " + position.coords.latitude +

@@ -1,4 +1,5 @@
 function initMap() {
+    var position = {};
     const myLatlng = { lat: 55.603, lng: 13.02 };
     const map = new google.maps.Map(document.getElementById("map"), {
       zoom: 4,
@@ -18,9 +19,9 @@ function initMap() {
       infoWindow = new google.maps.InfoWindow({
         position: mapsMouseEvent.latLng,
       });
-      infoWindow.setContent(
-        JSON.stringify(mapsMouseEvent.latLng.toJSON(), null, 2)
-      );
+      //infoWindow.setContent(JSON.stringify(mapsMouseEvent.latLng.toJSON(), null, 2));
+      position = mapsMouseEvent.latLng;
+      fetchCoordsMap(position);
       infoWindow.open(map);
     });
   }
