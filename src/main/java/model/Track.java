@@ -9,11 +9,5 @@ public class Track {
 
     public String name          = "";
 
-    @Override
-    public String toString() {
-        return "Track{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                '}';
-    }
+    public String uri           = "";
 }

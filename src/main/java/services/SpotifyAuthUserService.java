@@ -7,7 +7,6 @@ import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
 import kong.unirest.json.JSONObject;
 import model.Code;
-import model.Token;
 
 /**
  * Service for getting user authorization to Spotify API.
@@ -22,7 +21,7 @@ public class SpotifyAuthUserService extends APIService {
     @Override
     public HttpResponse<JsonNode> response(DataHandler dataHandler) {
         return Unirest.get("https://accounts.spotify.com/authorize")
-                .queryString("client_id", dataHandler.getClientId())
+                .queryString("client_id", "444dff56b04044f3b091504c069e9954") //dataHandler.getClientId()
                 .queryString("response_type", "code")
                 .queryString("redirect_uri", "http://localhost:8888/callback/")
                 .queryString("scope", "playlist-modify-public")

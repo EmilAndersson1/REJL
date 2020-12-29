@@ -20,10 +20,12 @@ public class SpotifyAuthUserAppService extends APIService{
 
     @Override
     public HttpResponse<JsonNode> response(DataHandler dataHandler) {
+        String encoded = dataHandler.getEncodedClientCredentials();
+        String code = dataHandler.getCode();
         return Unirest.post("https://accounts.spotify.com/api/token")
-                .header("Authorization", "Basic " + dataHandler.getEncodedClientCredentials())
-                .field("grant_type", "cauthorization_code")
-                .field("code", dataHandler.getAuthorizationCode().code)
+                .header("Authorization", "Basic " + encoded)
+                .field("grant_type", "authorization_code")
+                .field("code", code)
                 .field("redirect_uri", "http://localhost:8888/callback/")
                 .asJson();
     }

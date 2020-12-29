@@ -1,9 +1,7 @@
 package Controllers;
 
 import com.google.gson.Gson;
-import model.ClientCredentials;
-import model.Code;
-import model.Token;
+import model.*;
 import services.*;
 import utils.ClientEncoder;
 import utils.MoodInterpreter;
@@ -13,8 +11,14 @@ import utils.MoodInterpreter;
  */
 public class DataHandler {
 
+    private APIService spotifyAuthUserService;
+    private APIService spotifyAuthUserAppService;
+
     private APIService weatherService;
     private APIService spotifyValanceSearchService;
+    private APIService addTracksToPlaylist;
+
+    private APIService spotifyPlaylistService;
 
     private String  clientId;
     private String  encodedClientCredentials;
@@ -24,22 +28,50 @@ public class DataHandler {
     private String  longitude;
     private float   valance;
 
+    private Playlist playlist;
+    private Tracks tracks;
+
     public DataHandler() {
-        APIService spotifyAuthAppService = new SpotifyAuthAppService(this);
-        APIService spotifyAuthUserService = new SpotifyAuthUserService(this);
+//        APIService spotifyAuthAppService = new SpotifyAuthAppService(this);
+        spotifyAuthUserService       = new SpotifyAuthUserService(this);
+        spotifyAuthUserAppService    = new SpotifyAuthUserAppService(this);
+
         ClientCredentials credentials = new ClientCredentials();
+        clientId                    = credentials.getClientID();
+        encodedClientCredentials    = ClientEncoder.generate(credentials.getClientID(), credentials.getClientSecret());
 
-        clientId = credentials.getClientID();
-        encodedClientCredentials = ClientEncoder.generate(credentials.getClientID(), credentials.getClientSecret());
+//        authorizationToken = (Token) spotifyAuthAppService.apiResponse();
 
-        //TODO: Generate a new token if expired. This is only instantiated once after starting server right now.
-        authorizationToken = (Token) spotifyAuthAppService.apiResponse();
-
-        authorizationCode = (Code) spotifyAuthUserService.apiResponse();
-
-        weatherService = new WeatherService(this);
+        weatherService              = new WeatherService(this);
         spotifyValanceSearchService = new SpotifyValanceSearchService(this);
+        spotifyPlaylistService      = new SpotifyPlaylistService(this);
+        addTracksToPlaylist         = new AddTracksToPlaylist(this);
     }
+
+    public String addSpotifyTracksToPlaylist() {
+        return new Gson().toJson(addTracksToPlaylist.apiResponse());
+    }
+
+    public String getSpotifyPlaylist() {
+        playlist = (Playlist) spotifyPlaylistService.apiResponse();
+        return new Gson().toJson(playlist);
+    }
+
+    private String code;
+    public String getCode() {
+        return code;
+    }
+    public String getToken(String code) {
+        this.code = code;
+        authorizationToken  = (Token) spotifyAuthUserAppService.apiResponse();
+        return new Gson().toJson(authorizationToken);
+    }
+
+//    public String getCode() {
+//        authorizationCode = (Code) spotifyAuthUserService.apiResponse();
+//        System.out.println("CHECKPOINT authorizationCode: " + authorizationCode.toString());
+//        return new Gson().toJson(authorizationCode);
+//    }
 
     public String getWeather(String latitude, String longitude) {
         this.latitude = latitude;
@@ -47,9 +79,10 @@ public class DataHandler {
         return new Gson().toJson(weatherService.apiResponse());
     }
 
-    public String getTracks(String weather) {
+    public String getSpotifyTracks(String weather) {
         valance = MoodInterpreter.weatherToValance(weather);
-        return new Gson().toJson(spotifyValanceSearchService.apiResponse());
+        tracks = (Tracks) spotifyValanceSearchService.apiResponse();
+        return new Gson().toJson(tracks);
     }
 
     public String getClientId() {
@@ -78,5 +111,13 @@ public class DataHandler {
 
     public float getValance() {
         return valance;
+    }
+
+    public Playlist getPlaylist() {
+        return playlist;
+    }
+
+    public Tracks getTracks() {
+        return tracks;
     }
 }

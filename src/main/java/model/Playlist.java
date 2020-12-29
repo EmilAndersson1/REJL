@@ -1,18 +1,25 @@
 package model;
 
-import java.util.Arrays;
+import com.google.gson.annotations.SerializedName;
 
 public class Playlist {
 
     public Playlist() {
     }
 
-    public Track[] tracks = null;
+    @SerializedName("external_urls")
+    public ExternalUrls externalUrls;
 
-    @Override
-    public String toString() {
-        return "Playlist{" +
-                "tracks=" + Arrays.toString(tracks) +
-                '}';
+    public String id = "";
+
+    public String name = "";
+
+
+    private class ExternalUrls {
+        public ExternalUrls() {
+        }
+
+        @SerializedName("spotify")
+        public String spotifyUrl = "";
     }
 }

@@ -22,10 +22,12 @@ public abstract class APIService {
     public Object apiResponse() {
 
         HttpResponse<JsonNode> response = response(dataHandler);
+        System.out.println("CHECKPOINT api response status: " + response.getStatus());
 
         // Retrieve the parsed JSONObject from the response.
         JsonNode jsonNode = response.getBody();
         JSONObject jsonObject = jsonNode.getObject();
+        System.out.println("CHECKPOINT jsonObject: \n" + jsonObject.toString(1));
 
         // Gson instance for marshalling and unmarshalling.
         GsonBuilder builder = new GsonBuilder();
@@ -36,8 +38,6 @@ public abstract class APIService {
 
         // Close Unirest connection.
         Unirest.shutDown();
-
-        System.out.println(javaObject); // Prints out the java object after instantiation.
 
         return javaObject;
     }

@@ -6,7 +6,7 @@ import kong.unirest.HttpResponse;
 import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
 import kong.unirest.json.JSONObject;
-import model.Playlist;
+import model.Tracks;
 
 /**
  * https://developer.spotify.com/documentation/web-api/reference-beta/#endpoint-get-recommendations
@@ -49,6 +49,6 @@ public class SpotifyValanceSearchService extends APIService {
 
     @Override
     public Object returnObject(Gson gson, JSONObject jsonObject) {
-        return gson.fromJson(jsonObject.toString(), Playlist.class);
+        return gson.fromJson(jsonObject.toString(), Tracks.class);
     }
 }
