@@ -24,10 +24,6 @@ public class MoodInterpreter {
             case "fair":
                 valance = 0.750f;
                 break;
-            case "heavyrain":
-            case "heavyrainandthunder":
-            case "heavyrainshowers":
-            case "heavyrainshowersandthunder":
             case "snowandthunderr":
             case "rain":
             case "rainandthunder":
@@ -35,6 +31,10 @@ public class MoodInterpreter {
             case "rainshowersandthunder":
                 valance = 0.300f;
                 break;
+            case "heavyrain":
+            case "heavyrainandthunder":
+            case "heavyrainshowers":
+            case "heavyrainshowersandthunder":
             case "heavysleet":
             case "heavysleetandthunder":
             case "heavysleetshowersandthundert":
@@ -45,9 +45,7 @@ public class MoodInterpreter {
             case "heavysnowshowers":
             case "heavysnowshowersandthunder":
             case "snowshowersandthunder":
-            case "lightsnow":
             case "lightsnowandthunder":
-            case "lightsnowshowers":
             case "lightssleetshowersandthunder":
             case "lightssnowshowersandthunder":
                 valance = 0.400f;
@@ -71,6 +69,8 @@ public class MoodInterpreter {
             case "snow":
                 valance = 0.800f;
                 break;
+            case "lightsnow":
+            case "lightsnowshowers":
             case "snowshowers":
                 valance = 0.700f;
                 break;

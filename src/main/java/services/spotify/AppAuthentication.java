@@ -13,14 +13,14 @@ import services.APIService;
  * Service for getting authorization to Spotify API.
  * The retrieved JSON code is represented in a bean (java object) for easier manipulation in java.
  */
-public class SpotifyAuthUserAppService extends APIService {
+public class AppAuthentication extends APIService {
 
-    public SpotifyAuthUserAppService(DataHandler dataHandler) {
+    public AppAuthentication(DataHandler dataHandler) {
         super(dataHandler);
     }
 
     @Override
-    public HttpResponse<JsonNode> response(DataHandler dataHandler) {
+    public HttpResponse<JsonNode> jsonResponse(DataHandler dataHandler) {
         String encoded = dataHandler.getEncodedClientCredentials();
         String code = dataHandler.getCode();
         return Unirest.post("https://accounts.spotify.com/api/token")
@@ -32,7 +32,7 @@ public class SpotifyAuthUserAppService extends APIService {
     }
 
     @Override
-    public Object returnObject(Gson gson, JSONObject jsonObject) {
+    public Object convertJsonResponseToJava(Gson gson, JSONObject jsonObject) {
         return gson.fromJson(jsonObject.toString(), Token.class);
     }
 }

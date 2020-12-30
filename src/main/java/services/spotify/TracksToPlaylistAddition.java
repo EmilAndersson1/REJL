@@ -11,22 +11,21 @@ import model.spotify.Tracks;
 import model.spotify.Uris;
 import services.APIService;
 
-public class AddTracksToPlaylist extends APIService {
-    public AddTracksToPlaylist(DataHandler dataHandler) {
+public class TracksToPlaylistAddition extends APIService {
+    public TracksToPlaylistAddition(DataHandler dataHandler) {
         super(dataHandler);
     }
 
     private Playlist playlist;
-    private Uris trackUris;
 
     @Override
-    public HttpResponse<JsonNode> response(DataHandler dataHandler) {
+    public HttpResponse<JsonNode> jsonResponse(DataHandler dataHandler) {
 
         playlist = dataHandler.getPlaylist();
 
         Tracks tracks = dataHandler.getTracks();
 
-        trackUris = new Uris();
+        Uris trackUris = new Uris();
         trackUris.uris = new String[tracks.tracks.length];
 
         for (int i = 0; i < tracks.tracks.length; i++) {
@@ -52,7 +51,7 @@ public class AddTracksToPlaylist extends APIService {
     }
 
     @Override
-    public Object returnObject(Gson gson, JSONObject jsonObject) {
+    public Object convertJsonResponseToJava(Gson gson, JSONObject jsonObject) {
         return playlist;
     }
 }

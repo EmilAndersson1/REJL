@@ -17,8 +17,8 @@ public class APIServer {
 
         DataHandler dataHandler = new DataHandler(); // TODO: Think about where to put DataHandler. User?
 
-        port(8888); //Webbläsare: "http://localhost:8888"
-        staticFiles.location("/static"); // Plats för css-filer typ
+        port(8888); // "http://localhost:8888"
+        staticFiles.location("/static");
 
         // Get weather based on location coordinates from frontend.
         // Return json weather.

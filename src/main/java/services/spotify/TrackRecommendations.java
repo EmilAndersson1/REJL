@@ -12,14 +12,14 @@ import services.APIService;
 /**
  * https://developer.spotify.com/documentation/web-api/reference-beta/#endpoint-get-recommendations
  */
-public class SpotifyValanceSearchService extends APIService {
+public class TrackRecommendations extends APIService {
 
-    public SpotifyValanceSearchService(DataHandler dataHandler) {
+    public TrackRecommendations(DataHandler dataHandler) {
         super(dataHandler);
     }
 
     @Override
-    public HttpResponse<JsonNode> response(DataHandler dataHandler) {
+    public HttpResponse<JsonNode> jsonResponse(DataHandler dataHandler) {
         float valence = dataHandler.getValance();
         float interval = 0.200f;
         float minValence = valence - interval/2;
@@ -49,7 +49,7 @@ public class SpotifyValanceSearchService extends APIService {
     }
 
     @Override
-    public Object returnObject(Gson gson, JSONObject jsonObject) {
+    public Object convertJsonResponseToJava(Gson gson, JSONObject jsonObject) {
         return gson.fromJson(jsonObject.toString(), Tracks.class);
     }
 }

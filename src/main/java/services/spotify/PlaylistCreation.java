@@ -9,14 +9,14 @@ import kong.unirest.json.JSONObject;
 import model.spotify.Playlist;
 import services.APIService;
 
-public class SpotifyPlaylistService extends APIService {
+public class PlaylistCreation extends APIService {
 
-    public SpotifyPlaylistService(DataHandler dataHandler) {
+    public PlaylistCreation(DataHandler dataHandler) {
         super(dataHandler);
     }
 
     @Override
-    public HttpResponse<JsonNode> response(DataHandler dataHandler) {
+    public HttpResponse<JsonNode> jsonResponse(DataHandler dataHandler) {
 
         String hardCodedUserId = "1164261797";
         String hardCodedPlaylistName = "SkolProjekt";
@@ -30,7 +30,7 @@ public class SpotifyPlaylistService extends APIService {
     }
 
     @Override
-    public Object returnObject(Gson gson, JSONObject jsonObject) {
-        return gson.fromJson(jsonObject.toString(), Playlist.class);
+    public Object convertJsonResponseToJava(Gson gson, JSONObject jsonObject) {
+        return gson.fromJson(jsonObject.toString(), model.spotify.Playlist.class);
     }
 }

@@ -19,16 +19,16 @@ public abstract class APIService {
     }
 
     public Object apiResponse() {
-        HttpResponse<JsonNode> response = response(dataHandler);
+        HttpResponse<JsonNode> response = jsonResponse(dataHandler);
         System.out.println("CHECKPOINT api response status: " + response.getStatus());
         JSONObject jsonObject = response.getBody().getObject(); // Retrieve the parsed JSONObject from the response.
         Gson gson = new Gson(); // For marshalling.
-        Object javaObject = returnObject(gson, jsonObject); // Create the java object for easy usage i the application.
+        Object javaObject = convertJsonResponseToJava(gson, jsonObject);
         Unirest.shutDown(); // Close Unirest connection.
         return javaObject;
     }
 
-    public abstract HttpResponse<JsonNode> response(DataHandler dataHandler);
+    public abstract HttpResponse<JsonNode> jsonResponse(DataHandler dataHandler);
 
-    public abstract Object returnObject(Gson gson, JSONObject jsonObject);
+    public abstract Object convertJsonResponseToJava(Gson gson, JSONObject jsonObject);
 }

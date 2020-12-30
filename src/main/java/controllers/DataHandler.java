@@ -8,7 +8,7 @@ import model.spotify.Token;
 import model.spotify.Tracks;
 import services.*;
 import services.spotify.*;
-import services.yr.WeatherService;
+import services.yr.WeatherRetrieval;
 import utils.ClientEncoder;
 import utils.MoodInterpreter;
 
@@ -17,49 +17,44 @@ import utils.MoodInterpreter;
  */
 public class DataHandler {
 
-    private APIService spotifyAuthUserService;
-    private APIService spotifyAuthUserAppService;
+    private APIService  UserLogin;
+    private APIService  AppAuthentication;
 
-    private APIService weatherService;
-    private APIService spotifyValanceSearchService;
-    private APIService addTracksToPlaylist;
+    private String      encodedClientCredentials;
+    private Token       authorizationToken;
+    private Code        authorizationCode;
 
-    private APIService spotifyPlaylistService;
+    private APIService  weatherRetrieval;
+    private APIService  trackRecommendations;
+    private APIService  playlistCreation;
+    private APIService  tracksToPlaylistAddition;
 
-    private String  clientId;
-    private String  encodedClientCredentials;
-    private Token authorizationToken;
-    private Code authorizationCode;
-    private String  latitude;
-    private String  longitude;
-    private float   valance;
-
-    private Playlist playlist;
-    private Tracks tracks;
+    private String      latitude;
+    private String      longitude;
+    private float       valance;
+    private Playlist    playlist;
+    private Tracks      tracks;
 
     public DataHandler() {
-//        APIService spotifyAuthAppService = new SpotifyAuthAppService(this);
-        spotifyAuthUserService       = new SpotifyAuthUserService(this);
-        spotifyAuthUserAppService    = new SpotifyAuthUserAppService(this);
+        ClientCredentials credentials   = new ClientCredentials();
 
-        ClientCredentials credentials = new ClientCredentials();
-        clientId                    = credentials.getClientID();
         encodedClientCredentials    = ClientEncoder.generate(credentials.getClientID(), credentials.getClientSecret());
 
-//        authorizationToken = (Token) spotifyAuthAppService.apiResponse();
+        UserLogin                   = new UserLogin(this);
+        AppAuthentication           = new AppAuthentication(this);
 
-        weatherService              = new WeatherService(this);
-        spotifyValanceSearchService = new SpotifyValanceSearchService(this);
-        spotifyPlaylistService      = new SpotifyPlaylistService(this);
-        addTracksToPlaylist         = new AddTracksToPlaylist(this);
+        weatherRetrieval            = new WeatherRetrieval(this);
+        trackRecommendations        = new TrackRecommendations(this);
+        playlistCreation            = new PlaylistCreation(this);
+        tracksToPlaylistAddition    = new TracksToPlaylistAddition(this);
     }
 
     public String addSpotifyTracksToPlaylist() {
-        return new Gson().toJson(addTracksToPlaylist.apiResponse());
+        return new Gson().toJson(tracksToPlaylistAddition.apiResponse());
     }
 
     public String getSpotifyPlaylist() {
-        playlist = (Playlist) spotifyPlaylistService.apiResponse();
+        playlist = (model.spotify.Playlist) playlistCreation.apiResponse();
         return new Gson().toJson(playlist);
     }
 
@@ -67,32 +62,28 @@ public class DataHandler {
     public String getCode() {
         return code;
     }
-    public String getToken(String code) {
-        this.code = code;
-        authorizationToken  = (Token) spotifyAuthUserAppService.apiResponse();
-        return new Gson().toJson(authorizationToken);
-    }
-
-//    public String getCode() {
+//        public String getCode() {
 //        authorizationCode = (Code) spotifyAuthUserService.apiResponse();
 //        System.out.println("CHECKPOINT authorizationCode: " + authorizationCode.toString());
 //        return new Gson().toJson(authorizationCode);
 //    }
 
+    public String getToken(String code) {
+        this.code = code;
+        authorizationToken  = (Token) AppAuthentication.apiResponse();
+        return new Gson().toJson(authorizationToken);
+    }
+
     public String getWeather(String latitude, String longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
-        return new Gson().toJson(weatherService.apiResponse());
+        return new Gson().toJson(weatherRetrieval.apiResponse());
     }
 
     public String getSpotifyTracks(String weather) {
         valance = MoodInterpreter.weatherToValance(weather);
-        tracks = (Tracks) spotifyValanceSearchService.apiResponse();
+        tracks = (Tracks) trackRecommendations.apiResponse();
         return new Gson().toJson(tracks);
-    }
-
-    public String getClientId() {
-        return clientId;
     }
 
     public String getEncodedClientCredentials() {
@@ -101,10 +92,6 @@ public class DataHandler {
 
     public Token getAuthorizationToken() {
         return authorizationToken;
-    }
-
-    public Code getAuthorizationCode() {
-        return authorizationCode;
     }
 
     public String getLatitude() {

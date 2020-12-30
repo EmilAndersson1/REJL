@@ -3,7 +3,7 @@ package model.yr;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * A java bean to represent a current weather.
+ * A java bean to represent current weather.
  */
 public class CurrentWeather {
 
@@ -11,12 +11,12 @@ public class CurrentWeather {
     public CurrentWeather() {}
 
     @SerializedName("symbol_code")
-    public String symbolCode = "";
+    public String weatherSymbolCode = "";
 
     @Override
     public String toString() {
         return "CurrentWeather{" +
-                "symbolCode='" + symbolCode + '\'' +
+                "weatherSymbolCode='" + weatherSymbolCode + '\'' +
                 '}';
     }
 }

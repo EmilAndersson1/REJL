@@ -13,14 +13,14 @@ import services.APIService;
  * Service for getting user authorization to Spotify API.
  * User authentication is required to create a playlist.
  */
-public class SpotifyAuthUserService extends APIService {
+public class UserLogin extends APIService {
 
-    public SpotifyAuthUserService(DataHandler dataHandler) {
+    public UserLogin(DataHandler dataHandler) {
         super(dataHandler);
     }
 
     @Override
-    public HttpResponse<JsonNode> response(DataHandler dataHandler) {
+    public HttpResponse<JsonNode> jsonResponse(DataHandler dataHandler) {
         return Unirest.get("https://accounts.spotify.com/authorize")
                 .queryString("client_id", "444dff56b04044f3b091504c069e9954") //dataHandler.getClientId()
                 .queryString("response_type", "code")
@@ -30,7 +30,7 @@ public class SpotifyAuthUserService extends APIService {
     }
 
     @Override
-    public Object returnObject(Gson gson, JSONObject jsonObject) {
+    public Object convertJsonResponseToJava(Gson gson, JSONObject jsonObject) {
         return gson.fromJson(jsonObject.toString(), Code.class);
     }
 }
