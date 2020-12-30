@@ -1,6 +1,6 @@
 package services.spotify;
 
-import controllers.DataHandler;
+import controll.Controller;
 import com.google.gson.Gson;
 import kong.unirest.HttpResponse;
 import kong.unirest.JsonNode;
@@ -15,14 +15,14 @@ import services.APIService;
  */
 public class AppAuthentication extends APIService {
 
-    public AppAuthentication(DataHandler dataHandler) {
-        super(dataHandler);
+    public AppAuthentication(Controller controller) {
+        super(controller);
     }
 
     @Override
-    public HttpResponse<JsonNode> jsonResponse(DataHandler dataHandler) {
-        String encoded = dataHandler.getEncodedClientCredentials();
-        String code = dataHandler.getCode();
+    public HttpResponse<JsonNode> jsonResponse(Controller controller) {
+        String encoded = controller.getEncodedClientCredentials();
+        String code = controller.getAuthorizationCode();
         return Unirest.post("https://accounts.spotify.com/api/token")
                 .header("Authorization", "Basic " + encoded)
                 .field("grant_type", "authorization_code")

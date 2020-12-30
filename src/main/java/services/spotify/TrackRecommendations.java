@@ -1,6 +1,6 @@
 package services.spotify;
 
-import controllers.DataHandler;
+import controll.Controller;
 import com.google.gson.Gson;
 import kong.unirest.HttpResponse;
 import kong.unirest.JsonNode;
@@ -14,13 +14,13 @@ import services.APIService;
  */
 public class TrackRecommendations extends APIService {
 
-    public TrackRecommendations(DataHandler dataHandler) {
-        super(dataHandler);
+    public TrackRecommendations(Controller controller) {
+        super(controller);
     }
 
     @Override
-    public HttpResponse<JsonNode> jsonResponse(DataHandler dataHandler) {
-        float valence = dataHandler.getValance();
+    public HttpResponse<JsonNode> jsonResponse(Controller controller) {
+        float valence = controller.getValance();
         float interval = 0.200f;
         float minValence = valence - interval/2;
         float maxValence = minValence + interval;
@@ -35,14 +35,9 @@ public class TrackRecommendations extends APIService {
         System.out.println("TEST Max Valance: " + maxValence);
         return Unirest.get("https://api.spotify.com/v1/recommendations")
                 .header("Accept", "application/json")
-                .header("Authorization", "Bearer " + dataHandler.getAuthorizationToken().access_token)
+                .header("Authorization", "Bearer " + controller.getAuthorizationToken().accessToken)
                 .queryString("limit", 10)
-                // A comma separated list of Spotify IDs for seed artists.
-                // Up to 5 seed values may be provided in any combination
-                // of seed_artists, seed_tracks and seed_genres.
-                .queryString("seed_artists", "6uothxMWeLWIhsGeF7cyo4") //dataHandler.getArtists()) //Enya hardcoded
-//                .queryString("seed_genres", dataHandler.getGeres())
-//                .queryString("seed_tracks", dataHandler.getTracks())
+                .queryString("seed_genres", controller.getGenre())
                 .queryString("min_valence", minValence)
                 .queryString("max_valence", maxValence)
                 .asJson();

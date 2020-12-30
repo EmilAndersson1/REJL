@@ -1,6 +1,6 @@
 package services.spotify;
 
-import controllers.DataHandler;
+import controll.Controller;
 import com.google.gson.Gson;
 import kong.unirest.HttpResponse;
 import kong.unirest.JsonNode;
@@ -12,18 +12,17 @@ import model.spotify.Uris;
 import services.APIService;
 
 public class TracksToPlaylistAddition extends APIService {
-    public TracksToPlaylistAddition(DataHandler dataHandler) {
-        super(dataHandler);
+    public TracksToPlaylistAddition(Controller controller) {
+        super(controller);
     }
 
     private Playlist playlist;
 
     @Override
-    public HttpResponse<JsonNode> jsonResponse(DataHandler dataHandler) {
+    public HttpResponse<JsonNode> jsonResponse(Controller controller) {
 
-        playlist = dataHandler.getPlaylist();
-
-        Tracks tracks = dataHandler.getTracks();
+        playlist = controller.getPlaylist();
+        Tracks tracks = controller.getTracks();
 
         Uris trackUris = new Uris();
         trackUris.uris = new String[tracks.tracks.length];
@@ -33,10 +32,10 @@ public class TracksToPlaylistAddition extends APIService {
         }
         String uris = new Gson().toJson(trackUris);
 
-        System.out.println(uris);
+        System.out.println("" + uris);
 
         return Unirest.post("https://api.spotify.com/v1/playlists/{playlist_id}/tracks")
-                .header("Authorization", "Bearer " + dataHandler.getAuthorizationToken().access_token)
+                .header("Authorization", "Bearer " + controller.getAuthorizationToken().accessToken)
                 .header("Content-Type", "application/json")
                 .routeParam("playlist_id", playlist.id)
                 .body(uris)

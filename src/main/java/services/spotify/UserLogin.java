@@ -1,6 +1,6 @@
 package services.spotify;
 
-import controllers.DataHandler;
+import controll.Controller;
 import com.google.gson.Gson;
 import kong.unirest.HttpResponse;
 import kong.unirest.JsonNode;
@@ -15,12 +15,12 @@ import services.APIService;
  */
 public class UserLogin extends APIService {
 
-    public UserLogin(DataHandler dataHandler) {
-        super(dataHandler);
+    public UserLogin(Controller controller) {
+        super(controller);
     }
 
     @Override
-    public HttpResponse<JsonNode> jsonResponse(DataHandler dataHandler) {
+    public HttpResponse<JsonNode> jsonResponse(Controller controller) {
         return Unirest.get("https://accounts.spotify.com/authorize")
                 .queryString("client_id", "444dff56b04044f3b091504c069e9954") //dataHandler.getClientId()
                 .queryString("response_type", "code")

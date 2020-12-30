@@ -1,73 +1,54 @@
-import controllers.DataHandler;
-import kong.unirest.HttpResponse;
-import kong.unirest.Unirest;
+import controll.Controller;
 import spark.ModelAndView;
 import spark.template.pebble.PebbleTemplateEngine;
 
 import static spark.Spark.*;
 
 /**
- * CORS är ett problem med lokala HTML-filer. Låt Spark agera webbserver och serva en html-fil.
  *
  * @author "REJL"
  */
 public class APIServer {
 
     public static void main(String[] args) {
-
-        DataHandler dataHandler = new DataHandler(); // TODO: Think about where to put DataHandler. User?
-
-        port(8888); // "http://localhost:8888"
+        Controller controller = new Controller();
+        port(8888);
         staticFiles.location("/static");
 
-        // Get weather based on location coordinates from frontend.
-        // Return json weather.
-        get("/weather/:latitude/:longitude", (req, res) -> {
-            String latitude = req.params(":latitude");
-            String longitude = req.params(":longitude");
-            return dataHandler.getWeather(latitude, longitude);
-        });
+        /*
+         * 1. Generate a starting page.
+         * CORS är ett problem med lokala HTML-filer. Låt Spark agera webbserver och serva en html-fil.
+         */
+        get("/", (req, res) -> new PebbleTemplateEngine().render(
+                new ModelAndView(null, "templates/index.html")));
 
-        // Get tracks based on weather.
-        get("/tracks/:weather", (req, res) -> {
-            String weather = req.params(":weather");
-            return dataHandler.getSpotifyTracks(weather);
-        });
+        /*
+         * 2. Get weather based on location coordinates from frontend.
+         */
+        get("/api/weather/:latitude/:longitude", (req, res) -> controller.getWeather(
+                req.params(":latitude"), req.params(":longitude"))); // json weather.
 
-        // Authorize user.
-        get("/login", (req, res) -> {
+        /*
+         * 3.1. Authorize user.
+         * Remove this apps access to users spotify acount to log in again: https://www.spotify.com/us/account/apps/
+         */
+        get("/login", (req, res) -> controller.getSpotifyAuthorizationLink());
 
-            //TODO: returnera urlen som en sträng eller ?
-            HttpResponse<String> stringResponse = Unirest.get("https://accounts.spotify.com/authorize")
-                    .queryString("client_id", "444dff56b04044f3b091504c069e9954") //dataHandler.getClientId()
-                    .queryString("response_type", "code")
-                    .queryString("redirect_uri", "http://localhost:8888/callback/")
-                    .queryString("scope", "playlist-modify-public")
-                    .asString();
+        /*
+         * 3.2. Authorize app.
+         */
+        get("/callback/", (req, res) -> controller.getSpotifyToken(
+                req.queryMap().get("code").value()));
 
-            return "https://accounts.spotify.com/sv/authorize?client_id=444dff56b04044f3b091504c069e9954&response_type=code&redirect_uri=http:%2F%2Flocalhost:8888%2Fcallback%2F&scope=playlist-modify-public";
-        });
+        /*
+         * 5. Get tracks based on weather. Returns tracks as json.
+         */
+        get("/api/tracks/:weather/:genre", (req, res) -> controller.getSpotifyTracks(
+                req.params(":weather"), req.params(":genre")));
 
-        // Authorize app.
-        get("/callback/", (req, res) -> {
-            String code = req.queryMap().get("code").value();
-            return dataHandler.getToken(code);
-        });
-
-        // Create Playlist.
-        get("/playlist", (req, res) -> {
-            return dataHandler.getSpotifyPlaylist();
-        });
-
-        // Add tracks to Playlist.
-        get("/addtracks", (req, res) -> {
-            return dataHandler.addSpotifyTracksToPlaylist();
-        });
-
-        // Generate a starting page.
-        get("/", (req, res) -> {
-            return new PebbleTemplateEngine().render(
-                    new ModelAndView(null, "templates/index.html"));
-        });
+        /*
+         * 6. Create Playlist and add tracks. Returns a playlist as json.
+         */
+        get("/api/playlist", (req, res) -> controller.getSpotifyPlaylist());
     }
 }

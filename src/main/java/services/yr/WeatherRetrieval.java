@@ -1,6 +1,6 @@
 package services.yr;
 
-import controllers.DataHandler;
+import controll.Controller;
 import kong.unirest.HttpResponse;
 import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
@@ -16,16 +16,16 @@ import services.APIService;
  */
 public class WeatherRetrieval extends APIService {
 
-    public WeatherRetrieval(DataHandler dataHandler) {
-        super(dataHandler);
+    public WeatherRetrieval(Controller controller) {
+        super(controller);
     }
 
     @Override
-    public HttpResponse<JsonNode> jsonResponse(DataHandler dataHandler) {
+    public HttpResponse<JsonNode> jsonResponse(Controller controller) {
         return Unirest.get("https://api.met.no/weatherapi/locationforecast/2.0/compact?")
                 .header("Accept", "application/json")
-                .queryString("lat", dataHandler.getLatitude())
-                .queryString("lon", dataHandler.getLongitude())
+                .queryString("lat", controller.getLatitude())
+                .queryString("lon", controller.getLongitude())
                 .asJson();
     }
 

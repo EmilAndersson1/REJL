@@ -1,28 +1,27 @@
 package services.spotify;
 
-import controllers.DataHandler;
+import controll.Controller;
 import com.google.gson.Gson;
 import kong.unirest.HttpResponse;
 import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
 import kong.unirest.json.JSONObject;
-import model.spotify.Playlist;
 import services.APIService;
 
 public class PlaylistCreation extends APIService {
 
-    public PlaylistCreation(DataHandler dataHandler) {
-        super(dataHandler);
+    public PlaylistCreation(Controller controller) {
+        super(controller);
     }
 
     @Override
-    public HttpResponse<JsonNode> jsonResponse(DataHandler dataHandler) {
+    public HttpResponse<JsonNode> jsonResponse(Controller controller) {
 
         String hardCodedUserId = "1164261797";
         String hardCodedPlaylistName = "SkolProjekt";
 
         return Unirest.post("https://api.spotify.com/v1/users/{user_id}/playlists")
-                .header("Authorization", "Bearer " + dataHandler.getAuthorizationToken().access_token)
+                .header("Authorization", "Bearer " + controller.getAuthorizationToken().accessToken)
                 .header("Content-Type", "application/json")
                 .routeParam("user_id", hardCodedUserId)
                 .body("{ \"name\": \"" + hardCodedPlaylistName + "\" }")
