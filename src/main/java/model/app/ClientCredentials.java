@@ -1,4 +1,4 @@
-package model;
+package model.app;
 
 // TODO: Prompt us - the admins - to type in ID and Secret. Or other meassure for security.
 public class ClientCredentials {
@@ -10,5 +10,6 @@ public class ClientCredentials {
     public String getClientSecret() {
         return "a15ce62d40ba4a0697be814f59602ebc";
     }
+
 
 }

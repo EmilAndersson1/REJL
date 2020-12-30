@@ -1,4 +1,4 @@
-package model;
+package model.spotify;
 
 public class Code {
 

@@ -1,12 +1,13 @@
-package services;
+package services.spotify;
 
-import Controllers.DataHandler;
+import controllers.DataHandler;
 import com.google.gson.Gson;
 import kong.unirest.HttpResponse;
 import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
 import kong.unirest.json.JSONObject;
-import model.Playlist;
+import model.spotify.Playlist;
+import services.APIService;
 
 public class SpotifyPlaylistService extends APIService {
 

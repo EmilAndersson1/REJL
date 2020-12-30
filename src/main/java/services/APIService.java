@@ -1,8 +1,7 @@
 package services;
 
-import Controllers.DataHandler;
+import controllers.DataHandler;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import kong.unirest.HttpResponse;
 import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
@@ -20,25 +19,12 @@ public abstract class APIService {
     }
 
     public Object apiResponse() {
-
         HttpResponse<JsonNode> response = response(dataHandler);
         System.out.println("CHECKPOINT api response status: " + response.getStatus());
-
-        // Retrieve the parsed JSONObject from the response.
-        JsonNode jsonNode = response.getBody();
-        JSONObject jsonObject = jsonNode.getObject();
-        System.out.println("CHECKPOINT jsonObject: \n" + jsonObject.toString(1));
-
-        // Gson instance for marshalling and unmarshalling.
-        GsonBuilder builder = new GsonBuilder();
-        Gson gson           = builder.create();
-
-        // Create the java object for easy usage i the application.
-        Object javaObject = returnObject(gson, jsonObject);
-
-        // Close Unirest connection.
-        Unirest.shutDown();
-
+        JSONObject jsonObject = response.getBody().getObject(); // Retrieve the parsed JSONObject from the response.
+        Gson gson = new Gson(); // For marshalling.
+        Object javaObject = returnObject(gson, jsonObject); // Create the java object for easy usage i the application.
+        Unirest.shutDown(); // Close Unirest connection.
         return javaObject;
     }
 

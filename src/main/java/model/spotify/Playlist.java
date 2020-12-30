@@ -1,4 +1,4 @@
-package model;
+package model.spotify;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -21,5 +21,14 @@ public class Playlist {
 
         @SerializedName("spotify")
         public String spotifyUrl = "";
+    }
+
+    @Override
+    public String toString() {
+        return "Playlist{" +
+                "externalUrls=" + externalUrls +
+                ", id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

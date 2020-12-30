@@ -1,18 +1,19 @@
-package services;
+package services.spotify;
 
-import Controllers.DataHandler;
+import controllers.DataHandler;
 import com.google.gson.Gson;
 import kong.unirest.HttpResponse;
 import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
 import kong.unirest.json.JSONObject;
-import model.Token;
+import model.spotify.Token;
+import services.APIService;
 
 /**
  * Service for getting authorization to Spotify API.
  * The retrieved JSON code is represented in a bean (java object) for easier manipulation in java.
  */
-public class SpotifyAuthUserAppService extends APIService{
+public class SpotifyAuthUserAppService extends APIService {
 
     public SpotifyAuthUserAppService(DataHandler dataHandler) {
         super(dataHandler);

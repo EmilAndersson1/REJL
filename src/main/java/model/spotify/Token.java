@@ -1,4 +1,4 @@
-package model;
+package model.spotify;
 
 /**
  * We might need a java bean for the Spotify handling.
@@ -25,6 +25,7 @@ public class Token {
                 ", token_type='" + token_type + '\'' +
                 ", expires_in=" + expires_in +
                 ", scope='" + scope + '\'' +
+                ", refresh_token='" + refresh_token + '\'' +
                 '}';
     }
 }

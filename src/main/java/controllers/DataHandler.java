@@ -1,8 +1,14 @@
-package Controllers;
+package controllers;
 
 import com.google.gson.Gson;
-import model.*;
+import model.app.ClientCredentials;
+import model.spotify.Code;
+import model.spotify.Playlist;
+import model.spotify.Token;
+import model.spotify.Tracks;
 import services.*;
+import services.spotify.*;
+import services.yr.WeatherService;
 import utils.ClientEncoder;
 import utils.MoodInterpreter;
 
@@ -22,8 +28,8 @@ public class DataHandler {
 
     private String  clientId;
     private String  encodedClientCredentials;
-    private Token   authorizationToken;
-    private Code    authorizationCode;
+    private Token authorizationToken;
+    private Code authorizationCode;
     private String  latitude;
     private String  longitude;
     private float   valance;

@@ -1,4 +1,4 @@
-import Controllers.DataHandler;
+import controllers.DataHandler;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
 import spark.ModelAndView;

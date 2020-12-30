@@ -1,19 +1,20 @@
-package services;
+package services.yr;
 
-import Controllers.DataHandler;
+import controllers.DataHandler;
 import kong.unirest.HttpResponse;
 import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
 import kong.unirest.json.JSONObject;
-import model.CurrentWeather;
+import model.yr.CurrentWeather;
 
 import com.google.gson.Gson;
+import services.APIService;
 
 /**
  * Service for communication with a Weather API: YR.
  * The retrieved JSON code is represented in a bean (java object) for easier manipulation in java.
  */
-public class WeatherService extends APIService{
+public class WeatherService extends APIService {
 
     public WeatherService(DataHandler dataHandler) {
         super(dataHandler);
