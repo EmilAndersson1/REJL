@@ -5,6 +5,21 @@ var currentWeather = document.getElementById("current_weather");
 var temp = document.getElementById("temp");
 
 
+
+
+/*
+TODO:
+
+1. login knapp som skickar till login url (som nu returnas) denna knapp ska ligga i index.html
+2. Fråga om client ID är hemligt(den är synlig i URL nör man loggar in på spotify)
+3. Skapa welcome.html och föra över allt från index dit
+4. Lägga till route för /welcome (som användaren redirectas till när hen har loggat in)
+5. Översätt alla moods till svenska ord
+6. Radioknappar för genres att välja mellan
+*/
+
+
+
 /*
 Function that fetches the current position
 */
@@ -27,7 +42,7 @@ function fetchCoords(position) {
     url: "http://localhost:8888/api/weather/"  + position.coords.latitude + "/" + position.coords.longitude
   }).done(function (response) {
     console.log(response);
-    showData(position);
+    showData(position, response);
   })
 }
 
@@ -66,7 +81,10 @@ function showDataMap(parsed) {
 /*
 Displays return from location call
 */
-function showData(position) {
+function showData(position, APIresponse) {
+  console.log(APIresponse)
+  console.log(position)
+  parsed = JSON.parse(APIresponse)
   coord.innerHTML = "Latitude: " + position.coords.latitude +
   "<br>Longitude: " + position.coords.longitude;
 
@@ -74,7 +92,7 @@ function showData(position) {
 
   country.innerHTML = ", Land"
 
-  currentWeather.innerHTML = "Soligt"
+  currentWeather.innerHTML = parsed.symbol_code;
 
   temp.innerHTML = "35C"
 
