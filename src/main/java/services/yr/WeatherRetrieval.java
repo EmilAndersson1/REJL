@@ -1,35 +1,36 @@
-package services;
+package services.yr;
 
-import Controllers.DataHandler;
+import controll.Controller;
 import kong.unirest.HttpResponse;
 import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
 import kong.unirest.json.JSONObject;
-import model.CurrentWeather;
+import model.yr.CurrentWeather;
 
 import com.google.gson.Gson;
+import services.APIService;
 
 /**
- * Service for communication with a Weather API. Currently: YR API
+ * Service for communication with a Weather API: YR.
  * The retrieved JSON code is represented in a bean (java object) for easier manipulation in java.
  */
-public class WeatherService extends APIService{
+public class WeatherRetrieval extends APIService {
 
-    public WeatherService(DataHandler dataHandler) {
-        super(dataHandler);
+    public WeatherRetrieval(Controller controller) {
+        super(controller);
     }
 
     @Override
-    public HttpResponse<JsonNode> response(DataHandler dataHandler) {
+    public HttpResponse<JsonNode> jsonResponse(Controller controller) {
         return Unirest.get("https://api.met.no/weatherapi/locationforecast/2.0/compact?")
                 .header("Accept", "application/json")
-                .queryString("lat", dataHandler.getLatitude())                // Build on base url
-                .queryString("lon", dataHandler.getLongitude())               // Build on base url
+                .queryString("lat", controller.getLatitude())
+                .queryString("lon", controller.getLongitude())
                 .asJson();
     }
 
     @Override
-    public Object returnObject(Gson gson, JSONObject jsonObject) {
+    public Object convertJsonResponseToJava(Gson gson, JSONObject jsonObject) {
         // Retrieve wanted fields from the JSONObject. Parsing the JSON tree.
         JSONObject jsonFieldObject = jsonObject
                 .getJSONObject("properties")
@@ -41,12 +42,4 @@ public class WeatherService extends APIService{
 
         return gson.fromJson(jsonFieldObject.toString(), CurrentWeather.class);
     }
-
-//    //TODO: Remove this method. Keep for now...
-//    private Location testAndPrintMarshalling(Gson gson, JSONObject jsonObject) {
-//        JSONObject jsonField    = jsonObject.getJSONObject("geometry");
-//        String json             = jsonField.toString();
-//
-//        return gson.fromJson(json, Location.class);
-//    }
 }

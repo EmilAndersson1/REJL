@@ -24,7 +24,7 @@ function getCurrentLocation() {
 function fetchCoords(position) {
   $.ajax({
     method: "GET",
-    url: "http://localhost:5555/api/weather/"  + position.coords.latitude + "/" + position.coords.longitude
+    url: "http://localhost:8888/api/weather/"  + position.coords.latitude + "/" + position.coords.longitude
   }).done(function (response) {
     console.log(response);
     showData(position);

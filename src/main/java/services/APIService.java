@@ -1,8 +1,7 @@
 package services;
 
-import Controllers.DataHandler;
+import controll.Controller;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import kong.unirest.HttpResponse;
 import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
@@ -13,36 +12,24 @@ import kong.unirest.json.JSONObject;
  */
 public abstract class APIService {
 
-    private DataHandler dataHandler;
+    private Controller controller;
 
-    public APIService(DataHandler dataHandler) {
-        this.dataHandler = dataHandler;
+    public APIService(Controller controller) {
+        this.controller = controller;
     }
 
     public Object apiResponse() {
-
-        HttpResponse<JsonNode> response = response(dataHandler);
-
-        // Retrieve the parsed JSONObject from the response.
-        JsonNode jsonNode = response.getBody();
-        JSONObject jsonObject = jsonNode.getObject();
-
-        // Gson instance for marshalling and unmarshalling.
-        GsonBuilder builder = new GsonBuilder();
-        Gson gson           = builder.create();
-
-        // Create the java object for easy usage i the application.
-        Object javaObject = returnObject(gson, jsonObject);
-
-        // Close Unirest connection.
-        Unirest.shutDown();
-
-        System.out.println(javaObject); // Prints out the java object after instantiation.
-
+        HttpResponse<JsonNode> response = jsonResponse(controller);
+        System.out.println("CHECKPOINT api response status: " + response.getStatus());
+        JSONObject jsonObject = response.getBody().getObject(); // Retrieve the parsed JSONObject from the response.
+        Gson gson = new Gson(); // For marshalling.
+        Object javaObject = convertJsonResponseToJava(gson, jsonObject);
+        Unirest.shutDown(); // Close Unirest connection.
+        System.out.println("CHECKPOINT api response java Object: \n" + javaObject.toString());
         return javaObject;
     }
 
-    public abstract HttpResponse<JsonNode> response(DataHandler dataHandler);
+    public abstract HttpResponse<JsonNode> jsonResponse(Controller controller);
 
-    public abstract Object returnObject(Gson gson, JSONObject jsonObject);
+    public abstract Object convertJsonResponseToJava(Gson gson, JSONObject jsonObject);
 }
