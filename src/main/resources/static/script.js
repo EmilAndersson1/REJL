@@ -39,7 +39,7 @@ function fetchCoordsMap(position) {
   parsed = JSON.parse(latMap)
   $.ajax({
     method: "GET",
-    url: "http://localhost:5555/api/weather/" + parsed.lat + "/" + parsed.lng
+    url: "http://localhost:8888/api/weather/" + parsed.lat + "/" + parsed.lng
   }) 
     showDataMap(parsed);
     $("#map").hide();
