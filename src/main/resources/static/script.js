@@ -4,6 +4,10 @@ var country = document.getElementById("country");
 var currentWeather = document.getElementById("current_weather");
 var temp = document.getElementById("temp");
 
+
+/*
+Function that fetches the current position
+*/
 function getCurrentLocation() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(fetchCoords);
@@ -14,29 +18,37 @@ function getCurrentLocation() {
   }
 }
 
-
+/*
+  API function that fetches position depending on where the user is located and feeds it to our API
+*/
 function fetchCoords(position) {
   $.ajax({
     method: "GET",
-    url: "http://localhost:5555/"  + position.coords.latitude + "/" + position.coords.longitude
+    url: "http://localhost:5555/api/weather/"  + position.coords.latitude + "/" + position.coords.longitude
   }).done(function (response) {
     console.log(response);
     showData(position);
   })
 }
 
+/*
+  API function that fetches position depending on where the user clicks on the map and feeds it to our API
+*/
 function fetchCoordsMap(position) {
   latMap = JSON.stringify(position)
   parsed = JSON.parse(latMap)
   $.ajax({
     method: "GET",
-    url: "http://localhost:5555/" + parsed.lat + "/" + parsed.lng
+    url: "http://localhost:5555/api/weather/" + parsed.lat + "/" + parsed.lng
   }) 
     showDataMap(parsed);
     $("#map").hide();
 }
 
 
+/*
+Displays return from location call
+*/
 function showDataMap(parsed) {
   coord.innerHTML = "Latitude: " + parsed.lat +
   "<br>Longitude: " + parsed.lng;
@@ -51,7 +63,9 @@ function showDataMap(parsed) {
 
 }
 
-
+/*
+Displays return from location call
+*/
 function showData(position) {
   coord.innerHTML = "Latitude: " + position.coords.latitude +
   "<br>Longitude: " + position.coords.longitude;

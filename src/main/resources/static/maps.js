@@ -19,7 +19,7 @@ function initMap() {
       infoWindow = new google.maps.InfoWindow({
         position: mapsMouseEvent.latLng,
       });
-      //infoWindow.setContent(JSON.stringify(mapsMouseEvent.latLng.toJSON(), null, 2));
+      //infoWindow.setContent(JSON.stringify(mapsMouseEvent.latLng.toJSON(), null, 2)); skriver ut coordinaterna i rutan som en json sträng
       position = mapsMouseEvent.latLng;
       fetchCoordsMap(position);
       infoWindow.open(map);
