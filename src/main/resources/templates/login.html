@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="/style.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital@1&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <title>REJL</title>
+</head>
+<body>
+    <div class="container">
+        <div class="row d-flex justify-content-center pt-3 text-center">
+            <div class=" row d-flex justify-content-center pb-5">
+                <a href="/" id="logo">REJL</a>
+                <div class="row d-flex justify-content-center">
+                    <p id="slogan" class="pb-5">Discover music that fits the weather at your current location!</p>
+                </div>
+            </div> 
+        <div class="row col-5 font-weight-bold">
+            <a href="https://accounts.spotify.com/sv/authorize?client_id=444dff56b04044f3b091504c069e9954&response_type=code&redirect_uri=http:%2F%2Flocalhost:8888%2Fcallback%2F&scope=playlist-modify-public" class="p-3 btn btn-lg btn-outline-success">Logga in!</a>
+
+        </div>  
+        
+        </div>
+    </div>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyALNSg4-mot96aQpauSbHWln_tZMCvx5fw&callback=initMap&libraries=&v=weekly" defer></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+    <script src="/script.js"></script>
+    <script src="/maps.js"></script>
+</body>
+</html>

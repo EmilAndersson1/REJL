@@ -32,8 +32,8 @@ public class APIServer {
          * 3.1. Authorize user.
          * Remove this apps access to users spotify acount to log in again: https://www.spotify.com/us/account/apps/
          */
-        get("/login", (req, res) -> controller.getSpotifyAuthorizationLink());
-
+        get("/login", (req, res) -> new PebbleTemplateEngine().render(
+                new ModelAndView(null, "templates/login.html")));
         /*
          * 3.2. Authorize app.
          */
@@ -50,5 +50,6 @@ public class APIServer {
          * 6. Create Playlist and add tracks. Returns a playlist as json.
          */
         get("/api/playlist", (req, res) -> controller.getSpotifyPlaylist());
+
     }
 }
