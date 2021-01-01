@@ -28,4 +28,7 @@ body{
     color:white;
     font-weight: bold;
 }
-  
+
+#genreButtons{
+    display:none;
+}

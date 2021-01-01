@@ -23,14 +23,11 @@ function initMap() {
       position = mapsMouseEvent.latLng;
       fetchCoordsMap(position);
       infoWindow.open(map);
+      $("#genreButtons").show();
     });
   }
 
 function toggleMap(){
-    var map = document.getElementById("map");
-    if (map.style.display === "none") {
-        map.style.display = "block";
-    } else {
-        map.style.display = "none";
-    }
+    $("#buttons").hide();
+    $("#map").show();
 }
