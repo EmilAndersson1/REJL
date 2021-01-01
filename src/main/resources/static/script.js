@@ -34,10 +34,7 @@ function getCurrentLocation() {
   }
 }
 
-
-
 function fetchTracks(genre) {
-
   //fetches the current weather from the current_weather paragraph
   var weather = document.getElementById("current_weather").innerHTML;
   console.log(weather)
@@ -46,9 +43,27 @@ function fetchTracks(genre) {
     method: "GET",
     url: "http://localhost:8888/api/tracks/" + weather + "/" + genre
   }).done(function (response) {
-    console.log(response);
+    parsed = JSON.parse(response);
+    displayTracks(parsed);
   })
 }
+
+//generates links for every song
+function displayTracks(songs) {
+  $("#genreButtons").hide();
+  for (var songs = 0; songs < parsed.tracks.length; songs++) {
+    console.log(parsed.tracks[songs].name);
+    var a = document.createElement('a');
+    var linkText = document.createTextNode(parsed.tracks[songs].name);
+    a.appendChild(linkText);
+    a.title = "my title text";
+    a.href = "https://open.spotify.com/track/"+parsed.tracks[songs].id;
+    a.target = "_blank";
+    a.className = "list-group-item list-group-item-action list-group-item-light";
+
+    document.getElementById("songs").appendChild(a);
+  }
+} 
 
 
 /*
@@ -73,8 +88,9 @@ function fetchCoordsMap(position) {
   $.ajax({
     method: "GET",
     url: "http://localhost:8888/api/weather/" + parsed.lat + "/" + parsed.lng
-  }) 
-    showDataMap(parsed);
+  }).done(function (response) {
+    showDataMap(parsed, response);
+  })
     $("#map").hide();
     $("#buttons").hide();
 }
@@ -83,7 +99,8 @@ function fetchCoordsMap(position) {
 /*
 Displays return from location call
 */
-function showDataMap(parsed) {
+function showDataMap(parsed, APIresponse) {
+  parsed_response = JSON.parse(APIresponse)
   coord.innerHTML = "Latitude: " + parsed.lat +
   "<br>Longitude: " + parsed.lng;
 
@@ -91,7 +108,7 @@ function showDataMap(parsed) {
 
   country.innerHTML = ", Land"
 
-  currentWeather.innerHTML = "Soligt"
+  currentWeather.innerHTML = parsed_response.symbol_code;
 
   temp.innerHTML = "35C"
 

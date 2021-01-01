@@ -5,8 +5,10 @@ body{
     background: radial-gradient(circle, rgba(91,91,91,1) 0%, rgba(37,37,37,1) 89%);
 }
 
-
-#map {
+#songs{
+    
+}
+#map{
     height: 500px;
     width: 80%;
     display: none;

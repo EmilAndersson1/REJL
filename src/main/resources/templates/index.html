@@ -24,11 +24,11 @@
 
             <div id="buttons">
                 <div class="d-flex justify-content-center pt-5 weather-data">
-                    <button type="button" class="btn btn-primary" id="posBtn" onclick="getCurrentLocation()">Använd min position!</button>
+                    <button type="button" class="btn btn-outline-light btn-lg" id="posBtn" onclick="getCurrentLocation()">Använd min position!</button>
                 </div>
 
                 <div class="d-flex justify-content-center pt-5 weather-data">
-                    <button type="button" class="btn btn-secondary" id="mapBtn" onclick="toggleMap()">Eller välj en position på en karta!</button>
+                    <button type="button" class="btn btn-outline-light btn-lg" id="mapBtn" onclick="toggleMap()">Eller välj en position på en karta!</button>
                 </div>
             </div> 
             
@@ -55,6 +55,11 @@
                 <input type="button" class="btn btn-outline-light mt-3" value="chill" onclick="fetchTracks(this.value)">
 
                 <input type="button" class="btn btn-outline-light mt-3" value="funk" onclick="fetchTracks(this.value)">
+            </div>
+            
+            
+            <div class="list-group col-7" id="songs">
+               
             </div>
 
 
