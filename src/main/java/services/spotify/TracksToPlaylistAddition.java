@@ -7,10 +7,13 @@ import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
 import kong.unirest.json.JSONObject;
 import model.spotify.Playlist;
-import model.spotify.Tracks;
+import model.spotify.RecommendedTracks;
 import model.spotify.Uris;
 import services.APIService;
 
+/**
+ * https://developer.spotify.com/documentation/web-api/reference/playlists/add-tracks-to-playlist/
+ */
 public class TracksToPlaylistAddition extends APIService {
     public TracksToPlaylistAddition(Controller controller) {
         super(controller);
@@ -22,13 +25,13 @@ public class TracksToPlaylistAddition extends APIService {
     public HttpResponse<JsonNode> jsonResponse(Controller controller) {
 
         playlist = controller.getPlaylist();
-        Tracks tracks = controller.getTracks();
+        RecommendedTracks recommendedTracks = controller.getRecommendedTracks();
 
         Uris trackUris = new Uris();
-        trackUris.uris = new String[tracks.tracks.length];
+        trackUris.uris = new String[recommendedTracks.tracks.length];
 
-        for (int i = 0; i < tracks.tracks.length; i++) {
-            trackUris.uris[i] = tracks.tracks[i].uri;
+        for (int i = 0; i < recommendedTracks.tracks.length; i++) {
+            trackUris.uris[i] = recommendedTracks.tracks[i].uri;
         }
         String uris = new Gson().toJson(trackUris);
 

@@ -6,7 +6,7 @@ import kong.unirest.HttpResponse;
 import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
 import kong.unirest.json.JSONObject;
-import model.spotify.Tracks;
+import model.spotify.RecommendedTracks;
 import services.APIService;
 
 /**
@@ -45,6 +45,6 @@ public class TrackRecommendations extends APIService {
 
     @Override
     public Object convertJsonResponseToJava(Gson gson, JSONObject jsonObject) {
-        return gson.fromJson(jsonObject.toString(), Tracks.class);
+        return gson.fromJson(jsonObject.toString(), RecommendedTracks.class);
     }
 }

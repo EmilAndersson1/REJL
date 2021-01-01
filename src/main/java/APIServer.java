@@ -32,13 +32,30 @@ public class APIServer {
          * 3.1. Authorize user.
          * Remove this apps access to users spotify acount to log in again: https://www.spotify.com/us/account/apps/
          */
-        get("/login", (req, res) -> controller.getSpotifyAuthorizationLink());
+        get("/login", (req, res) -> {
+            res.redirect(controller.getSpotifyAuthorizationLink());
+            return res.status();
+        });
 
         /*
          * 3.2. Authorize app.
          */
-        get("/callback/", (req, res) -> controller.getSpotifyToken(
-                req.queryMap().get("code").value()));
+        get("/callback/", (req, res) -> {
+            controller.getSpotifyToken(req.queryMap().get("code").value());
+            res.redirect("/");
+            return controller.getUserProfile();
+        });
+
+//        /*
+//         * https://sparkjava.com/documentation#filters
+//         */
+//        before((request, response) -> {
+//            boolean authenticated = false;
+//            // ... check if authenticated
+//            if (!authenticated) {
+//                halt(401, "You are not welcome here");
+//            }
+//        });
 
         /*
          * 5. Get tracks based on weather. Returns tracks as json.

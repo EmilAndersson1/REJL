@@ -12,6 +12,8 @@ import services.APIService;
 /**
  * Service for getting authorization to Spotify API.
  * The retrieved JSON code is represented in a bean (java object) for easier manipulation in java.
+ *
+ * https://developer.spotify.com/documentation/general/guides/authorization-guide/#authorization-code-flow
  */
 public class AppAuthentication extends APIService {
 
