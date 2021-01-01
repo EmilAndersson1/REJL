@@ -10,7 +10,7 @@ var temp = document.getElementById("temp");
 /*
 TODO:
 
-1. login knapp som skickar till login url (som nu returnas) denna knapp ska ligga i index.html
+1. login knapp som skickar till login url (som nu returnas) DONE!!!
 2. Fråga om client ID är hemligt(den är synlig i URL nör man loggar in på spotify)
 3. Skapa welcome.html och föra över allt från index dit
 4. Lägga till route för /welcome (som användaren redirectas till när hen har loggat in)
