@@ -5,7 +5,6 @@ import spark.template.pebble.PebbleTemplateEngine;
 import static spark.Spark.*;
 
 /**
- *
  * @author "REJL"
  */
 public class APIServer {
@@ -16,56 +15,58 @@ public class APIServer {
         staticFiles.location("/static");
 
         /*
-         * 1. Generate a starting page.
-         * CORS är ett problem med lokala HTML-filer. Låt Spark agera webbserver och serva en html-fil.
+         * 1.1. Generate a starting page.
          */
         get("/", (req, res) -> new PebbleTemplateEngine().render(
                 new ModelAndView(null, "templates/index.html")));
 
         /*
-         * 2. Get weather based on location coordinates from frontend.
+         * 1.2. Logged in page.
          */
-        get("/api/weather/:latitude/:longitude", (req, res) -> controller.getWeather(
+        get("/loggedin", (req, res) -> new PebbleTemplateEngine().render(
+                new ModelAndView(null, "templates/main.html")));
+
+        /*
+         * 2. Get weather based on location coordinates from frontend.
+         * Don't have to be logged in.
+         */
+        get("/api/weather/:latitude/:longitude", (req, res) -> controller.getJsonWeather(
                 req.params(":latitude"), req.params(":longitude"))); // json weather.
 
         /*
          * 3.1. Authorize user.
-         * Remove this apps access to users spotify acount to log in again: https://www.spotify.com/us/account/apps/
+         * Redirects to the Spotify user authorization url and automatically to callback-endpoint (3.2.).
+         * This apps access to the users spotify acount:
+         * https://www.spotify.com/us/account/apps/
          */
         get("/login", (req, res) -> {
-            res.redirect(controller.getSpotifyAuthorizationLink());
+            res.redirect(controller.getStringAuthorizationUrl());
             return res.status();
         });
 
         /*
          * 3.2. Authorize app.
+         * Redirects to logged in main page (1.2.).
          */
         get("/callback/", (req, res) -> {
-            controller.getSpotifyToken(req.queryMap().get("code").value());
-            res.redirect("/");
-            return controller.getUserProfile();
+            controller.getJsonToken(req.queryMap().get("code").value());
+            res.redirect("/loggedin");
+            return controller.getJsonUserProfile();
         });
 
-//        /*
-//         * https://sparkjava.com/documentation#filters
-//         */
-//        before((request, response) -> {
-//            boolean authenticated = false;
-//            // ... check if authenticated
-//            if (!authenticated) {
-//                halt(401, "You are not welcome here");
-//            }
-//        });
-
         /*
-         * 5. Get tracks based on weather. Returns tracks as json.
+         * 4. Get tracks based on weather (from location) and genre.
+         * User has to be logged in.
+         * Returns tracks as json.
          */
-        get("/api/tracks/:weather/:genre", (req, res) -> controller.getSpotifyTracks(
+        get("/api/tracks/:weather/:genre", (req, res) -> controller.getJsonTracks(
                 req.params(":weather"), req.params(":genre")));
 
         /*
-         * 6. Create Playlist and add tracks. Returns a playlist as json.
+         * 5. Create Playlist and add tracks to users Spotify account.
+         * User has to be logged in.
+         * Returns a playlist as json.
          */
-        get("/api/playlist", (req, res) -> controller.getSpotifyPlaylist());
+        get("/api/playlist", (req, res) -> controller.getJsonPlaylist());
     }
 }

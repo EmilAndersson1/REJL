@@ -16,8 +16,6 @@ import services.APIService;
  */
 public class WeatherRetrieval extends APIService {
 
-    private Object DateTime;
-
     public WeatherRetrieval(Controller controller) {
         super(controller);
     }
@@ -33,10 +31,7 @@ public class WeatherRetrieval extends APIService {
 
     @Override
     public Object convertJsonResponseToJava(Gson gson, JSONObject jsonObject) {
-        // Retrieve wanted fields from the JSONObject. Parsing the JSON tree.
-        JSONObject jsonFieldObject = jsonObject
-                .getJSONObject("properties");
-
+        JSONObject jsonFieldObject = jsonObject.getJSONObject("properties");
         return gson.fromJson(jsonFieldObject.toString(), Weather.class);
     }
 }

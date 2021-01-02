@@ -11,10 +11,8 @@ import services.*;
 import services.spotify.*;
 import services.yr.WeatherRetrieval;
 import utils.ClientEncoder;
+import utils.TimeComparator;
 import utils.MoodInterpreter;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 /**
  * Controller class for API:s.
@@ -58,55 +56,42 @@ public class Controller {
         tracksToPlaylistAddition    = new TracksToPlaylistAddition(this);
     }
 
-    public String getSpotifyPlaylist() {
-        playlist = (Playlist) playlistCreation.apiResponse(); //Create a playlist.
-        playlist = (Playlist) tracksToPlaylistAddition.apiResponse(); //Add tracks to the playlist. (And update playlist)
-        return new Gson().toJson(playlist);
-    }
-
-    public String getSpotifyAuthorizationLink() {
+    public String getStringAuthorizationUrl() {
         return "https://accounts.spotify.com/sv/" +
                 "authorize?client_id=444dff56b04044f3b091504c069e9954&response_type=code&" +
                 "redirect_uri=http:%2F%2Flocalhost:8888%2Fcallback%2F&scope=playlist-modify-public";
     }
 
-    public String getUserProfile() {
-        UserProfile userProfile = (UserProfile) userProfileRetrieval.apiResponse();
-        userId = userProfile.userId;
-        return new Gson().toJson(userProfile);
+    public String getJsonWeather(String latitude, String longitude) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+        return TimeComparator.findCurrentWeatherTime((Weather) weatherRetrieval.apiResponse());
     }
 
-    public void getSpotifyToken(String authorizationCode) {
+    public void getJsonToken(String authorizationCode) {
         this.authorizationCode = authorizationCode;
         authorizationToken = (Token) AppAuthentication.apiResponse();
         new Gson().toJson(authorizationToken);
     }
 
-    public String getWeather(String latitude, String longitude) {
-        this.latitude = latitude;
-        this.longitude = longitude;
-
-        Weather weather = (Weather) weatherRetrieval.apiResponse();
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String str = LocalDateTime.now().format(formatter);
-        System.out.println(str.substring(11,13));
-        for (int i = 0; i < 5; i++) {
-            System.out.println(weather.weathers[i].time.substring(11,13));
-            if (str.substring(11,13).equals(weather.weathers[i].time.substring(11,13))) {
-                System.out.println(weather.weathers[i]);
-                return new Gson().toJson(weather.weathers[i]);
-            }
-        }
-        return "something wrong";
+    public String getJsonUserProfile() {
+        UserProfile userProfile = (UserProfile) userProfileRetrieval.apiResponse();
+        userId = userProfile.userId;
+        return new Gson().toJson(userProfile);
     }
 
-    public String getSpotifyTracks(String weather, String genre) {
+    public String getJsonTracks(String weather, String genre) {
         this.weather = weather;
         this.genre = genre;
         valance = MoodInterpreter.weatherToValance(weather);
         recommendedTracks = (RecommendedTracks) trackRecommendations.apiResponse();
         return new Gson().toJson(recommendedTracks);
+    }
+
+    public String getJsonPlaylist() {
+        playlist = (Playlist) playlistCreation.apiResponse(); //Create a playlist.
+        playlist = (Playlist) tracksToPlaylistAddition.apiResponse(); //Add tracks to the playlist. (And update playlist)
+        return new Gson().toJson(playlist);
     }
 
     public String getEncodedClientCredentials() {

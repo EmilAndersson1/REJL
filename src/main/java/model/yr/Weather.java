@@ -10,24 +10,24 @@ public class Weather {
     }
 
     @SerializedName("timeseries")
-    public WeatherTimes[] weathers = null;
+    public WeatherTime[] weatherTimes = null;
 
     @Override
     public String toString() {
         return "Weather{" +
-                "weathers=" + Arrays.toString(weathers) +
+                "weatherTimes=" + Arrays.toString(weatherTimes) +
                 '}';
     }
 
-    public class WeatherTimes {
-        public WeatherTimes() {}
+    public class WeatherTime {
+        public WeatherTime() {}
         public String time = "";
         @SerializedName("data")
         public WeatherData weatherData;
 
         @Override
         public String toString() {
-            return "WeatherTimes{" +
+            return "WeatherTime{" +
                     "time='" + time + '\'' +
                     ", weatherData=" + weatherData +
                     '}';
