@@ -12,6 +12,8 @@ import services.APIService;
 /**
  * Service for getting user authorization to Spotify API.
  * User authentication is required to create a playlist.
+ *
+ * https://developer.spotify.com/documentation/general/guides/authorization-guide/#authorization-code-flow
  */
 public class UserLogin extends APIService {
 

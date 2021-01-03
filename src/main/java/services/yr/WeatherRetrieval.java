@@ -5,9 +5,9 @@ import kong.unirest.HttpResponse;
 import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
 import kong.unirest.json.JSONObject;
-import model.yr.CurrentWeather;
 
 import com.google.gson.Gson;
+import model.yr.Weather;
 import services.APIService;
 
 /**
@@ -31,15 +31,7 @@ public class WeatherRetrieval extends APIService {
 
     @Override
     public Object convertJsonResponseToJava(Gson gson, JSONObject jsonObject) {
-        // Retrieve wanted fields from the JSONObject. Parsing the JSON tree.
-        JSONObject jsonFieldObject = jsonObject
-                .getJSONObject("properties")
-                .getJSONArray("timeseries")
-                .getJSONObject(0)   //TODO: Sök upp en tid som matchar. YR använder cachade rapporter, ej liveuppdatering.
-                .getJSONObject("data")
-                .getJSONObject("next_1_hours")
-                .getJSONObject("summary");
-
-        return gson.fromJson(jsonFieldObject.toString(), CurrentWeather.class);
+        JSONObject jsonFieldObject = jsonObject.getJSONObject("properties");
+        return gson.fromJson(jsonFieldObject.toString(), Weather.class);
     }
 }

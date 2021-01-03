@@ -10,6 +10,4 @@ public class ClientCredentials {
     public String getClientSecret() {
         return "a15ce62d40ba4a0697be814f59602ebc";
     }
-
-
 }
