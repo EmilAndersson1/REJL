@@ -21,12 +21,6 @@ public class APIServer {
                 new ModelAndView(null, "templates/index.html")));
 
         /*
-         * 1.2. Logged in page.
-         */
-        get("/loggedin", (req, res) -> new PebbleTemplateEngine().render(
-                new ModelAndView(null, "templates/main.html")));
-
-        /*
          * 2. Get weather based on location coordinates from frontend.
          * Don't have to be logged in.
          */
@@ -54,7 +48,7 @@ public class APIServer {
          */
         get("/callback/", (req, res) -> {
             controller.getJsonToken(req.queryMap().get("code").value());
-            res.redirect("/loggedin");
+            res.redirect("/");
             return controller.getJsonUserProfile();
         });
 
