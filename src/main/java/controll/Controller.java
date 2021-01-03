@@ -40,8 +40,15 @@ public class Controller {
     private Playlist playlist;
     private RecommendedTracks recommendedTracks;
     private String userId;
+    private boolean userLoggedIn;
+    private boolean userAuthpath;
+    private boolean generatedTracks;
 
     public Controller() {
+        userLoggedIn = false;
+        userAuthpath = false;
+        generatedTracks = false;
+
         ClientCredentials credentials = new ClientCredentials();
 
         encodedClientCredentials = ClientEncoder.generate(credentials.getClientID(), credentials.getClientSecret());
@@ -57,6 +64,7 @@ public class Controller {
     }
 
     public String getStringAuthorizationUrl() {
+        userAuthpath = true;
         return "https://accounts.spotify.com/sv/" +
                 "authorize?client_id=444dff56b04044f3b091504c069e9954&response_type=code&" +
                 "redirect_uri=http:%2F%2Flocalhost:8888%2Fcallback%2F&scope=playlist-modify-public";
@@ -70,6 +78,7 @@ public class Controller {
 
     public void getJsonToken(String authorizationCode) {
         this.authorizationCode = authorizationCode;
+        userLoggedIn = true;
         authorizationToken = (Token) AppAuthentication.apiResponse();
         new Gson().toJson(authorizationToken);
     }
@@ -83,12 +92,14 @@ public class Controller {
     public String getJsonTracks(String weather, String genre) {
         this.weather = weather;
         this.genre = genre;
+        generatedTracks = true;
         valance = MoodInterpreter.weatherToValance(weather);
         recommendedTracks = (RecommendedTracks) trackRecommendations.apiResponse();
         return new Gson().toJson(recommendedTracks);
     }
 
     public String getJsonPlaylist() {
+
         playlist = (Playlist) playlistCreation.apiResponse(); //Create a playlist.
         playlist = (Playlist) tracksToPlaylistAddition.apiResponse(); //Add tracks to the playlist. (And update playlist)
         return new Gson().toJson(playlist);
@@ -136,5 +147,17 @@ public class Controller {
 
     public String getUserId() {
         return userId;
+    }
+
+    public boolean isUserLoggedIn() {
+        return userLoggedIn;
+    }
+
+    public boolean isUserAuthpath() {
+        return userAuthpath;
+    }
+
+    public boolean isGeneratedTracks() {
+        return generatedTracks;
     }
 }

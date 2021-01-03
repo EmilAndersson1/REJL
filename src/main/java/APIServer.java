@@ -14,11 +14,44 @@ public class APIServer {
         port(8888);
         staticFiles.location("/static");
 
+        before("/", (req, res) -> {
+            if (!controller.isUserLoggedIn()) {
+                halt(401, "Not Logged in!");
+            }
+        });
+
+        before("/callback/*", (req, res) -> {
+            if (!controller.isUserAuthpath()) {
+                halt(401, "Spotify not authenticated!");
+            }
+        });
+
+        before("/api/*", (req, res) -> {
+            if (!controller.isUserLoggedIn()) {
+                halt(401, "Not Logged in!");
+            }
+        });
+
+        before("/api/playlist", (req, res) -> {
+            if (!controller.isGeneratedTracks()) {
+                halt(418, "No tracks!");
+            }
+        });
+
+        before("/api/playlist/", (req, res) -> {
+            if (!controller.isGeneratedTracks()) {
+                halt(418, "No tracks!");
+            }
+        });
+
         /*
          * 1.1. Generate a starting page.
          */
         get("/", (req, res) -> new PebbleTemplateEngine().render(
                 new ModelAndView(null, "templates/index.html")));
+
+        get("/login", (req, res) -> new PebbleTemplateEngine().render(
+                new ModelAndView(null, "templates/login.html")));
 
         /*
          * 2. Get weather based on location coordinates from frontend.
@@ -33,9 +66,6 @@ public class APIServer {
          * This apps access to the users spotify acount:
          * https://www.spotify.com/us/account/apps/
          */
-
-        get("/login", (req, res) -> new PebbleTemplateEngine().render(
-                new ModelAndView(null, "templates/login.html")));
 
         get("/loginButton", (req, res) -> {
             res.redirect(controller.getStringAuthorizationUrl());
@@ -65,7 +95,6 @@ public class APIServer {
          * User has to be logged in.
          * Returns a playlist as json.
          */
-
         get("/api/playlist", (req, res) -> controller.getJsonPlaylist());
     }
 }
