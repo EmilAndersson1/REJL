@@ -3,6 +3,7 @@ var city = document.getElementById("city");
 var country = document.getElementById("country");
 var currentWeather = document.getElementById("current_weather");
 var temp = document.getElementById("temp");
+var symbol = document.getElementById("symbol");
 
 
 
@@ -127,15 +128,19 @@ function fetchCoordsMap(position, location) {
 Displays return from location call
 */
 function showDataMap(parsed, APIresponse, location) {
+  
   parsed_response = JSON.parse(APIresponse)
   coord.innerHTML = "Latitude: " + parsed.lat +
   "<br>Longitude: " + parsed.lng;
 
-  locationHtml.innerHTML = location
+  locationHtml.innerHTML = location;
 
   currentWeather.innerHTML = parsed_response.symbol_code;
 
-  temp.innerHTML = "35C"
+  temp.innerHTML = parsed_response.air_temperature + "°C";
+
+  var symbolWeather = '<img src="/img/'+parsed_response.symbol_code+'.svg"' + 'width="200" height="200" alt="weatherSymbol">';
+  symbol.innerHTML = symbolWeather;
 
 }
 
@@ -151,7 +156,10 @@ function showData(position, APIresponse, location) {
 
   currentWeather.innerHTML = parsed_response.symbol_code;
 
-  temp.innerHTML = "35C"
+  temp.innerHTML = parsed_response.air_temperature + "°C";
+  
+  var symbolWeather = '<img src="/img/'+parsed_response.symbol_code+'.svg"' + 'width="200" height="200" alt="weatherSymbol">';
+  symbol.innerHTML = symbolWeather;
 
 }
 
