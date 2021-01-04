@@ -15,72 +15,74 @@ public class APIServer {
         staticFiles.location("/static");
 
         before("/", (req, res) -> {
-            if (!controller.isUserLoggedIn()) {
+            if (!controller.userIsLoggedIn()) {
                 halt(401, "Not Logged in!");
             }
         });
 
         before("/callback/*", (req, res) -> {
-            if (!controller.isUserAuthpath()) {
+            if (!controller.userAuthpathIsGenerated()) {
                 halt(401, "Spotify not authenticated!");
             }
         });
 
         before("/api/*", (req, res) -> {
-            if (!controller.isUserLoggedIn()) {
+            if (!controller.userIsLoggedIn()) {
                 halt(401, "Not Logged in!");
             }
         });
 
         before("/api/playlist", (req, res) -> {
-            if (!controller.isGeneratedTracks()) {
+            if (!controller.hasGeneratedTracks()) {
                 halt(418, "No tracks!");
             }
         });
 
         before("/api/playlist/", (req, res) -> {
-            if (!controller.isGeneratedTracks()) {
+            if (!controller.hasGeneratedTracks()) {
                 halt(418, "No tracks!");
             }
         });
 
         /*
-         * 1.1. Generate a starting page.
+         * 1.1. Generates a starting page. Available after log in.
          */
         get("/", (req, res) -> new PebbleTemplateEngine().render(
                 new ModelAndView(null, "templates/index.html")));
 
+        /*
+         * 1.2. Generates a log in page.
+         */
         get("/login", (req, res) -> new PebbleTemplateEngine().render(
                 new ModelAndView(null, "templates/login.html")));
 
         /*
-         * 2. Get weather based on location coordinates from frontend.
-         * Don't have to be logged in.
-         */
-        get("/api/weather/:latitude/:longitude", (req, res) -> controller.getJsonWeather(
-                req.params(":latitude"), req.params(":longitude"))); // json weather.
-
-        /*
-         * 3.1. Authorize user.
-         * Redirects to the Spotify user authorization url and automatically to callback-endpoint (3.2.).
-         * This apps access to the users spotify acount:
+         * 2.1. Authorize user.
+         * Redirects to the Spotify user authorization url and automatically to callback-endpoint.
+         * This apps access to the user Spotify account kan be removed here:
          * https://www.spotify.com/us/account/apps/
          */
-
         get("/loginButton", (req, res) -> {
             res.redirect(controller.getStringAuthorizationUrl());
             return res.status();
         });
 
         /*
-         * 3.2. Authorize app.
-         * Redirects to logged in main page (1.2.).
+         * 2.2. Authorize app.
+         * Automatically redirects to logged in main starting page.
          */
         get("/callback/", (req, res) -> {
             controller.getJsonToken(req.queryMap().get("code").value());
             res.redirect("/");
             return controller.getJsonUserProfile();
         });
+
+        /*
+         * 3. Get weather based on location coordinates.
+         * Don't have to be logged in?
+         */
+        get("/api/weather/:latitude/:longitude", (req, res) -> controller.getJsonWeather(
+                req.params(":latitude"), req.params(":longitude"))); // json weather.
 
         /*
          * 4. Get tracks based on weather (from location) and genre.
@@ -91,7 +93,7 @@ public class APIServer {
                 req.params(":weather"), req.params(":genre")));
 
         /*
-         * 5. Create Playlist and add tracks to users Spotify account.
+         * 5. Create Playlist and add the previously generated tracks to users Spotify account.
          * User has to be logged in.
          * Returns a playlist as json.
          */

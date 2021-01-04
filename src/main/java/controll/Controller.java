@@ -147,15 +147,15 @@ public class Controller {
         return userId;
     }
 
-    public boolean isUserLoggedIn() {
+    public boolean userIsLoggedIn() {
         return userLoggedIn;
     }
 
-    public boolean isUserAuthpath() {
+    public boolean userAuthpathIsGenerated() {
         return userAuthpath;
     }
 
-    public boolean isGeneratedTracks() {
+    public boolean hasGeneratedTracks() {
         return generatedTracks;
     }
 }
