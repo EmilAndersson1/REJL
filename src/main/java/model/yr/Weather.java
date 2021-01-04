@@ -14,7 +14,7 @@ public class Weather {
 
     @Override
     public String toString() {
-        return "CurrentWeather{" +
+        return "Weather{" +
                 "temperature=" + temperature +
                 ", weatherSymbol='" + weatherSymbol + '\'' +
                 '}';
