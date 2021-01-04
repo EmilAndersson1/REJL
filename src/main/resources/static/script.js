@@ -26,8 +26,8 @@ function getCurrentLocation() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(locationFromCoords);
     //When the button is clicked it it no longer shows
-    $("#map").hide();
-    $("#genreButtons").show();
+    $("#map").fadeOut();
+    $("#genreButtons").delay(500).fadeIn(800);
   } else {
     coord.innerHTML = "Geolocation is not supported by this browser.";
   }
@@ -118,9 +118,9 @@ function fetchCoordsMap(position, location) {
     method: "GET",
     url: "http://localhost:8888/api/weather/" + parsed.lat + "/" + parsed.lng
   }).done(function (response) {
-    showDataMap(parsed, response, location);
+    setTimeout(function() { showDataMap(parsed, response, location); }, 500);
   })
-    $("#map").hide();
+    $("#map").fadeOut();
     $("#buttons").hide();
 }
 
