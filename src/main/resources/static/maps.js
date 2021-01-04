@@ -21,7 +21,10 @@ function initMap() {
       });
       //infoWindow.setContent(JSON.stringify(mapsMouseEvent.latLng.toJSON(), null, 2)); skriver ut coordinaterna i rutan som en json sträng
       position = mapsMouseEvent.latLng;
-      fetchCoordsMap(position);
+      console.log(position)
+      var location = locationFromCoordsMap(position)
+      
+      fetchCoordsMap(position, location);
       infoWindow.open(map);
       $("#genreButtons").show();
     });
