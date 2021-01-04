@@ -18,16 +18,19 @@
 
 
            
-            <div class="d-flex justify-content-between">
-                
-                <a href="/" class="d-flex justify-content-start" id="logo">REJL</a>
-                <p id="logged_in" class="d-flex justify-content-end pt-3">Logged in as:</p>
+            <div class="d-flex justify-content-center">
+                <a href="/" class="d-flex " id="logo">REJL</a>
             </div>
+            <div class="d-flex justify-content-center">
                 <p id="slogan" class="d-flex justify-content-start">Discover music that fits the weather at your current location!</p>
+            </div>
+            <div class="d-flex justify-content-center">
+                <p id="logged_in" class="d-flex pt-3">Logged in as:</p>
+            </div>
 
             <div id="buttons">
                 <div class="d-flex justify-content-center pt-5 weather-data">
-                    <button type="button" class="btn btn-outline-light btn-lg" id="posBtn" onclick="getCurrentLocation()">Använd min position!</button>
+                    <button type="button" class="btn btn-outline-light btn-lg"  id="posBtn" onclick="getCurrentLocation()">Använd min position!</button>
                 </div>
 
                 <div class="d-flex justify-content-center pt-5 weather-data">
@@ -63,10 +66,20 @@
                     <input type="button" class="btn btn-outline-light mt-3" value="funk" onclick="fetchTracks(this.value)">
                 </div>
             </div>
-
             <div class="d-flex justify-content-center">
-                <div class="list-group col-7" id="songs"></div>
+                <button class="btn btn-outline-light col-7" id="songs_btn" type="button" data-toggle="collapse" data-target="#collapse" aria-expanded="false" aria-controls="collapse">
+                    Här är dina låtar
+                </button>
             </div>
+            <div class="d-flex justify-content-center" >
+                <img src="/img/loading3.svg" alt="loading...." width="50" height="50" id="loading">
+            </div>
+              <div class="collapse" id="collapse">
+                    <div class="d-flex justify-content-center">
+                        <div class="list-group col-7 mt-2 mb-5" id="songs"></div>
+                    </div>
+              </div>
+            
 
 
             <!-- <div class="d-flex justify-content-center">

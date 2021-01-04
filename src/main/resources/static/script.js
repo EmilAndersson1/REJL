@@ -6,13 +6,15 @@ var temp = document.getElementById("temp");
 var symbol = document.getElementById("symbol");
 
 
-
+$("#songs_btn").hide();
+$("#loading").hide();
 
 /*
 TODO:
 
 1. Kan vi få väder_inkl day/night/twilight?
 2. Kan vi lösa stad + land snyggare?
+3. hur gör vi lättast om "cloudy" till "Molnigt" tex?
 */
 
 
@@ -58,6 +60,8 @@ function locationFromCoordsMap(position) {
 }
 
 function fetchTracks(genre) {
+  $("#genreButtons").fadeOut();
+  $("#loading").delay(500).fadeIn();
   //fetches the current weather from the current_weather paragraph
   var weather = document.getElementById("current_weather").innerHTML;
   console.log(weather)
@@ -73,7 +77,8 @@ function fetchTracks(genre) {
 
 //generates links for every song
 function displayTracks(songs) {
-  $("#genreButtons").hide();
+  $("#loading").delay(3350).fadeOut(800);
+  $("#songs_btn").delay(5000).fadeIn(800);
   for (var songs = 0; songs < parsed.tracks.length; songs++) {
     console.log(parsed.tracks[songs].name);
     var a = document.createElement('a');
