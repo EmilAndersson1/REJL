@@ -25,13 +25,39 @@ Function that fetches the current position
 */
 function getCurrentLocation() {
   if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(fetchCoords);
+    navigator.geolocation.getCurrentPosition(locationFromCoords);
     //When the button is clicked it it no longer shows
     $("#map").hide();
     $("#genreButtons").show();
   } else {
     coord.innerHTML = "Geolocation is not supported by this browser.";
   }
+}
+
+
+function locationFromCoords(position) {
+  console.log(typeof position)
+  console.log(position)
+  $.ajax({
+    method: "GET",
+    url: "https://maps.googleapis.com/maps/api/geocode/json?latlng="+ position.coords.latitude + "," + position.coords.longitude + "&key=AIzaSyALNSg4-mot96aQpauSbHWln_tZMCvx5fw"
+  }).done(function (response) {
+    var location = response.results[8].formatted_address
+    fetchCoords(position, location)
+  })
+}
+
+function locationFromCoordsMap(position) {
+  latMap = JSON.stringify(position)
+  parsed = JSON.parse(latMap)
+  $.ajax({
+    method: "GET",
+    url: "https://maps.googleapis.com/maps/api/geocode/json?latlng="+ parsed.lat + "," + parsed.lng + "&key=AIzaSyALNSg4-mot96aQpauSbHWln_tZMCvx5fw"
+  }).done(function (response) {
+    console.log(response)
+    var location = response.results[8].formatted_address
+    fetchCoordsMap(position, location)
+  })
 }
 
 function fetchTracks(genre) {
@@ -69,12 +95,13 @@ function displayTracks(songs) {
 /*
   API function that fetches position depending on where the user is located and feeds it to our API
 */
-function fetchCoords(position) {
+function fetchCoords(position, location) {
+  console.log(location)
   $.ajax({
     method: "GET",
     url: "http://localhost:8888/api/weather/"  + position.coords.latitude + "/" + position.coords.longitude
   }).done(function (response) {
-    showData(position, response);
+    showData(position, response, location);
   })
   $("#buttons").hide();
 }
@@ -82,14 +109,14 @@ function fetchCoords(position) {
 /*
   API function that fetches position depending on where the user clicks on the map and feeds it to our API
 */
-function fetchCoordsMap(position) {
+function fetchCoordsMap(position, location) {
   latMap = JSON.stringify(position)
   parsed = JSON.parse(latMap)
   $.ajax({
     method: "GET",
     url: "http://localhost:8888/api/weather/" + parsed.lat + "/" + parsed.lng
   }).done(function (response) {
-    showDataMap(parsed, response);
+    showDataMap(parsed, response, location);
   })
     $("#map").hide();
     $("#buttons").hide();
@@ -99,14 +126,12 @@ function fetchCoordsMap(position) {
 /*
 Displays return from location call
 */
-function showDataMap(parsed, APIresponse) {
+function showDataMap(parsed, APIresponse, location) {
   parsed_response = JSON.parse(APIresponse)
   coord.innerHTML = "Latitude: " + parsed.lat +
   "<br>Longitude: " + parsed.lng;
 
-  city.innerHTML = "Stad" 
-
-  country.innerHTML = ", Land"
+  locationHtml.innerHTML = location
 
   currentWeather.innerHTML = parsed_response.symbol_code;
 
@@ -117,16 +142,14 @@ function showDataMap(parsed, APIresponse) {
 /*
 Displays return from location call
 */
-function showData(position, APIresponse) {
-  parsed = JSON.parse(APIresponse)
+function showData(position, APIresponse, location) {
+  parsed_response = JSON.parse(APIresponse)
   coord.innerHTML = "Latitude: " + position.coords.latitude +
   "<br>Longitude: " + position.coords.longitude;
 
-  city.innerHTML = "Stad" 
+  locationHtml.innerHTML = location
 
-  country.innerHTML = ", Land"
-
-  currentWeather.innerHTML = parsed.symbol_code;
+  currentWeather.innerHTML = parsed_response.symbol_code;
 
   temp.innerHTML = "35C"
 
