@@ -11,12 +11,8 @@ var symbol = document.getElementById("symbol");
 /*
 TODO:
 
-1. login knapp som skickar till login url (som nu returnas) DONE!!!
-2. Fråga om client ID är hemligt(den är synlig i URL nör man loggar in på spotify)
-3. Skapa welcome.html och föra över allt från index dit
-4. Lägga till route för /welcome (som användaren redirectas till när hen har loggat in)
-5. Översätt alla moods till svenska ord
-6. Radioknappar för genres att välja mellan DONE!!!
+1. Kan vi få väder_inkl day/night/twilight?
+2. Kan vi lösa stad + land snyggare?
 */
 
 
@@ -157,7 +153,7 @@ function showData(position, APIresponse, location) {
   currentWeather.innerHTML = parsed_response.symbol_code;
 
   temp.innerHTML = parsed_response.air_temperature + "°C";
-  
+
   var symbolWeather = '<img src="/img/'+parsed_response.symbol_code+'.svg"' + 'width="200" height="200" alt="weatherSymbol">';
   symbol.innerHTML = symbolWeather;
 
