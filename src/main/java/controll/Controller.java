@@ -6,12 +6,10 @@ import model.spotify.Playlist;
 import model.spotify.Token;
 import model.spotify.RecommendedTracks;
 import model.spotify.UserProfile;
-import model.yr.Weather;
 import services.*;
 import services.spotify.*;
 import services.yr.WeatherRetrieval;
 import utils.ClientEncoder;
-import utils.TimeComparator;
 import utils.MoodInterpreter;
 
 /**
@@ -73,7 +71,7 @@ public class Controller {
     public String getJsonWeather(String latitude, String longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
-        return TimeComparator.findCurrentWeatherTime((Weather) weatherRetrieval.apiResponse());
+        return new Gson().toJson(weatherRetrieval.apiResponse());
     }
 
     public void getJsonToken(String authorizationCode) {
