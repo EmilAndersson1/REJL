@@ -15,6 +15,8 @@ TODO:
 1. Kan vi få väder_inkl day/night/twilight?
 2. Kan vi lösa stad + land snyggare?
 3. hur gör vi lättast om "cloudy" till "Molnigt" tex?
+4. font upp på C
+5. try again knapp för väder
 */
 
 
@@ -53,11 +55,22 @@ function locationFromCoordsMap(position) {
     method: "GET",
     url: "https://maps.googleapis.com/maps/api/geocode/json?latlng="+ parsed.lat + "," + parsed.lng + "&key=AIzaSyALNSg4-mot96aQpauSbHWln_tZMCvx5fw"
   }).done(function (response) {
+    console.log(response.status)
     console.log(response)
-    var location = response.results[8].formatted_address
-    if (location = null){
-      location = response.results[0].formatted_address
+    console.log(response.results.length)
+    var location = ""
+
+
+    if (response.results.length >= 9){
+      location = response.results[8].formatted_address;
+    }else if(response.results.length >= 5){
+      location = response.results[4].formatted_address;
+    }else if(response.results.length >= 1){
+      location = response.results[0].formatted_address;
+    }else{
+      location = "Långtbortistan";
     }
+    
     fetchCoordsMap(position, location)
   })
 }
@@ -134,14 +147,14 @@ Displays return from location call
 function showDataMap(parsed, APIresponse, location) {
   
   parsed_response = JSON.parse(APIresponse)
-  coord.innerHTML = "Latitude: " + parsed.lat +
-  "<br>Longitude: " + parsed.lng;
+  coord.innerHTML = "Latitude: " + parsed.lat.toFixed(3) +
+  "<br>Longitude: " + parsed.lng.toFixed(3);
 
   locationHtml.innerHTML = location;
 
   currentWeather.innerHTML = parsed_response.symbol_code;
 
-  temp.innerHTML = parsed_response.air_temperature + "°C";
+  temp.innerHTML = parsed_response.air_temperature.toFixed(0) + "°C";
 
   var symbolWeather = '<img src="/img/'+parsed_response.symbol_code+'.svg"' + 'width="200" height="200" alt="weatherSymbol">';
   symbol.innerHTML = symbolWeather;
@@ -153,14 +166,14 @@ Displays return from location call
 */
 function showData(position, APIresponse, location) {
   parsed_response = JSON.parse(APIresponse)
-  coord.innerHTML = "Latitude: " + position.coords.latitude +
-  "<br>Longitude: " + position.coords.longitude;
+  coord.innerHTML = "Latitude: " + position.coords.latitude.toFixed(3) +
+  "<br>Longitude: " + position.coords.longitude.toFixed(3);
 
-  locationHtml.innerHTML = location
+  locationHtml.innerHTML = location;
 
   currentWeather.innerHTML = parsed_response.symbol_code;
 
-  temp.innerHTML = parsed_response.air_temperature + "°C";
+  temp.innerHTML = parsed_response.air_temperature.toFixed(0) + "°C";
 
   var symbolWeather = '<img src="/img/'+parsed_response.symbol_code+'.svg"' + 'width="200" height="200" alt="weatherSymbol">';
   symbol.innerHTML = symbolWeather;

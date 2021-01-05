@@ -5,8 +5,8 @@ body{
     background: radial-gradient(circle, rgba(91,91,91,1) 0%, rgba(37,37,37,1) 89%);
 }
 
-#songs{
-    
+#current_weather{
+    display: none;
 }
 #map{
     height: 500px;
