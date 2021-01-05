@@ -44,9 +44,9 @@ public class WeatherRetrieval extends APIService {
                 .getJSONObject("next_1_hours")
                 .getJSONObject("summary")
                 .getString("symbol_code");
-        if (symbolCode.contains("_")) {
-            symbolCode = symbolCode.split("_")[0];
-        }
+//        if (symbolCode.contains("_")) {
+//            symbolCode = symbolCode.split("_")[0];
+//        }
         JSONObject jsonWeather = new JSONObject();
         jsonWeather.put("air_temperature", temperature).put("symbol_code", symbolCode);
         return gson.fromJson(jsonWeather.toString(), Weather.class);
