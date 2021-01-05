@@ -17,6 +17,7 @@ TODO:
 3. hur gör vi lättast om "cloudy" till "Molnigt" tex?
 4. font upp på C
 5. try again knapp för väder
+6. if not logged in render welcome.html
 */
 
 

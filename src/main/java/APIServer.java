@@ -53,7 +53,9 @@ public class APIServer {
          */
         get("/", (req, res) -> {
             Map<String, Object> model = new HashMap<String, Object>();
-            model.put("userProfile", controller.getJsonUserProfile());
+            model.put("userId", controller.getUserId());
+            model.put("userName", controller.getUserName()); //name
+            model.put("userPic", controller.getUserPic());//bild
 
             return new PebbleTemplateEngine().render(
                     new ModelAndView(model, "templates/index.html"));

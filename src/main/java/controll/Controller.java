@@ -144,7 +144,16 @@ public class Controller {
     }
 
     public String getUserId() {
-        return userId;
+        UserProfile userProfile = (UserProfile) userProfileRetrieval.apiResponse();
+        return userProfile.userId;
+    }
+    public String getUserName() {
+        UserProfile userProfile = (UserProfile) userProfileRetrieval.apiResponse();
+        return userProfile.userName;
+    }
+    public String getUserPic() {
+        UserProfile userProfile = (UserProfile) userProfileRetrieval.apiResponse();
+        return userProfile.images[0].url;
     }
 
     public boolean userIsLoggedIn() {
