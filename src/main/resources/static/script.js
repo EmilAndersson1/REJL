@@ -18,6 +18,8 @@ TODO:
 4. font upp på C
 5. try again knapp för väder
 6. if not logged in render welcome.html
+7. skapa en welcome.html
+8. fixa "logged in as"
 */
 
 
