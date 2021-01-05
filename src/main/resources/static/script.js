@@ -3,19 +3,18 @@ var city = document.getElementById("city");
 var country = document.getElementById("country");
 var currentWeather = document.getElementById("current_weather");
 var temp = document.getElementById("temp");
+var symbol = document.getElementById("symbol");
 
 
-
+$("#songs_btn").hide();
+$("#loading").hide();
 
 /*
 TODO:
 
-1. login knapp som skickar till login url (som nu returnas) DONE!!!
-2. Fråga om client ID är hemligt(den är synlig i URL nör man loggar in på spotify)
-3. Skapa welcome.html och föra över allt från index dit
-4. Lägga till route för /welcome (som användaren redirectas till när hen har loggat in)
-5. Översätt alla moods till svenska ord
-6. Radioknappar för genres att välja mellan DONE!!!
+1. Kan vi få väder_inkl day/night/twilight?
+2. Kan vi lösa stad + land snyggare?
+3. hur gör vi lättast om "cloudy" till "Molnigt" tex?
 */
 
 
@@ -27,8 +26,8 @@ function getCurrentLocation() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(locationFromCoords);
     //When the button is clicked it it no longer shows
-    $("#map").hide();
-    $("#genreButtons").show();
+    $("#map").fadeOut();
+    $("#genreButtons").delay(500).fadeIn(800);
   } else {
     coord.innerHTML = "Geolocation is not supported by this browser.";
   }
@@ -61,6 +60,8 @@ function locationFromCoordsMap(position) {
 }
 
 function fetchTracks(genre) {
+  $("#genreButtons").fadeOut();
+  $("#loading").delay(500).fadeIn();
   //fetches the current weather from the current_weather paragraph
   var weather = document.getElementById("current_weather").innerHTML;
   console.log(weather)
@@ -76,7 +77,8 @@ function fetchTracks(genre) {
 
 //generates links for every song
 function displayTracks(songs) {
-  $("#genreButtons").hide();
+  $("#loading").delay(3350).fadeOut(800);
+  $("#songs_btn").delay(5000).fadeIn(800);
   for (var songs = 0; songs < parsed.tracks.length; songs++) {
     console.log(parsed.tracks[songs].name);
     var a = document.createElement('a');
@@ -116,9 +118,9 @@ function fetchCoordsMap(position, location) {
     method: "GET",
     url: "http://localhost:8888/api/weather/" + parsed.lat + "/" + parsed.lng
   }).done(function (response) {
-    showDataMap(parsed, response, location);
+    setTimeout(function() { showDataMap(parsed, response, location); }, 500);
   })
-    $("#map").hide();
+    $("#map").fadeOut();
     $("#buttons").hide();
 }
 
@@ -127,15 +129,19 @@ function fetchCoordsMap(position, location) {
 Displays return from location call
 */
 function showDataMap(parsed, APIresponse, location) {
+  
   parsed_response = JSON.parse(APIresponse)
   coord.innerHTML = "Latitude: " + parsed.lat +
   "<br>Longitude: " + parsed.lng;
 
-  locationHtml.innerHTML = location
+  locationHtml.innerHTML = location;
 
   currentWeather.innerHTML = parsed_response.symbol_code;
 
-  temp.innerHTML = "35C"
+  temp.innerHTML = parsed_response.air_temperature + "°C";
+
+  var symbolWeather = '<img src="/img/'+parsed_response.symbol_code+'.svg"' + 'width="200" height="200" alt="weatherSymbol">';
+  symbol.innerHTML = symbolWeather;
 
 }
 
@@ -151,7 +157,10 @@ function showData(position, APIresponse, location) {
 
   currentWeather.innerHTML = parsed_response.symbol_code;
 
-  temp.innerHTML = "35C"
+  temp.innerHTML = parsed_response.air_temperature + "°C";
+
+  var symbolWeather = '<img src="/img/'+parsed_response.symbol_code+'.svg"' + 'width="200" height="200" alt="weatherSymbol">';
+  symbol.innerHTML = symbolWeather;
 
 }
 

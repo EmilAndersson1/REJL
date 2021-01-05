@@ -15,22 +15,16 @@ function initMap() {
     map.addListener("click", (mapsMouseEvent) => {
       // Close the current InfoWindow.
       infoWindow.close();
-      // Create a new InfoWindow.
-      infoWindow = new google.maps.InfoWindow({
-        position: mapsMouseEvent.latLng,
-      });
-      //infoWindow.setContent(JSON.stringify(mapsMouseEvent.latLng.toJSON(), null, 2)); skriver ut coordinaterna i rutan som en json sträng
+      // Create a new InfoWindow
       position = mapsMouseEvent.latLng;
-      console.log(position)
       var location = locationFromCoordsMap(position)
-      
       fetchCoordsMap(position, location);
       infoWindow.open(map);
-      $("#genreButtons").show();
+      $("#genreButtons").delay(500).fadeIn(800);
     });
   }
 
 function toggleMap(){
     $("#buttons").hide();
-    $("#map").show();
+    $("#map").fadeIn(900);
 }

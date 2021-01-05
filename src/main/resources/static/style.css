@@ -14,7 +14,7 @@ body{
     display: none;
 }
 
-#slogan{
+#slogan, #logged_in{
     color:white;
     font-style: italic;
 }
