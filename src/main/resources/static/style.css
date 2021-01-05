@@ -14,10 +14,17 @@ body{
     display: none;
 }
 
-#slogan, #logged_in{
+#slogan{
     color:white;
     font-style: italic;
 }
+
+#logged_in{
+    color:white;
+    font-style: italic;
+    font-size: larger;
+}
+
 
 #logo{
     font-family: 'Fira Sans', sans-serif;
