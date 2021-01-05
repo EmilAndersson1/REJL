@@ -55,6 +55,9 @@ function locationFromCoordsMap(position) {
   }).done(function (response) {
     console.log(response)
     var location = response.results[8].formatted_address
+    if (location = null){
+      location = response.results[0].formatted_address
+    }
     fetchCoordsMap(position, location)
   })
 }
