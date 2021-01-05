@@ -2,6 +2,10 @@ import controll.Controller;
 import spark.ModelAndView;
 import spark.template.pebble.PebbleTemplateEngine;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import static spark.Spark.*;
 
 /**
@@ -47,8 +51,15 @@ public class APIServer {
         /*
          * 1.1. Generates a starting page. Available after log in.
          */
-        get("/", (req, res) -> new PebbleTemplateEngine().render(
-                new ModelAndView(null, "templates/index.html")));
+        get("/", (req, res) -> {
+            Map<String, Object> model = new HashMap<String, Object>();
+            model.put("userProfile", controller.getJsonUserProfile());
+
+            return new PebbleTemplateEngine().render(
+                    new ModelAndView(model, "templates/index.html"));
+        });
+
+
 
         /*
          * 1.2. Generates a log in page.
@@ -74,7 +85,7 @@ public class APIServer {
         get("/callback/", (req, res) -> {
             controller.getJsonToken(req.queryMap().get("code").value());
             res.redirect("/");
-            return controller.getJsonUserProfile();
+            return res.status();
         });
 
         /*
@@ -98,5 +109,9 @@ public class APIServer {
          * Returns a playlist as json.
          */
         get("/api/playlist", (req, res) -> controller.getJsonPlaylist());
+        // post spara till
+        //
+
+        get("/api/profile", (req, res) -> controller.getJsonUserProfile());
     }
 }
