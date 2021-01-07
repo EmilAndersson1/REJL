@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="/style.css" rel="stylesheet" type="text/css">
+    <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital@1&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
     <title>REJL</title>
@@ -43,13 +44,15 @@
             <div class="d-flex justify-content-center weather-data">
                 <div id="symbol"></div>
             </div> 
+            <div class="d-flex justify-content-center weather-data h1">
+                <p id="temp"></p>
+            </div>
+
             <div class="d-flex justify-content-center weather-data h3">
                 <p id="locationHtml"></p>
             </div> 
             
-            <div class="d-flex justify-content-center weather-data h1">
-                <p id="temp"></p>
-            </div>
+            
             
             <div class="d-flex justify-content-center weather-data">
                 <p id="current_weather"></p>
@@ -59,30 +62,41 @@
                 <em><small><p id="coords"></p> </small></em>
             </div> 
 
-            <div class="d-flex justify-content-center">
-                <div id="genreButtons">
-                    <input type="button" class="btn btn-outline-light m-2" value="pop" onclick="fetchTracks(this.value)">
-
-                    <input type="button" class="btn btn-outline-light m-2" value="chill" onclick="fetchTracks(this.value)">
-
-                    <input type="button" class="btn btn-outline-light m-2" value="funk" onclick="fetchTracks(this.value)">
-
-                    <input type="button" class="btn btn-outline-light m-2" value="hip-hop" onclick="fetchTracks(this.value)">
-
-                    <input type="button" class="btn btn-outline-light m-2" value="rock" onclick="fetchTracks(this.value)">
-
-                    <input type="button" class="btn btn-outline-light m-2" value="soul" onclick="fetchTracks(this.value)">
-                </div>
-            </div>            
+                        
         </div>
         
         <div class="d-flex flex-wrap justify-content-center" id="songs">
 
             <!-- Här kommer alla låtar som cards-->
         </div>
-        <div class="d-flex justify-content-center" >
-            <img src="/img/loading3.svg" alt="loading...." width="50" height="50" id="loading">
+
+        
+
+        <div class="d-flex justify-content-center mt-1" >
+            <img src="/img/loading3.svg" alt="loading...." width="50" height="50" class="loading mt-3">
         </div>
+
+        <div class="d-flex justify-content-center">
+            <div id="genreButtons">
+                <input type="button" class="btn btn-outline-light m-2" value="pop" onclick="fetchTracks(this.value)">
+
+                <input type="button" class="btn btn-outline-light m-2" value="chill" onclick="fetchTracks(this.value)">
+
+                <input type="button" class="btn btn-outline-light m-2" value="funk" onclick="fetchTracks(this.value)">
+
+                <input type="button" class="btn btn-outline-light m-2" value="hip-hop" onclick="fetchTracks(this.value)">
+
+                <input type="button" class="btn btn-outline-light m-2" value="rock" onclick="fetchTracks(this.value)">
+
+                <input type="button" class="btn btn-outline-light m-2" value="soul" onclick="fetchTracks(this.value)">
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-center">
+            <input type="button" class="btn btn-outline-light m-5 more_songs col-5" value="Ladda fler låtar!" onclick="$('#genreButtons').fadeIn(), window.scrollTo(0,document.body.scrollHeight)">
+            <button type="button" class="btn btn-outline-light m-5 more_songs"onclick=""><span class="iconify" data-icon="mdi-spotify"></span>  Skapa spellista!</button>
+        </div>
+        
          
         
 
