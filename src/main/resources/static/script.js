@@ -87,24 +87,23 @@ function fetchTracks(genre) {
   $("#loading").delay(500).fadeIn();
   //fetches the current weather from the current_weather paragraph
   var weather = document.getElementById("current_weather").innerHTML;
-  console.log(weather)
-  console.log(genre)
   $.ajax({
     method: "GET",
     url: "http://localhost:8888/api/tracks/" + weather + "/" + genre
   }).done(function (response) {
     parsed = JSON.parse(response);
-    displayTracks(parsed);
+    displayTracks(parsed, genre);
   })
 }
 
 //generate card for song
-function displayTracks(songs) {
+function displayTracks(songs, genre) {
+  console.log(genre)
   $("#loading").delay(3350).fadeOut(800);
   for (var songs = 0; songs < parsed.tracks.length; songs++) {
-    var artists = ""
+    var artists = []
     for (var i = 0; i < parsed.tracks[songs].artists.length; i++){
-      artists += parsed.tracks[songs].artists[i].name + " ";
+      artists.push(parsed.tracks[songs].artists[i].name)
     }
    
     var card = document.createElement('div');
@@ -116,7 +115,7 @@ function displayTracks(songs) {
     card.innerHTML = '<img class="card-img-top" src="https://i.scdn.co/image/107819f5dc557d5d0a4b216781c6ec1b2f3c5ab2"  alt="Card image cap">';
     card.innerHTML += '<div class="card-body text-center">';
     card.innerHTML += '<h5 class="card-title">' + parsed.tracks[songs].name + '</h5>';
-    card.innerHTML += '<p class="card-text">' + artists + '</p>';
+    card.innerHTML += '<p class="card-text">' + artists.join(", ") + '</p>';
     card.innerHTML += '<a href="https://open.spotify.com/track/' + parsed.tracks[songs].id + '" target="_blank" class="btn btn-secondary btn-block">Lyssna!</a>';
     card.innerHTML += '</div>';
     card.innerHTML += '</div>';
@@ -197,13 +196,3 @@ function showData(position, APIresponse, location) {
   symbol.innerHTML = symbolWeather;
 
 }
-
-/*
-Expected return from ajax call in function "fetchCoords"
-{ 
-  "Stad": "string", 
-  "Land": "string",
-  "celsius": int,
-  "current_weather": "string"
-}
-*/
