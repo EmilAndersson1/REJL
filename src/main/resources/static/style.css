@@ -8,6 +8,7 @@ body{
 #current_weather{
     display: none;
 }
+
 #map{
     height: 500px;
     width: 80%;
@@ -22,13 +23,12 @@ body{
 #logged_in{
     color:white;
     font-style: italic;
-    font-size: larger;
 }
 
 
 #logo{
     font-family: 'Fira Sans', sans-serif;
-    font-size: 80px;
+    font-size: 60px;
     text-decoration: none;
     color: white;
 }

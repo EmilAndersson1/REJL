@@ -7,8 +7,12 @@ var symbol = document.getElementById("symbol");
 
 
 $("#songs_btn").hide();
+$("#playlist_btn").hide();
 $("#loading").hide();
 
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
 /*
 TODO:
 
@@ -94,22 +98,33 @@ function fetchTracks(genre) {
   })
 }
 
-//generates links for every song
+//generate card for song
 function displayTracks(songs) {
   $("#loading").delay(3350).fadeOut(800);
-  $("#songs_btn").delay(5000).fadeIn(800);
   for (var songs = 0; songs < parsed.tracks.length; songs++) {
-    console.log(parsed.tracks[songs].name);
-    var a = document.createElement('a');
-    var linkText = document.createTextNode(parsed.tracks[songs].name);
-    a.appendChild(linkText);
-    a.title = "my title text";
-    a.href = "https://open.spotify.com/track/"+parsed.tracks[songs].id;
-    a.target = "_blank";
-    a.className = "list-group-item list-group-item-action list-group-item-light";
+    var artists = ""
+    for (var i = 0; i < parsed.tracks[songs].artists.length; i++){
+      artists += parsed.tracks[songs].artists[i].name + " ";
+    }
+   
+    var card = document.createElement('div');
+    card.className = "card text-white bg-dark p-3 m-3 card_songs";
+    card.id = "song_card";
+    card.style = "width: 12rem;";
 
-    document.getElementById("songs").appendChild(a);
+    
+    card.innerHTML = '<img class="card-img-top" src="https://i.scdn.co/image/107819f5dc557d5d0a4b216781c6ec1b2f3c5ab2"  alt="Card image cap">';
+    card.innerHTML += '<div class="card-body text-center">';
+    card.innerHTML += '<h5 class="card-title">' + parsed.tracks[songs].name + '</h5>';
+    card.innerHTML += '<p class="card-text">' + artists + '</p>';
+    card.innerHTML += '<a href="https://open.spotify.com/track/' + parsed.tracks[songs].id + '" target="_blank" class="btn btn-secondary btn-block">Lyssna!</a>';
+    card.innerHTML += '</div>';
+    card.innerHTML += '</div>';
+    document.getElementById("songs").appendChild(card);
+    $(".card_songs").hide();
+    
   }
+  $(".card_songs").delay(4700).fadeIn(800);
 } 
 
 
@@ -178,7 +193,7 @@ function showData(position, APIresponse, location) {
 
   temp.innerHTML = parsed_response.air_temperature.toFixed(0) + "°C";
 
-  var symbolWeather = '<img src="/img/'+parsed_response.symbol_code+'.svg"' + 'width="200" height="200" alt="weatherSymbol">';
+  var symbolWeather = '<img src="/img/'+parsed_response.symbol_code+'.svg"' + 'width="180" height="180" alt="weatherSymbol">';
   symbol.innerHTML = symbolWeather;
 
 }
