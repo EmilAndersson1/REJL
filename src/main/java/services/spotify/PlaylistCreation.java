@@ -22,13 +22,12 @@ public class PlaylistCreation extends APIService {
     public HttpResponse<JsonNode> jsonResponse(Controller controller) {
 
         String userId = controller.getUserId();
-        String playlistname = controller.getWeather() + "-" + controller.getGenre();
 
         return Unirest.post("https://api.spotify.com/v1/users/{user_id}/playlists")
                 .header("Authorization", "Bearer " + controller.getAuthorizationToken().accessToken)
                 .header("Content-Type", "application/json")
                 .routeParam("user_id", userId)
-                .body("{ \"name\": \"" + playlistname + "\" }")
+                .body("{ \"name\": \"" + "My REJL Playlist" + "\" }")
                 .asJson();
     }
 

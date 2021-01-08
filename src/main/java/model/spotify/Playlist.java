@@ -17,7 +17,6 @@ public class Playlist {
     @SerializedName("external_urls")
     public ExternalUrls externalUrls = null;
     public String uri = "";
-    public Image[] images = null;
 
     @Override
     public String toString() {
@@ -26,7 +25,6 @@ public class Playlist {
                 ", name='" + name + '\'' +
                 ", externalUrls=" + externalUrls +
                 ", uri='" + uri + '\'' +
-                ", images=" + Arrays.toString(images) +
                 '}';
     }
 }

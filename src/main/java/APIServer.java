@@ -3,7 +3,6 @@ import spark.ModelAndView;
 import spark.template.pebble.PebbleTemplateEngine;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static spark.Spark.*;
