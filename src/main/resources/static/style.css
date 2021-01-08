@@ -2,13 +2,8 @@ html,
 body{
     height: 100vh;
     background: rgb(91,91,91);
-    background: radial-gradient(circle, rgba(91,91,91,1) 0%, rgba(37,37,37,1) 89%);
-    scrollbar-width: thin;
-    
+    background: radial-gradient(circle, rgba(91,91,91,1) 0%, rgba(37,37,37,1) 89%); 
 }
-*::-webkit-scrollbar {
-    width: 12px;
-  }
 
 #current_weather{
     display: none;

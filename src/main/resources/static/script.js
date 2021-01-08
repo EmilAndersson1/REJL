@@ -13,15 +13,9 @@ $(".more_songs").hide();
 
 /*
 TODO:
-
-1. Kan vi få väder_inkl day/night/twilight?
-2. Kan vi lösa stad + land snyggare?
-3. hur gör vi lättast om "cloudy" till "Molnigt" tex?
-4. font upp på C
-5. try again knapp för väder
 6. if not logged in render welcome.html
 7. skapa en welcome.html
-8. fixa "logged in as"
+
 */
 
 
@@ -88,6 +82,16 @@ function fetchTracks(genre) {
     parsed = JSON.parse(response);
     displayTracks(parsed);
     
+  })
+}
+
+function createPlaylist() {
+  $.ajax({
+    method: "GET",
+    url: "http://localhost:8888/api/playlist"
+  }).done(function (response) {
+    parsed = JSON.parse(response);
+    window.open(parsed.external_urls.spotify, "_blank");
   })
 }
 
