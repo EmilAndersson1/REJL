@@ -23,6 +23,11 @@ body{
 #logged_in{
     color:white;
     font-style: italic;
+    text-decoration: none;
+}
+
+#logged_in:hover{
+    text-decoration: underline;
 }
 
 

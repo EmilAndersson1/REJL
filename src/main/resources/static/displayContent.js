@@ -37,7 +37,7 @@ function displayTracks(songs) {
       card.id = "song_card";
       card.style = "width: 14rem;";
   
-      card.innerHTML = '<img class="card-img-top" src="https://i.scdn.co/image/107819f5dc557d5d0a4b216781c6ec1b2f3c5ab2"  alt="Card image cap">';
+      card.innerHTML = '<img class="card-img-top" src="'+ parsed.tracks[songs].imageUrl +'"  alt="Card image cap">';
       card.innerHTML += '<div class="card-body text-center">';
       card.innerHTML += '<h5 class="card-title">' + parsed.tracks[songs].name + '</h5>';
       card.innerHTML += '<p class="card-text">' + artists.join(", ") + '</p>';
