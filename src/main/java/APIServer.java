@@ -51,16 +51,16 @@ public class APIServer {
          * 1.1. Generates a starting page. Available after log in.
          */
         get("/", (req, res) -> {
+            controller.getJsonUserProfile();
             Map<String, Object> model = new HashMap<String, Object>();
             model.put("userId", controller.getUserId());
-            model.put("userName", controller.getUserName()); //name
-            model.put("userPic", controller.getUserPic());//bild
+            model.put("userName", controller.getUserName());
+            model.put("userPic", controller.getUserPic()); //bild
+            model.put("UserUrl", controller.getUserUrl());
 
             return new PebbleTemplateEngine().render(
                     new ModelAndView(model, "templates/index.html"));
         });
-
-
 
         /*
          * 1.2. Generates a log in page.
@@ -110,7 +110,5 @@ public class APIServer {
          * Returns a playlist as json.
          */
         post("/api/playlist", (req, res) -> controller.getJsonPlaylist());
-
-        get("/api/profile", (req, res) -> controller.getJsonUserProfile());
     }
 }

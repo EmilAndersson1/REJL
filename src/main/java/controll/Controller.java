@@ -41,6 +41,7 @@ public class Controller {
     private boolean userLoggedIn;
     private boolean userAuthpath;
     private boolean generatedTracks;
+    private UserProfile userProfile;
 
     public Controller() {
         userLoggedIn = false;
@@ -78,13 +79,11 @@ public class Controller {
         this.authorizationCode = authorizationCode;
         userLoggedIn = true;
         authorizationToken = (Token) AppAuthentication.apiResponse();
-        new Gson().toJson(authorizationToken);
     }
 
-    public String getJsonUserProfile() {
-        UserProfile userProfile = (UserProfile) userProfileRetrieval.apiResponse();
+    public void getJsonUserProfile() {
+        userProfile = (UserProfile) userProfileRetrieval.apiResponse();
         userId = userProfile.userId;
-        return new Gson().toJson(userProfile);
     }
 
     public String getJsonTracks(String weather, String genre) {
@@ -143,16 +142,16 @@ public class Controller {
     }
 
     public String getUserId() {
-        UserProfile userProfile = (UserProfile) userProfileRetrieval.apiResponse();
         return userProfile.userId;
     }
     public String getUserName() {
-        UserProfile userProfile = (UserProfile) userProfileRetrieval.apiResponse();
         return userProfile.userName;
     }
     public String getUserPic() {
-        UserProfile userProfile = (UserProfile) userProfileRetrieval.apiResponse();
         return userProfile.images[0].url;
+    }
+    public String getUserUrl() {
+        return userProfile.externalUrls.spotifyUrl;
     }
 
     public boolean userIsLoggedIn() {
