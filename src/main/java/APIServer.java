@@ -19,7 +19,7 @@ public class APIServer {
 
         before("/", (req, res) -> {
             if (!controller.userIsLoggedIn()) {
-                halt(401, "Not Logged in!");
+                res.redirect("/login");
             }
         });
 
