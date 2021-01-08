@@ -28,3 +28,14 @@ function toggleMap(){
     $("#buttons").hide();
     $("#map").fadeIn(900);
 }
+
+function getCurrentLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(locationFromCoords);
+    //When the button is clicked it it no longer shows
+    $("#map").fadeOut();
+    $("#genreButtons").delay(100).fadeIn(800);
+  } else {
+    coord.innerHTML = "Geolocation is not supported by this browser.";
+  }
+}
