@@ -109,9 +109,7 @@ public class APIServer {
          * User has to be logged in.
          * Returns a playlist as json.
          */
-        get("/api/playlist", (req, res) -> controller.getJsonPlaylist());
-        // post spara till
-        //
+        post("/api/playlist", (req, res) -> controller.getJsonPlaylist());
 
         get("/api/profile", (req, res) -> controller.getJsonUserProfile());
     }
