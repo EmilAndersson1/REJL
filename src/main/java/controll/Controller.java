@@ -97,7 +97,6 @@ public class Controller {
     }
 
     public String getJsonPlaylist() {
-
         playlist = (Playlist) playlistCreation.apiResponse(); //Create a playlist.
         playlist = (Playlist) tracksToPlaylistAddition.apiResponse(); //Add tracks to the playlist. (And update playlist)
         return new Gson().toJson(playlist);

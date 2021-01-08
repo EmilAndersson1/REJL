@@ -7,6 +7,7 @@ import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
 import kong.unirest.json.JSONObject;
 import model.spotify.RecommendedTracks;
+import model.spotify.Track;
 import services.APIService;
 
 /**
@@ -14,8 +15,11 @@ import services.APIService;
  */
 public class TrackRecommendations extends APIService {
 
+    Controller controller;
+
     public TrackRecommendations(Controller controller) {
         super(controller);
+        this.controller = controller;
     }
 
     @Override
@@ -45,6 +49,25 @@ public class TrackRecommendations extends APIService {
 
     @Override
     public Object convertJsonResponseToJava(Gson gson, JSONObject jsonObject) {
-        return gson.fromJson(jsonObject.toString(), RecommendedTracks.class);
+        RecommendedTracks tracks = gson.fromJson(jsonObject.toString(), RecommendedTracks.class);
+        for (Track track : tracks.tracks) {
+            String trackId = track.id;
+            track.imageUrl = getTrackImageAtSpotify(trackId);
+        }
+        return tracks;
+    }
+
+    private String getTrackImageAtSpotify(String trackId) {
+        HttpResponse<JsonNode> response = Unirest.get("https://api.spotify.com/v1/tracks/{id}")
+                .header("Accept", "application/json")
+                .header("Authorization", "Bearer " + controller.getAuthorizationToken().accessToken)
+                .routeParam("id", trackId)
+                .asJson();
+        String imageUrl = response.getBody().getObject()
+                .getJSONObject("album")
+                .getJSONArray("images")
+                .getJSONObject(1)
+                .getString("url");
+        return imageUrl;
     }
 }

@@ -18,6 +18,7 @@ public class Track {
     public ExternalUrls externalUrls    = null;
     public String uri                   = "";
     public Artist[] artists             = null;
+    public String imageUrl              = "";
 
     @Override
     public String toString() {
@@ -27,6 +28,7 @@ public class Track {
                 ", externalUrls=" + externalUrls +
                 ", uri='" + uri + '\'' +
                 ", artists=" + Arrays.toString(artists) +
+                ", imageUrl='" + imageUrl + '\'' +
                 '}';
     }
 }
