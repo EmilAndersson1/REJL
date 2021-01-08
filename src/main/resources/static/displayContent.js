@@ -6,6 +6,8 @@ var temp = document.getElementById("temp");
 var symbol = document.getElementById("symbol");
 
 
+
+
 $("#songs_btn").hide();
 $("#playlist_btn").hide();
 $(".loading").hide();
