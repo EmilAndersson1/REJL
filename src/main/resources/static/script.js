@@ -60,7 +60,7 @@ function fetchTracks(genre) {
 
 function createPlaylist() {
   $.ajax({
-    method: "GET",
+    method: "POST",
     url: "http://localhost:8888/api/playlist"
   }).done(function (response) {
     parsed = JSON.parse(response);
