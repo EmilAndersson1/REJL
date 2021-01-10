@@ -112,5 +112,13 @@ public class APIServer {
             return controller.getJsonPlaylist(
                     req.body());
         });
+
+        /*
+            API doc
+        */
+        get("/apidoc", (req, res) -> {
+            return new PebbleTemplateEngine().render(
+                    new ModelAndView(null, "templates/apidoc.html"));
+        });
     }
 }
