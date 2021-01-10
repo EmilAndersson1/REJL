@@ -7,6 +7,12 @@ var symbol = document.getElementById("symbol");
 
 var tracksArray = {"uris":[]}
 
+
+console.log(userId)
+
+
+console.log()
+
 console.log(tracksArray.uris)
 console.log(tracksArray)
 
