@@ -7,8 +7,6 @@ import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
 import kong.unirest.json.JSONObject;
 import model.spotify.Playlist;
-import model.spotify.RecommendedTracks;
-import model.spotify.Uris;
 import services.APIService;
 
 /**
@@ -25,30 +23,13 @@ public class TracksToPlaylistAddition extends APIService {
     public HttpResponse<JsonNode> jsonResponse(Controller controller) {
 
         playlist = controller.getPlaylist();
-        RecommendedTracks recommendedTracks = controller.getRecommendedTracks();
-
-        Uris trackUris = new Uris();
-        trackUris.uris = new String[recommendedTracks.tracks.length];
-
-        for (int i = 0; i < recommendedTracks.tracks.length; i++) {
-            trackUris.uris[i] = recommendedTracks.tracks[i].uri;
-        }
-        String uris = new Gson().toJson(trackUris);
-
-        System.out.println("" + uris);
+        String uris = controller.getTracks();
 
         return Unirest.post("https://api.spotify.com/v1/playlists/{playlist_id}/tracks")
                 .header("Authorization", "Bearer " + controller.getAuthorizationToken().accessToken)
                 .header("Content-Type", "application/json")
                 .routeParam("playlist_id", playlist.id)
                 .body(uris)
-//                .body("{\"uris\": " +
-//                        "[" +
-//                        "\"spotify:track:4iV5W9uYEdYUVa79Axb7Rh\"," +
-//                        "\"spotify:track:1301WleyT98MSxVHPZCA6M\", " +
-//                        "\"spotify:episode:512ojhOuo1ktJprKbVcKyQ\"" +
-//                        "]" +
-//                        "}")
                 .asJson();
     }
 

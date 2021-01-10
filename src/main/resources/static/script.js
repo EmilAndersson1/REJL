@@ -70,7 +70,7 @@ function createPlaylist() {
   $.ajax({
     method: "POST",
     url: "http://localhost:8888/api/playlist",
-    data: tracksArray
+    data: JSON.stringify(tracksArray)
   }).done(function (response) {
     parsed = JSON.parse(response);
     window.open(parsed.external_urls.spotify, "_blank");

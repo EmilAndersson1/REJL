@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import model.app.ClientCredentials;
 import model.spotify.Playlist;
 import model.spotify.Token;
-import model.spotify.RecommendedTracks;
 import model.spotify.UserProfile;
 import services.*;
 import services.spotify.*;
@@ -20,13 +19,11 @@ import java.util.Map;
  */
 public class Controller {
 
-//    private APIService UserLogin;
     private APIService AppAuthentication;
 
     private ClientCredentials clientCredentials;
-
     private String encodedClientCredentials;
-    private Map<String, Token> userAuthorizations;
+    private Map<String, Token> authorizedUsers;
     private Token authorizationToken;
     private String authorizationCode;
 
@@ -39,22 +36,16 @@ public class Controller {
     private String latitude;
     private String longitude;
     private float valance;
-    private String weather;
     private String genre;
     private Playlist playlist;
-    private RecommendedTracks recommendedTracks;
     private boolean userAuthpath;
     private UserProfile userProfile;
 
     public Controller() {
-        userAuthorizations = new HashMap<String, Token>();
+        authorizedUsers = new HashMap<String, Token>();
         userAuthpath = false;
-
         clientCredentials = new ClientCredentials();
-
         encodedClientCredentials = ClientEncoder.generate(clientCredentials.getClientID(), clientCredentials.getClientSecret());
-
-//        UserLogin                   = new UserLogin(this);
         AppAuthentication           = new AppAuthentication(this);
         userProfileRetrieval        = new UserProfileRetrieval(this);
 
@@ -83,21 +74,21 @@ public class Controller {
         this.authorizationCode = authorizationCode;
         authorizationToken = (Token) AppAuthentication.apiResponse();
         userProfile = (UserProfile) userProfileRetrieval.apiResponse();
-        userAuthorizations.put(userProfile.userId, authorizationToken);
-        System.out.println("test1111: " + userAuthorizations.get(userProfile.toString()));
+        authorizedUsers.put(userProfile.userId, authorizationToken);
+        System.out.println("test1111: " + authorizedUsers.get(userProfile.toString()));
     }
 
     public String getJsonTracks(String weather, String genre) {
-        this.weather = weather;
         this.genre = genre;
         valance = MoodInterpreter.weatherToValance(weather);
-        recommendedTracks = (RecommendedTracks) trackRecommendations.apiResponse();
-        return new Gson().toJson(recommendedTracks);
+        return new Gson().toJson(trackRecommendations.apiResponse());
     }
 
-    public String getJsonPlaylist() {
-        playlist = (Playlist) playlistCreation.apiResponse(); //Create a playlist.
-        playlist = (Playlist) tracksToPlaylistAddition.apiResponse(); //Add tracks to the playlist. (And update playlist)
+    String tracks;
+    public String getJsonPlaylist(String tracks) {
+        this.tracks = tracks;
+        playlist = (Playlist) playlistCreation.apiResponse();
+        playlist = (Playlist) tracksToPlaylistAddition.apiResponse();
         return new Gson().toJson(playlist);
     }
 
@@ -137,10 +128,6 @@ public class Controller {
         return playlist;
     }
 
-    public RecommendedTracks getRecommendedTracks() {
-        return recommendedTracks;
-    }
-
     public String getUserId() {
         return userProfile.userId;
     }
@@ -155,12 +142,16 @@ public class Controller {
     }
 
     public boolean userIsAuthorized(String userId){
-        System.out.println("test1111: " + userAuthorizations.get(userId));
+        System.out.println("test1111: " + authorizedUsers.get(userId));
 
-        return userAuthorizations.containsKey(userId);
+        return authorizedUsers.containsKey(userId);
     }
 
     public boolean userAuthpathIsGenerated() {
         return userAuthpath;
+    }
+
+    public String getTracks() {
+        return tracks;
     }
 }

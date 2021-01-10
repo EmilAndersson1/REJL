@@ -1,7 +1,9 @@
+import com.google.gson.Gson;
 import controll.Controller;
 import spark.ModelAndView;
 import spark.template.pebble.PebbleTemplateEngine;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,13 +25,11 @@ public class APIServer {
                 res.redirect("/login");
             }
         });
-
         before("/callback/*", (req, res) -> {
             if (!controller.userAuthpathIsGenerated()) {
                 halt(401, "Not authenticated!");
             }
         });
-
         before("/api/*", (req, res) -> {
             boolean authorized = controller.userIsAuthorized(req.queryParams("user"));
             if (!authorized) {
@@ -98,9 +98,8 @@ public class APIServer {
          * User has to be logged in.
          * Returns a playlist as json.
          */
-        post("/api/playlist/", (req, res) -> {
-//            req.queryParams("user");
-            return controller.getJsonPlaylist();
+        post("/api/playlist", (req, res) -> {
+            return controller.getJsonPlaylist(req.body());
         });
     }
 }
