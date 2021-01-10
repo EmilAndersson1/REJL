@@ -28,6 +28,7 @@
                 <img src="{{userPic}}" class="rounded-circle" alt="profileimage" width="40" height="40"> <a href="{{UserUrl}}" target="_blank" id="logged_in" class="d-flex p-2">{{userName}}</a>
             </div>
             
+            
 
             <div id="buttons">
                 <div class="d-flex justify-content-center pt-5 weather-data">
@@ -102,6 +103,10 @@
 
 
     </div>
+    <script>
+        var userId = {};
+        userId.userId = '{{userId}}';
+    </script>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyALNSg4-mot96aQpauSbHWln_tZMCvx5fw&callback=initMap&libraries=&v=weekly" defer></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
