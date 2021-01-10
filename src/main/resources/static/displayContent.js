@@ -5,7 +5,9 @@ var currentWeather = document.getElementById("current_weather");
 var temp = document.getElementById("temp");
 var symbol = document.getElementById("symbol");
 
+var tracksArray = []
 
+console.log(tracksArray)
 
 
 $("#songs_btn").hide();
@@ -31,13 +33,15 @@ function displayTracks(songs) {
       for (var i = 0; i < parsed.tracks[songs].artists.length; i++){
         artists.push(parsed.tracks[songs].artists[i].name)
       }
+
+      tracksArray.push(parsed.tracks[songs].id)
       
       var card = document.createElement('div');
       card.className = "card text-white bg-dark p-3 m-3 " + randomClassName;
       card.id = "song_card";
       card.style = "width: 14rem;";
   
-      card.innerHTML = '<img class="card-img-top" src="https://i.scdn.co/image/107819f5dc557d5d0a4b216781c6ec1b2f3c5ab2"  alt="Card image cap">';
+      card.innerHTML = '<img class="card-img-top" src="'+ parsed.tracks[songs].imageUrl +'"  alt="Card image cap">';
       card.innerHTML += '<div class="card-body text-center">';
       card.innerHTML += '<h5 class="card-title">' + parsed.tracks[songs].name + '</h5>';
       card.innerHTML += '<p class="card-text">' + artists.join(", ") + '</p>';
@@ -51,6 +55,7 @@ function displayTracks(songs) {
   
     $("." + randomClassName).delay(4100).fadeIn(800);
     $(".more_songs").delay(4500).fadeIn(800);
+    console.log(tracksArray)
   } 
 
 /*

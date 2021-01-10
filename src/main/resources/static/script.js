@@ -5,7 +5,7 @@ TODO:
 */
 
 /*
-Function that fetches the current position
+Function that fetches location based on current position
 */
 function locationFromCoords(position) {
   $.ajax({
@@ -18,7 +18,9 @@ function locationFromCoords(position) {
   })
 }
 
-
+/*
+  API function that fetches location, based on coords (map)
+*/
 function locationFromCoordsMap(position) {
   latMap = JSON.stringify(position)
   parsed = JSON.parse(latMap)
@@ -41,6 +43,9 @@ function locationFromCoordsMap(position) {
   })
 }
 
+/*
+  fetches tracks based on weather and chosen genre
+*/
 function fetchTracks(genre) {
   $("#genreButtons").hide();
   $(".loading").fadeIn();
@@ -58,10 +63,14 @@ function fetchTracks(genre) {
   })
 }
 
+/*
+  Creates playlist based on tracks that has been recomended from spotify
+*/
 function createPlaylist() {
   $.ajax({
     method: "POST",
-    url: "http://localhost:8888/api/playlist"
+    url: "http://localhost:8888/api/playlist",
+    data: tracksArray
   }).done(function (response) {
     parsed = JSON.parse(response);
     window.open(parsed.external_urls.spotify, "_blank");
