@@ -25,7 +25,7 @@ public class TracksToPlaylistAddition extends APIService {
         playlist = controller.getPlaylist();
         String uris = controller.getTracks();
 
-        System.out.println(uris);
+        System.out.println("2: " + uris);
 
         return Unirest.post("https://api.spotify.com/v1/playlists/{playlist_id}/tracks")
                 .header("Authorization", "Bearer " + controller.getAuthorizationToken().accessToken)

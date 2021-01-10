@@ -64,18 +64,18 @@ public class Controller {
                 "&scope=" +         "playlist-modify-public";
     }
 
-    public String getJsonWeather(String latitude, String longitude) {
-        this.latitude = latitude;
-        this.longitude = longitude;
-        return new Gson().toJson(weatherRetrieval.apiResponse());
-    }
-
     public void getJsonToken(String authorizationCode) {
         this.authorizationCode = authorizationCode;
         authorizationToken = (Token) AppAuthentication.apiResponse();
         userProfile = (UserProfile) userProfileRetrieval.apiResponse();
         authorizedUsers.put(userProfile.userId, authorizationToken);
         System.out.println("test1111: " + authorizedUsers.get(userProfile.toString()));
+    }
+
+    public String getJsonWeather(String latitude, String longitude) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+        return new Gson().toJson(weatherRetrieval.apiResponse());
     }
 
     public String getJsonTracks(String weather, String genre) {

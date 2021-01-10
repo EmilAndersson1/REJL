@@ -17,23 +17,27 @@ public class APIServer {
         port(8888);
         staticFiles.location("/static");
 
-//        before("/", (req, res) -> {
-//            boolean authorized = controller.userIsAuthorized(req.queryParams("user"));
-//            if (!authorized) {
-//                res.redirect("/login");
-//            }
-//        });
+        before("/", (req, res) -> {
+            String userId = req.headers("userId");
+            System.out.println(userId);
+            boolean authorized = controller.userIsAuthorized(userId);
+            if (!authorized) {
+                res.redirect("/login");
+            }
+        });
 //        before("/callback/*", (req, res) -> {
 //            if (!controller.userAuthpathIsGenerated()) {
 //                halt(401, "Not authenticated!");
 //            }
 //        });
-//        before("/api/*", (req, res) -> {
-//            boolean authorized = controller.userIsAuthorized(req.queryParams("user"));
-//            if (!authorized) {
-//                halt(401, "Not authorized!");
-//            }
-//        });
+        before("/api/*", (req, res) -> {
+            String userId = req.headers("userId");
+            System.out.println(userId);
+            boolean authorized = controller.userIsAuthorized(userId);
+            if (!authorized) {
+                halt(401, "Not authorized!");
+            }
+        });
 
         /*
          * 1.1. Generates a starting page. Available after Spotify user authorization.
@@ -80,16 +84,22 @@ public class APIServer {
          * 3. Get weather based on location coordinates.
          * Don't have to be logged in?
          */
-        get("/api/weather/:latitude/:longitude", (req, res) -> controller.getJsonWeather(
-                req.params(":latitude"), req.params(":longitude"))); // json weather.
+        get("/api/weather/:latitude/:longitude", (req, res) ->  {
+            return controller.getJsonWeather(
+                    req.params(":latitude"),
+                    req.params(":longitude"));
+        });
 
         /*
          * 4. Get tracks based on weather (from location) and genre.
          * User has to be logged in.
          * Returns tracks as json.
          */
-        get("/api/tracks/:weather/:genre", (req, res) -> controller.getJsonTracks(
-                req.params(":weather"), req.params(":genre")));
+        get("/api/tracks/:weather/:genre", (req, res) -> {
+            return controller.getJsonTracks(
+                    req.params(":weather"),
+                    req.params(":genre"));
+        });
 
         /*
          * 5. Create Playlist and add the previously generated tracks to users Spotify account.
@@ -97,7 +107,10 @@ public class APIServer {
          * Returns a playlist as json.
          */
         post("/api/playlist", (req, res) -> {
-            return controller.getJsonPlaylist(req.body());
+
+            System.out.println(req.body());
+            return controller.getJsonPlaylist(
+                    req.body());
         });
     }
 }

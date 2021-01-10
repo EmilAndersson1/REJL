@@ -55,7 +55,7 @@ function fetchTracks(genre) {
   
   $.ajax({
     method: "GET",
-    data: JSON.stringify(userID),
+    data: JSON.stringify(userId),
     url: "http://localhost:8888/api/tracks/" + weather + "/" + genre
   }).done(function (response) {
     parsed = JSON.parse(response);
@@ -71,7 +71,7 @@ function createPlaylist() {
   $.ajax({
     method: "POST",
     url: "http://localhost:8888/api/playlist",
-    data: {uris: JSON.stringify(tracksArray), userId: JSON.stringify(userID)},
+    data: {uris: JSON.stringify(tracksArray), userId: JSON.stringify(userId)},
   }).done(function (response) {
     parsed = JSON.parse(response);
     window.open(parsed.external_urls.spotify, "_blank");
@@ -85,7 +85,7 @@ function createPlaylist() {
 function fetchCoords(position, location) {
   $.ajax({
     method: "GET",
-    data: JSON.stringify(userID),
+    data: JSON.stringify(userId),
     url: "http://localhost:8888/api/weather/"  + position.coords.latitude + "/" + position.coords.longitude
   }).done(function (response) {
     showData(position, response, location);
@@ -101,7 +101,7 @@ function fetchCoordsMap(position, location) {
   parsed = JSON.parse(latMap)
   $.ajax({
     method: "GET",
-    data: JSON.stringify(userID),
+    data: JSON.stringify(userId),
     url: "http://localhost:8888/api/weather/" + parsed.lat + "/" + parsed.lng
   }).done(function (response) {
     setTimeout(function() { showDataMap(parsed, response, location); }, 500);
