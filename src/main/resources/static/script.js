@@ -55,7 +55,8 @@ function fetchTracks(genre) {
   
   $.ajax({
     method: "GET",
-    url: "http://localhost:8888/api/tracks/" + weather + "/" + genre + "/" + userId
+    headers: {"userId": userId},
+    url: "http://localhost:8888/api/tracks/" + weather + "/" + genre 
   }).done(function (response) {
     parsed = JSON.parse(response);
     displayTracks(parsed);
