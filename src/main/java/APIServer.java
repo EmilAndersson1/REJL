@@ -18,40 +18,29 @@ public class APIServer {
         staticFiles.location("/static");
 
         before("/", (req, res) -> {
-            if (!controller.userIsLoggedIn()) {
+            boolean authorized = controller.userIsAuthorized(req.queryParams("user"));
+            if (!authorized) {
                 res.redirect("/login");
             }
         });
 
         before("/callback/*", (req, res) -> {
             if (!controller.userAuthpathIsGenerated()) {
-                halt(401, "Spotify not authenticated!");
+                halt(401, "Not authenticated!");
             }
         });
 
         before("/api/*", (req, res) -> {
-            if (!controller.userIsLoggedIn()) {
-                halt(401, "Not Logged in!");
-            }
-        });
-
-        before("/api/playlist", (req, res) -> {
-            if (!controller.hasGeneratedTracks()) {
-                halt(418, "No tracks!");
-            }
-        });
-
-        before("/api/playlist/", (req, res) -> {
-            if (!controller.hasGeneratedTracks()) {
-                halt(418, "No tracks!");
+            boolean authorized = controller.userIsAuthorized(req.queryParams("user"));
+            if (!authorized) {
+                halt(401, "Not authorized!");
             }
         });
 
         /*
-         * 1.1. Generates a starting page. Available after log in.
+         * 1.1. Generates a starting page. Available after Spotify user authorization.
          */
         get("/", (req, res) -> {
-            controller.getJsonUserProfile();
             Map<String, Object> model = new HashMap<String, Object>();
             model.put("userId", controller.getUserId());
             model.put("userName", controller.getUserName());
@@ -75,7 +64,7 @@ public class APIServer {
          * https://www.spotify.com/us/account/apps/
          */
         get("/loginButton", (req, res) -> {
-            res.redirect(controller.getStringAuthorizationUrl());
+            res.redirect(controller.getStringAppAuthorizationUrl());
             return res.status();
         });
 
@@ -109,6 +98,9 @@ public class APIServer {
          * User has to be logged in.
          * Returns a playlist as json.
          */
-        post("/api/playlist", (req, res) -> controller.getJsonPlaylist());
+        post("/api/playlist/", (req, res) -> {
+//            req.queryParams("user");
+            return controller.getJsonPlaylist();
+        });
     }
 }

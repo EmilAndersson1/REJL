@@ -12,15 +12,21 @@ import services.yr.WeatherRetrieval;
 import utils.ClientEncoder;
 import utils.MoodInterpreter;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Controller class for API:s.
  */
 public class Controller {
 
-    private APIService UserLogin;
+//    private APIService UserLogin;
     private APIService AppAuthentication;
 
+    private ClientCredentials clientCredentials;
+
     private String encodedClientCredentials;
+    private Map<String, Token> userAuthorizations;
     private Token authorizationToken;
     private String authorizationCode;
 
@@ -37,22 +43,18 @@ public class Controller {
     private String genre;
     private Playlist playlist;
     private RecommendedTracks recommendedTracks;
-    private String userId;
-    private boolean userLoggedIn;
     private boolean userAuthpath;
-    private boolean generatedTracks;
     private UserProfile userProfile;
 
     public Controller() {
-        userLoggedIn = false;
+        userAuthorizations = new HashMap<String, Token>();
         userAuthpath = false;
-        generatedTracks = false;
 
-        ClientCredentials credentials = new ClientCredentials();
+        clientCredentials = new ClientCredentials();
 
-        encodedClientCredentials = ClientEncoder.generate(credentials.getClientID(), credentials.getClientSecret());
+        encodedClientCredentials = ClientEncoder.generate(clientCredentials.getClientID(), clientCredentials.getClientSecret());
 
-        UserLogin                   = new UserLogin(this);
+//        UserLogin                   = new UserLogin(this);
         AppAuthentication           = new AppAuthentication(this);
         userProfileRetrieval        = new UserProfileRetrieval(this);
 
@@ -62,11 +64,13 @@ public class Controller {
         tracksToPlaylistAddition    = new TracksToPlaylistAddition(this);
     }
 
-    public String getStringAuthorizationUrl() {
+    public String getStringAppAuthorizationUrl() {
         userAuthpath = true;
-        return "https://accounts.spotify.com/sv/" +
-                "authorize?client_id=444dff56b04044f3b091504c069e9954&response_type=code&" +
-                "redirect_uri=http:%2F%2Flocalhost:8888%2Fcallback%2F&scope=playlist-modify-public";
+        return "https://accounts.spotify.com/sv/authorize" +
+                "?client_id=" +      clientCredentials.getClientID() +
+                "&response_type=" + "code" +
+                "&redirect_uri=" +  "http:%2F%2Flocalhost:8888%2Fcallback%2F" +
+                "&scope=" +         "playlist-modify-public";
     }
 
     public String getJsonWeather(String latitude, String longitude) {
@@ -77,19 +81,15 @@ public class Controller {
 
     public void getJsonToken(String authorizationCode) {
         this.authorizationCode = authorizationCode;
-        userLoggedIn = true;
         authorizationToken = (Token) AppAuthentication.apiResponse();
-    }
-
-    public void getJsonUserProfile() {
         userProfile = (UserProfile) userProfileRetrieval.apiResponse();
-        userId = userProfile.userId;
+        userAuthorizations.put(userProfile.userId, authorizationToken);
+        System.out.println("test1111: " + userAuthorizations.get(userProfile.toString()));
     }
 
     public String getJsonTracks(String weather, String genre) {
         this.weather = weather;
         this.genre = genre;
-        generatedTracks = true;
         valance = MoodInterpreter.weatherToValance(weather);
         recommendedTracks = (RecommendedTracks) trackRecommendations.apiResponse();
         return new Gson().toJson(recommendedTracks);
@@ -99,6 +99,10 @@ public class Controller {
         playlist = (Playlist) playlistCreation.apiResponse(); //Create a playlist.
         playlist = (Playlist) tracksToPlaylistAddition.apiResponse(); //Add tracks to the playlist. (And update playlist)
         return new Gson().toJson(playlist);
+    }
+
+    public String getClientId() {
+        return clientCredentials.getClientID();
     }
 
     public String getEncodedClientCredentials() {
@@ -123,10 +127,6 @@ public class Controller {
 
     public float getValance() {
         return valance;
-    }
-
-    public String getWeather() {
-        return weather;
     }
 
     public String getGenre() {
@@ -154,15 +154,13 @@ public class Controller {
         return userProfile.externalUrls.spotifyUrl;
     }
 
-    public boolean userIsLoggedIn() {
-        return userLoggedIn;
+    public boolean userIsAuthorized(String userId){
+        System.out.println("test1111: " + userAuthorizations.get(userId));
+
+        return userAuthorizations.containsKey(userId);
     }
 
     public boolean userAuthpathIsGenerated() {
         return userAuthpath;
-    }
-
-    public boolean hasGeneratedTracks() {
-        return generatedTracks;
     }
 }
