@@ -5,8 +5,9 @@ var currentWeather = document.getElementById("current_weather");
 var temp = document.getElementById("temp");
 var symbol = document.getElementById("symbol");
 
-var tracksArray = []
+var tracksArray = {"uris":[]}
 
+console.log(tracksArray.uris)
 console.log(tracksArray)
 
 
@@ -34,7 +35,7 @@ function displayTracks(songs) {
         artists.push(parsed.tracks[songs].artists[i].name)
       }
 
-      tracksArray.push(parsed.tracks[songs].id)
+      tracksArray.uris.push(parsed.tracks[songs].uri)
       
       var card = document.createElement('div');
       card.className = "card text-white bg-dark p-3 m-3 " + randomClassName;
