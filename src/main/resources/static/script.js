@@ -69,7 +69,8 @@ function fetchTracks(genre) {
 function createPlaylist() {
   $.ajax({
     method: "POST",
-    url: "http://localhost:8888/api/playlist"
+    url: "http://localhost:8888/api/playlist",
+    data: tracksArray
   }).done(function (response) {
     parsed = JSON.parse(response);
     window.open(parsed.external_urls.spotify, "_blank");
