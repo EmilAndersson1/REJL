@@ -110,5 +110,13 @@ public class APIServer {
          * Returns a playlist as json.
          */
         post("/api/playlist", (req, res) -> controller.getJsonPlaylist());
+
+        /*
+            API doc
+        */
+        get("/apidoc", (req, res) -> {
+            return new PebbleTemplateEngine().render(
+                    new ModelAndView(null, "templates/apidoc.html"));
+        });
     }
 }
