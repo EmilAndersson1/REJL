@@ -1,9 +1,7 @@
-import com.google.gson.Gson;
 import controll.Controller;
 import spark.ModelAndView;
 import spark.template.pebble.PebbleTemplateEngine;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,23 +17,23 @@ public class APIServer {
         port(8888);
         staticFiles.location("/static");
 
-        before("/", (req, res) -> {
-            boolean authorized = controller.userIsAuthorized(req.queryParams("user"));
-            if (!authorized) {
-                res.redirect("/login");
-            }
-        });
-        before("/callback/*", (req, res) -> {
-            if (!controller.userAuthpathIsGenerated()) {
-                halt(401, "Not authenticated!");
-            }
-        });
-        before("/api/*", (req, res) -> {
-            boolean authorized = controller.userIsAuthorized(req.queryParams("user"));
-            if (!authorized) {
-                halt(401, "Not authorized!");
-            }
-        });
+//        before("/", (req, res) -> {
+//            boolean authorized = controller.userIsAuthorized(req.queryParams("user"));
+//            if (!authorized) {
+//                res.redirect("/login");
+//            }
+//        });
+//        before("/callback/*", (req, res) -> {
+//            if (!controller.userAuthpathIsGenerated()) {
+//                halt(401, "Not authenticated!");
+//            }
+//        });
+//        before("/api/*", (req, res) -> {
+//            boolean authorized = controller.userIsAuthorized(req.queryParams("user"));
+//            if (!authorized) {
+//                halt(401, "Not authorized!");
+//            }
+//        });
 
         /*
          * 1.1. Generates a starting page. Available after Spotify user authorization.
