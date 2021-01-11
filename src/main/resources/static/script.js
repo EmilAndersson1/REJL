@@ -1,10 +1,4 @@
 /*
-TODO:
-6. if not logged in render welcome.html
-7. skapa en welcome.html
-*/
-
-/*
 Function that fetches location based on current position
 */
 function locationFromCoords(position) {
@@ -72,6 +66,7 @@ function createPlaylist() {
     url: "http://localhost:8888/api/playlist/",
     data: JSON.stringify(tracksArray)
   }).done(function (response) {
+    console.log(JSON.stringify(tracksArray))
     parsed = JSON.parse(response);
     window.open(parsed.external_urls.spotify, "_blank");
   })
