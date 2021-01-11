@@ -52,8 +52,6 @@ public class PlaylistCreation extends APIService {
 
         String playlistId = playlist.id;
 
-        System.out.println("playlist id: " + playlistId);
-
         Unirest.post("https://api.spotify.com/v1/playlists/{playlist_id}/tracks")
                 .header("Authorization", "Bearer " + controller.getAuthorizationToken().accessToken)
                 .header("Content-Type", "application/json")
@@ -76,7 +74,6 @@ public class PlaylistCreation extends APIService {
      */
     @Override
     public Object convertJsonResponseToJava(Gson gson, JSONObject jsonObject) {
-        System.out.println(jsonObject.toString(1));
         return gson.fromJson(jsonObject.toString(), Playlist.class);
     }
 }
