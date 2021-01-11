@@ -19,10 +19,24 @@
         <p>REJL har skapat ett mashup API för att enkelt kunna hämta data på vädret baserat på koordinater och samköra det med Spotify och deras "låtvärde" "Valence" som bestämmer hur "glad" eller "ledsen" en låt är.</p>
         
         <h1>API-beskrivning</h1>
-        <p><em>Här ska vi sedan beskriva vårt API....</em></p>
+        <p>För att komma åt ändpunkterna i listan så behöver användaren auktorisera REJL för sitt Spotifykonto. Det görs på adressen http://localhost:8888/loginButton.
+        </p>
+        <p>
+            API:t kan hämta ut ett väder baserat på koordinaterna latitud och longitud genom YRs API. koordinaterna är alltid strängar men skrivs nedan som {latitude} och {longitude}. Ersätt därför hela {latitude} och {longitude} med de koordinater som önskas.
+        </p>
+        <p>
+            API:t hämtar 10 låtar baserat på kombination av väder och genre. Om Spotify inte kan leverera rekommendationer baserat på vald kombinationen av väder och genre så kan det bli färre låtar. Det går att använda värdet för nyckeln “symbol_code” från returdatan av anropet GET /api/weather/{latitude}/{longitude}. En fullständig lista med adekvata “symbol_code” från YR finns <a href="https://api.met.no/weatherapi/weathericon/2.0/documentation#!/data/get_data">här</a>. Genres skrivs som en sträng: “pop”, “chill”, “funk”, “hip-hop”, “rock” eller “soul”. Genresträngen ersätter {genre} i http-anropet. Alla genrer som finns är definierade i Rejl/Files/Genres.json. Vädret är alltid en symbol_code som ersätter /:weather/ och genre är ett json som ersätter /:genre. 
+        </p>
+        <p>
+            API:et har ett anrop för att skapa en spellista baserat på rekommenderade låtar. Det går bra att använda svaret som har genererats i tracks-metoden. Det skickas med som en JSON-sträng på nedan beskrivet format. Detta görs genom anropet POST /api/playlist. Spellistan skapas i användarens Spotify-konto.
+        </p>
+        <p>
+            Returdatatyperna är alltid JSON och API:t accepterar indata som JSON. Exemplen nedan är beskrivna med JSON. 
+            </p>
 
 
         <br>
+        <hr>
         <h2>GET /api/weather/{latitude}/{longitude}</h2>
         <p>Hämta ut vädret från en specifik plats, platsen bestäms med latitude och longitude.</p>
         <p></p>
@@ -47,71 +61,224 @@
             }
         </pre>
 
-        <h2>GET /login</h2>
-        <p></p>
+        <hr>
+        <h2>GET /api/tracks/{weather}/{genre}</h2>
+        <p>Hämta ut 10 genererade låtar som baseras på väder och genre.</p>
         <h3>Indata</h3>
         <p>Ej möjligt för GET.</p>
         <h3>Exempelkod</h3>
         <pre class="prettyprint">
-            
-           
+
+            function fetchTracks(genre) {
+                $.ajax({
+                  method: "GET",
+                  url: "http://localhost:8888/api/tracks/cloudy/pop" 
+                })
+              }
         </pre>
         <h3>Returdata</h3>
         <pre class="prettyprint">
-            
+            {
+                "tracks": [
+                    {
+                        "id": "6xtcFXSo8H9BZN637BMVKS",
+                        "name": "Let You Love Me",
+                        "external_urls": {
+                            "spotify": "https://open.spotify.com/track/6xtcFXSo8H9BZN637BMVKS"
+                        },
+                        "uri": "spotify:track:6xtcFXSo8H9BZN637BMVKS",
+                        "artists": [
+                            {
+                                "name": "Rita Ora"
+                            }
+                        ],
+                        "imageUrl": "https://i.scdn.co/image/ab67616d00001e02c2d8075e09b1eac3db8b6254"
+                    },
+                    {
+                        "id": "0b9oOr2ZgvyQu88wzixux9",
+                        "name": "This Is America",
+                        "external_urls": {
+                            "spotify": "https://open.spotify.com/track/0b9oOr2ZgvyQu88wzixux9"
+                        },
+                        "uri": "spotify:track:0b9oOr2ZgvyQu88wzixux9",
+                        "artists": [
+                            {
+                                "name": "Childish Gambino"
+                            }
+                        ],
+                        "imageUrl": "https://i.scdn.co/image/ab67616d00001e023504664c17b7b99a3cb7d116"
+                    },
+                    {
+                        "id": "58zsLZPvfflaiIbNWoA22O",
+                        "name": "Human",
+                        "external_urls": {
+                            "spotify": "https://open.spotify.com/track/58zsLZPvfflaiIbNWoA22O"
+                        },
+                        "uri": "spotify:track:58zsLZPvfflaiIbNWoA22O",
+                        "artists": [
+                            {
+                                "name": "Rag'n'Bone Man"
+                            }
+                        ],
+                        "imageUrl": "https://i.scdn.co/image/ab67616d00001e0290a788beadaad34ff684d3ec"
+                    },
+                    {
+                        "id": "0BU7nIcCZxYSE0hYcc5oZz",
+                        "name": "Too Many Years",
+                        "external_urls": {
+                            "spotify": "https://open.spotify.com/track/0BU7nIcCZxYSE0hYcc5oZz"
+                        },
+                        "uri": "spotify:track:0BU7nIcCZxYSE0hYcc5oZz",
+                        "artists": [
+                            {
+                                "name": "Kodak Black"
+                            },
+                            {
+                                "name": "PnB Rock"
+                            }
+                        ],
+                        "imageUrl": "https://i.scdn.co/image/ab67616d00001e02fe566f1588c49719ff8fa8ac"
+                    },
+                    {
+                        "id": "01BC4Xj5tfsfV8DLDrma7q",
+                        "name": "Ciao Adios",
+                        "external_urls": {
+                            "spotify": "https://open.spotify.com/track/01BC4Xj5tfsfV8DLDrma7q"
+                        },
+                        "uri": "spotify:track:01BC4Xj5tfsfV8DLDrma7q",
+                        "artists": [
+                            {
+                                "name": "Anne-Marie"
+                            }
+                        ],
+                        "imageUrl": "https://i.scdn.co/image/ab67616d00001e0238aae75dc37fb42457866ffd"
+                    },
+                    {
+                        "id": "5p7ujcrUXASCNwRaWNHR1C",
+                        "name": "Without Me",
+                        "external_urls": {
+                            "spotify": "https://open.spotify.com/track/5p7ujcrUXASCNwRaWNHR1C"
+                        },
+                        "uri": "spotify:track:5p7ujcrUXASCNwRaWNHR1C",
+                        "artists": [
+                            {
+                                "name": "Halsey"
+                            }
+                        ],
+                        "imageUrl": "https://i.scdn.co/image/ab67616d00001e02c42acc1b86597285c2c79559"
+                    },
+                    {
+                        "id": "343YBumqHu19cGoGARUTsd",
+                        "name": "Fake Love",
+                        "external_urls": {
+                            "spotify": "https://open.spotify.com/track/343YBumqHu19cGoGARUTsd"
+                        },
+                        "uri": "spotify:track:343YBumqHu19cGoGARUTsd",
+                        "artists": [
+                            {
+                                "name": "Drake"
+                            }
+                        ],
+                        "imageUrl": "https://i.scdn.co/image/ab67616d00001e024f0fd9dad63977146e685700"
+                    },
+                    {
+                        "id": "4ntsD33Pgsgk8rUyZLLiUV",
+                        "name": "DEVASTATED",
+                        "external_urls": {
+                            "spotify": "https://open.spotify.com/track/4ntsD33Pgsgk8rUyZLLiUV"
+                        },
+                        "uri": "spotify:track:4ntsD33Pgsgk8rUyZLLiUV",
+                        "artists": [
+                            {
+                                "name": "Joey Bada$$"
+                            }
+                        ],
+                        "imageUrl": "https://i.scdn.co/image/ab67616d00001e026a3c1e51a7d2a2a7fbe172a1"
+                    },
+                    {
+                        "id": "1ULa3GfdMKs0MfRpm6xVlu",
+                        "name": "We Dem Boyz",
+                        "external_urls": {
+                            "spotify": "https://open.spotify.com/track/1ULa3GfdMKs0MfRpm6xVlu"
+                        },
+                        "uri": "spotify:track:1ULa3GfdMKs0MfRpm6xVlu",
+                        "artists": [
+                            {
+                                "name": "Wiz Khalifa"
+                            }
+                        ],
+                        "imageUrl": "https://i.scdn.co/image/ab67616d00001e0227ed4f26fa2bfbd714dba7dd"
+                    },
+                    {
+                        "id": "5N4erncE7kuUccm7zEmwzk",
+                        "name": "Electricity (with Dua Lipa)",
+                        "external_urls": {
+                            "spotify": "https://open.spotify.com/track/5N4erncE7kuUccm7zEmwzk"
+                        },
+                        "uri": "spotify:track:5N4erncE7kuUccm7zEmwzk",
+                        "artists": [
+                            {
+                                "name": "Silk City"
+                            },
+                            {
+                                "name": "Dua Lipa"
+                            },
+                            {
+                                "name": "Diplo"
+                            },
+                            {
+                                "name": "Mark Ronson"
+                            }
+                        ],
+                        "imageUrl": "https://i.scdn.co/image/ab67616d00001e025ea1a511549bc05ff20fdedf"
+                    }
+                ]
+            }
         </pre>
-
-        <h2>GET /callback/</h2>
-        <p></p>
-        <h3>Indata</h3>
-        <p>Ej möjligt för GET.</p>
-        <h3>Exempelkod</h3>
-        <pre class="prettyprint">
-            
-           
-        </pre>
-        <h3>Returdata</h3>
-        <pre class="prettyprint">
-            
-        </pre>
-
-        <h2>GET /api/tracks/:weather/:genre</h2>
-        <p></p>
-        <h3>Indata</h3>
-        <p>Ej möjligt för GET.</p>
-        <h3>Exempelkod</h3>
-        <pre class="prettyprint">
-            
-            
-        </pre>
-        <h3>Returdata</h3>
-        <pre class="prettyprint">
-            
-        </pre>
-
+        <hr>
         <h2>GET /api/playlist</h2>
-        <p>Skapa spellista med redan genererade låtar</p>
+        <p>Skapa spellista med låtar samt spara listan i användarens spotifyprofil.</p>
         <h3>Indata</h3>
-        <p>En JSON sträng med track URIs.</p>
+        <p>
+            <pre class="prettyprint">
+                
+            {
+                "uris": [
+                    "spotify:track:2PzYqACbv12FNhrlHPfJEH",
+                    "spotify:track:1nl09AjkuO7BBRF3BFAPsC",
+                    "spotify:track:3FB9tlgXIdyIkmnywJnTyq",
+                    "spotify:track:33fdvicpRVPWCPz19Obajn",
+                    "spotify:track:5eQBccR5YRctDPyUqMMON4",
+                    "spotify:track:2TjjRMZrgtVocAxXavQ1iq",
+                    "spotify:track:0xh1nbm202VvLOlpp7JjPA",
+                    "spotify:track:7BaoAkPnIGEEZdWK4eAmcH",
+                    "spotify:track:6BGu9IJlUza0h7YrTWElnD",
+                    "spotify:track:710IHJc9eSdXKtwurkwbgb"
+                ]
+            }
+        </pre>
+        </p>
         <h3>Exempelkod</h3>
         <pre class="prettyprint">
             
             function createPlaylist() {
                 $.ajax({
                   method: "POST",
-                  url: "http://localhost:8888/api/playlist"
+                  url: "http://localhost:8888/api/playlist/",
+                  data: JSON.stringify(tracks)
                 })
               }
+              
         </pre>
         <h3>Returdata</h3>
         <pre class="prettyprint"> <!-- fixa detta!!!! -->
             {
-                "id": "5S47gsj0UzNxy1LkUBs4k4",
-                "name": "My REJL Platlist",
+                "id": "5zccrptkSlabeqOTjX6btK",
+                "name": "My REJL Playlist",
                 "external_urls": {
-                    "spotify": "https://open.spotify.com/playlist/5S47gsj0UzNxy1LkUBs4k4"
+                    "spotify": "https://open.spotify.com/playlist/5zccrptkSlabeqOTjX6btK"
                 },
-                "uri": "spotify:playlist:5S47gsj0UzNxy1LkUBs4k4"
+                "uri": "spotify:playlist:5zccrptkSlabeqOTjX6btK"
             }
         </pre>
 

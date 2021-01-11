@@ -4,18 +4,7 @@ var country = document.getElementById("country");
 var currentWeather = document.getElementById("current_weather");
 var temp = document.getElementById("temp");
 var symbol = document.getElementById("symbol");
-
 var tracksArray = {"uris":[]}
-
-
-console.log(userId)
-
-
-console.log()
-
-console.log(tracksArray.uris)
-console.log(tracksArray)
-
 
 $("#songs_btn").hide();
 $("#playlist_btn").hide();
@@ -24,6 +13,9 @@ $(".more_songs").hide();
 
 //generate card for song
 function displayTracks(songs) {
+
+    //creates a random number so that every batch of cards has a unique classname/identifier.
+    //this makes it possible to fade in new cards whilst not hiding existing cards
     var randomClassName = Math.floor(Math.random() * 9999999);
     $(".loading").delay(3350).fadeOut(800);
   
@@ -41,13 +33,14 @@ function displayTracks(songs) {
         artists.push(parsed.tracks[songs].artists[i].name)
       }
 
+      //add every track uri to a json object, if the user wants to create a playlist with alla the generated songs
       tracksArray.uris.push(parsed.tracks[songs].uri)
       
       var card = document.createElement('div');
       card.className = "card text-white bg-dark p-3 m-3 " + randomClassName;
       card.id = "song_card";
       card.style = "width: 14rem;";
-  
+
       card.innerHTML = '<img class="card-img-top" src="'+ parsed.tracks[songs].imageUrl +'"  alt="Card image cap">';
       card.innerHTML += '<div class="card-body text-center">';
       card.innerHTML += '<h5 class="card-title">' + parsed.tracks[songs].name + '</h5>';
@@ -62,7 +55,6 @@ function displayTracks(songs) {
   
     $("." + randomClassName).delay(4100).fadeIn(800);
     $(".more_songs").delay(4500).fadeIn(800);
-    console.log(tracksArray)
   } 
 
 /*
