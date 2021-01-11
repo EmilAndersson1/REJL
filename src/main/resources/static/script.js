@@ -38,7 +38,7 @@ function locationFromCoordsMap(position) {
 }
 
 /*
-  fetches tracks based on weather and chosen genre
+  Fetches tracks based on weather and chosen genre
 */
 function fetchTracks(genre) {
   $("#genreButtons").hide();
@@ -66,7 +66,6 @@ function createPlaylist() {
     url: "http://localhost:8888/api/playlist/",
     data: JSON.stringify(tracksArray)
   }).done(function (response) {
-    console.log(JSON.stringify(tracksArray))
     parsed = JSON.parse(response);
     window.open(parsed.external_urls.spotify, "_blank");
   })
