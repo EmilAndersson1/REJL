@@ -29,7 +29,7 @@ public class Controller {
     private APIService weatherRetrieval;
     private APIService trackRecommendations;
     private APIService playlistCreation;
-    private APIService tracksToPlaylistAddition;
+//    private APIService tracksToPlaylistAddition;
     private APIService userProfileRetrieval;
 
     private String latitude;
@@ -58,7 +58,7 @@ public class Controller {
         weatherRetrieval            = new WeatherRetrieval(this);
         trackRecommendations        = new TrackRecommendations(this);
         playlistCreation            = new PlaylistCreation(this);
-        tracksToPlaylistAddition    = new TracksToPlaylistAddition(this);
+//        tracksToPlaylistAddition    = new TracksToPlaylistAddition(this);
     }
 
     public String getStringAuthorizationUrl() {
@@ -93,7 +93,7 @@ public class Controller {
     public String getJsonPlaylist(String tracks) {
         this.tracks = tracks;
         playlist = (Playlist) playlistCreation.apiResponse();
-        playlist = (Playlist) tracksToPlaylistAddition.apiResponse();
+//        playlist = (Playlist) tracksToPlaylistAddition.apiResponse();
         return new Gson().toJson(playlist);
     }
 
