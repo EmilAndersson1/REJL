@@ -41,13 +41,13 @@ public class APIServer {
             }
         });
         before("/api/playlist", (req, res) -> {
-            if (!controller.hasGeneratedTracks()) {
-                halt(418, "No tracks!");
+            if (!controller.userAuthpathIsGenerated()) {
+                halt(401, "Spotify not authenticated!");
             }
         });
         before("/api/playlist/", (req, res) -> {
-            if (!controller.hasGeneratedTracks()) {
-                halt(418, "No tracks!");
+            if (!controller.userAuthpathIsGenerated()) {
+                halt(401, "Spotify not authenticated!");
             }
         });
 

@@ -40,13 +40,13 @@ public class Controller {
     private Playlist playlist;
     private boolean userLoggedIn;
     private boolean userAuthpath;
-    private boolean generatedTracks;
+//    private boolean generatedTracks;
     private UserProfile userProfile;
 
     public Controller() {
         userLoggedIn = false;
         userAuthpath = false;
-        generatedTracks = false;
+//        generatedTracks = false;
 
         clientCredentials = new ClientCredentials();
         encodedClientCredentials = ClientEncoder.generate(
@@ -85,7 +85,7 @@ public class Controller {
 
     public String getJsonTracks(String weather, String genre) {
         this.genre = genre;
-        generatedTracks = true;
+//        generatedTracks = true;
         valance = MoodInterpreter.weatherToValance(weather);
         return new Gson().toJson(trackRecommendations.apiResponse());
     }
@@ -150,9 +150,9 @@ public class Controller {
         return userAuthpath;
     }
 
-    public boolean hasGeneratedTracks() {
-        return generatedTracks;
-    }
+//    public boolean hasGeneratedTracks() {
+//        return generatedTracks;
+//    }
 
     public String getTracks() {
         return tracks;
