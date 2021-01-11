@@ -8,7 +8,9 @@ import kong.unirest.Unirest;
 import kong.unirest.json.JSONObject;
 
 /**
- * Abstract class for all API:s services common functionality.
+ * API service to act as a http client to external API servers.
+ *
+ * @author Leo Mellberg Holm, Emil Andersson, Joakim Tell, Robert Rosencrantz.
  */
 public abstract class APIService {
 
@@ -18,18 +20,31 @@ public abstract class APIService {
         this.controller = controller;
     }
 
+    /**
+     * Retrieve a java bean representation from a API call.
+     * @return The java bean.
+     */
     public Object apiResponse() {
         HttpResponse<JsonNode> response = jsonResponse(controller);
-        System.out.println("CHECKPOINT api response status: " + response.getStatus());
-        JSONObject jsonObject = response.getBody().getObject(); // Retrieve the parsed JSONObject from the response.
-        Gson gson = new Gson(); // For marshalling.
+        JSONObject jsonObject = response.getBody().getObject();
+        Gson gson = new Gson();
         Object javaObject = convertJsonResponseToJava(gson, jsonObject);
-        Unirest.shutDown(); // Close Unirest connection.
-        System.out.println("CHECKPOINT api response java Object: \n" + javaObject.toString());
+        Unirest.shutDown();
         return javaObject;
     }
 
+    /**
+     * Retrieve http response from a API call.
+     * @param controller The server controller.
+     * @return The http response.
+     */
     public abstract HttpResponse<JsonNode> jsonResponse(Controller controller);
 
+    /**
+     * Transform a JSON object with Gson to a java representation.
+     * @param gson The Gson object.
+     * @param jsonObject The Json object.
+     * @return A java bean.
+     */
     public abstract Object convertJsonResponseToJava(Gson gson, JSONObject jsonObject);
 }

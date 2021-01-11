@@ -1,14 +1,24 @@
 package utils;
 
+/**
+ * A data processing utility class for weather to mood conversion.
+ *
+ * @author Leo Mellberg Holm, Emil Andersson, Joakim Tell, Robert Rosencrantz.
+ */
 public class MoodInterpreter {
 
-    /*
+    /**
+     * Takes an weather represantation to interpret as a mood representation from a "valence" number.
+     *
      * Ratings are subjectively mapped based on the developers collective
      * and completely biased experiences.
      * To make more accurate music predictions is out of the scope of the assignment.
      * This could be improved in the future.
      *
      * https://community.spotify.com/t5/Content-Questions/Valence-as-a-measure-of-happiness/td-p/4385221
+     *
+     * @param weather The weather to interpret.
+     * @return The "valence" mood representation.
      */
     public static float weatherToValance(String weather) {
         float valance;
@@ -77,10 +87,8 @@ public class MoodInterpreter {
 
             default:
                 valance = 0.500f; // Average valance.
-//                //TODO: Exception ?
 //                throw new IllegalStateException("Unexpected value: " + weather);
         }
         return valance;
     }
-
 }

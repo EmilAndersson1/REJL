@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import model.app.ClientCredentials;
 import model.spotify.Playlist;
 import model.spotify.Token;
-import model.spotify.RecommendedTracks;
 import model.spotify.UserProfile;
 import services.*;
 import services.spotify.*;
@@ -33,12 +32,9 @@ public class Controller {
     private String latitude;
     private String longitude;
     private float valance;
-    private String weather;
     private String genre;
     private String tracks;
     private Playlist playlist;
-    private RecommendedTracks recommendedTracks;
-    private String userId;
     private boolean userLoggedIn;
     private boolean userAuthpath;
     private boolean generatedTracks;
@@ -50,10 +46,8 @@ public class Controller {
         generatedTracks = false;
 
         ClientCredentials credentials = new ClientCredentials();
-
         encodedClientCredentials = ClientEncoder.generate(credentials.getClientID(), credentials.getClientSecret());
 
-        UserLogin                   = new UserLogin(this);
         AppAuthentication           = new AppAuthentication(this);
         userProfileRetrieval        = new UserProfileRetrieval(this);
 
@@ -65,15 +59,11 @@ public class Controller {
 
     public String getStringAuthorizationUrl() {
         userAuthpath = true;
-        return "https://accounts.spotify.com/sv/" +
-                "authorize?client_id=444dff56b04044f3b091504c069e9954&response_type=code&" +
-                "redirect_uri=http:%2F%2Flocalhost:8888%2Fcallback%2F&scope=playlist-modify-public";
-    }
-
-    public String getJsonWeather(String latitude, String longitude) {
-        this.latitude = latitude;
-        this.longitude = longitude;
-        return new Gson().toJson(weatherRetrieval.apiResponse());
+        return "https://accounts.spotify.com/sv/authorize" +
+                "?client_id=" +     "444dff56b04044f3b091504c069e9954" +
+                "&response_type=" + "code" +
+                "&redirect_uri=" +  "http:%2F%2Flocalhost:8888%2Fcallback%2F" +
+                "&scope=" +         "playlist-modify-public";
     }
 
     public void getJsonToken(String authorizationCode) {
@@ -84,16 +74,19 @@ public class Controller {
 
     public void getJsonUserProfile() {
         userProfile = (UserProfile) userProfileRetrieval.apiResponse();
-        userId = userProfile.userId;
+    }
+
+    public String getJsonWeather(String latitude, String longitude) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+        return new Gson().toJson(weatherRetrieval.apiResponse());
     }
 
     public String getJsonTracks(String weather, String genre) {
-        this.weather = weather;
         this.genre = genre;
         generatedTracks = true;
         valance = MoodInterpreter.weatherToValance(weather);
-        recommendedTracks = (RecommendedTracks) trackRecommendations.apiResponse();
-        return new Gson().toJson(recommendedTracks);
+        return new Gson().toJson(trackRecommendations.apiResponse());
     }
 
     public String getJsonPlaylist(String tracks) {
@@ -127,20 +120,12 @@ public class Controller {
         return valance;
     }
 
-    public String getWeather() {
-        return weather;
-    }
-
     public String getGenre() {
         return genre;
     }
 
     public Playlist getPlaylist() {
         return playlist;
-    }
-
-    public RecommendedTracks getRecommendedTracks() {
-        return recommendedTracks;
     }
 
     public String getUserId() {

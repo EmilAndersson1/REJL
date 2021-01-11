@@ -11,32 +11,31 @@ import model.spotify.Track;
 import services.APIService;
 
 /**
+ * API service implemented to communicate with the Spotify API endpoint for track recommendations retrieval.
  * https://developer.spotify.com/documentation/web-api/reference-beta/#endpoint-get-recommendations
+ *
+ * @author Leo Mellberg Holm, Emil Andersson, Joakim Tell, Robert Rosencrantz.
  */
 public class TrackRecommendations extends APIService {
-
     Controller controller;
-
     public TrackRecommendations(Controller controller) {
         super(controller);
         this.controller = controller;
     }
 
+    /**
+     * To get a tracks recommendations response from Spotify, based on a valence interval and a genre.
+     * @param controller The server controller.
+     * @return The response as json.
+     */
     @Override
     public HttpResponse<JsonNode> jsonResponse(Controller controller) {
+        // Calculate a valence interval.
         float valence = controller.getValance();
         float interval = 0.200f;
         float minValence = valence - interval/2;
         float maxValence = minValence + interval;
-        try {
-            assert (minValence>=0.000f) && (maxValence<=1.000f);
-        } catch (Exception e) {
-            System.out.println("Valence is broken...");
-            e.printStackTrace();
-        }
-        System.out.println("TEST Valance: " + valence);
-        System.out.println("TEST Min Valance: " + minValence);
-        System.out.println("TEST Max Valance: " + maxValence);
+
         return Unirest.get("https://api.spotify.com/v1/recommendations")
                 .header("Accept", "application/json")
                 .header("Authorization", "Bearer " + controller.getAuthorizationToken().accessToken)
@@ -47,16 +46,29 @@ public class TrackRecommendations extends APIService {
                 .asJson();
     }
 
+    /**
+     * Deserialize by marshalling to return a java RecommendedTracks bean and add an album image for each track.
+     * @param gson The Gson object.
+     * @param jsonObject The Json object.
+     * @return The RecommendedTracks bean.
+     */
     @Override
     public Object convertJsonResponseToJava(Gson gson, JSONObject jsonObject) {
-        RecommendedTracks tracks = gson.fromJson(jsonObject.toString(), RecommendedTracks.class);
-        for (Track track : tracks.tracks) {
+        RecommendedTracks recommendedTracks = gson.fromJson(jsonObject.toString(), RecommendedTracks.class);
+
+        for (Track track : recommendedTracks.tracks) {
             String trackId = track.id;
-            track.imageUrl = getTrackImageAtSpotify(trackId);
+            track.imageUrl = getTrackImageAtSpotify(trackId); // Add an image to each track.
         }
-        return tracks;
+
+        return recommendedTracks;
     }
 
+    /**
+     * To get an album image for a track from a API response from the Spotify tracks endpoint.
+     * @param trackId the tracks Spotify id.
+     * @return The image Spotify url.
+     */
     private String getTrackImageAtSpotify(String trackId) {
         HttpResponse<JsonNode> response = Unirest.get("https://api.spotify.com/v1/tracks/{id}")
                 .header("Accept", "application/json")

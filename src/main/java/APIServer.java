@@ -8,39 +8,43 @@ import java.util.Map;
 import static spark.Spark.*;
 
 /**
- * @author "REJL"
+ * Starting point for the application server and frontend.
+ *
+ * Endpoints for a running API.
+ *
+ * @author Leo Mellberg Holm, Emil Andersson, Joakim Tell, Robert Rosencrantz.
  */
 public class APIServer {
 
     public static void main(String[] args) {
         Controller controller = new Controller();
-        port(8888);
+
+        port(8888); // Connect to base url: http://localhost/8888
         staticFiles.location("/static");
 
+        /*
+         * User has to be authenticated to Spotify and accept authorization from app server before API-calls.
+         */
         before("/", (req, res) -> {
             if (!controller.userIsLoggedIn()) {
                 res.redirect("/login");
             }
         });
-
         before("/callback/*", (req, res) -> {
             if (!controller.userAuthpathIsGenerated()) {
                 halt(401, "Spotify not authenticated!");
             }
         });
-
         before("/api/*", (req, res) -> {
             if (!controller.userIsLoggedIn()) {
                 halt(401, "Not Logged in!");
             }
         });
-
         before("/api/playlist", (req, res) -> {
             if (!controller.hasGeneratedTracks()) {
                 halt(418, "No tracks!");
             }
         });
-
         before("/api/playlist/", (req, res) -> {
             if (!controller.hasGeneratedTracks()) {
                 halt(418, "No tracks!");
@@ -48,7 +52,8 @@ public class APIServer {
         });
 
         /*
-         * 1.1. Generates a starting page. Available after log in.
+         * 1.1. Generates a starting page.
+         * Available after user authentication and authorization.
          */
         get("/", (req, res) -> {
             controller.getJsonUserProfile();
@@ -64,6 +69,7 @@ public class APIServer {
 
         /*
          * 1.2. Generates a log in page.
+         * User is routed here before all other endpoints.
          */
         get("/login", (req, res) -> new PebbleTemplateEngine().render(
                 new ModelAndView(null, "templates/login.html")));
@@ -91,14 +97,15 @@ public class APIServer {
 
         /*
          * 3. Get weather based on location coordinates.
-         * Don't have to be logged in?
+         * User has to be authenticated and authorized.
+         * Returns a playlist as json.
          */
         get("/api/weather/:latitude/:longitude", (req, res) -> controller.getJsonWeather(
-                req.params(":latitude"), req.params(":longitude"))); // json weather.
+                req.params(":latitude"), req.params(":longitude")));
 
         /*
          * 4. Get tracks based on weather (from location) and genre.
-         * User has to be logged in.
+         * User has to be authenticated and authorized.
          * Returns tracks as json.
          */
         get("/api/tracks/:weather/:genre", (req, res) -> controller.getJsonTracks(
@@ -106,13 +113,13 @@ public class APIServer {
 
         /*
          * 5. Create Playlist and add the previously generated tracks to users Spotify account.
-         * User has to be logged in.
+         * User has to be authenticated and authorized.
          * Returns a playlist as json.
          */
         post("/api/playlist/", (req, res) -> controller.getJsonPlaylist(req.body()));
 
         /*
-         * API doc
+         * API documentation.
          */
         get("/apidoc", (req, res) -> {
             return new PebbleTemplateEngine().render(

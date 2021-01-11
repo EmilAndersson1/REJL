@@ -10,14 +10,21 @@ import model.spotify.Playlist;
 import services.APIService;
 
 /**
+ * API service implemented to communicate with the Spotify API endpoint for playlist creation.
  * https://developer.spotify.com/documentation/web-api/reference/playlists/create-playlist/
+ *
+ * @author Leo Mellberg Holm, Emil Andersson, Joakim Tell, Robert Rosencrantz.
  */
 public class PlaylistCreation extends APIService {
-
     public PlaylistCreation(Controller controller) {
         super(controller);
     }
 
+    /**
+     * To post a playlist a users Spotify account.
+     * @param controller The server controller.
+     * @return The json response.
+     */
     @Override
     public HttpResponse<JsonNode> jsonResponse(Controller controller) {
 
@@ -31,6 +38,12 @@ public class PlaylistCreation extends APIService {
                 .asJson();
     }
 
+    /**
+     * Deserialize by marshalling to return a java Playlist bean.
+     * @param gson The Gson object.
+     * @param jsonObject The Json object.
+     * @return The Playlist bean.
+     */
     @Override
     public Object convertJsonResponseToJava(Gson gson, JSONObject jsonObject) {
         return gson.fromJson(jsonObject.toString(), Playlist.class);

@@ -10,17 +10,22 @@ import model.spotify.Token;
 import services.APIService;
 
 /**
- * Service for getting authorization to Spotify API.
- * The retrieved JSON code is represented in a bean (java object) for easier manipulation in java.
- *
+ * API service implemented to communicate with the Spotify API endpoint for getting authorization to Spotify API
+ * endpoints with user data.
  * https://developer.spotify.com/documentation/general/guides/authorization-guide/#authorization-code-flow
+ *
+ * @author Leo Mellberg Holm, Emil Andersson, Joakim Tell, Robert Rosencrantz.
  */
 public class AppAuthentication extends APIService {
-
     public AppAuthentication(Controller controller) {
         super(controller);
     }
 
+    /**
+     * To post authorization for a user and receive a response containing a token from Spotify.
+     * @param controller The server controller.
+     * @return The json response.
+     */
     @Override
     public HttpResponse<JsonNode> jsonResponse(Controller controller) {
         String encoded = controller.getEncodedClientCredentials();
@@ -33,6 +38,12 @@ public class AppAuthentication extends APIService {
                 .asJson();
     }
 
+    /**
+     * Deserialize by marshalling to return a java Token bean.
+     * @param gson The Gson object.
+     * @param jsonObject The Json object.
+     * @return The Token bean.
+     */
     @Override
     public Object convertJsonResponseToJava(Gson gson, JSONObject jsonObject) {
         return gson.fromJson(jsonObject.toString(), Token.class);
