@@ -30,6 +30,16 @@ body{
     text-decoration: underline;
 }
 
+#api_doc{
+    color:white;
+    font-style: italic;
+    font-size: smaller;
+    text-decoration: none;
+}
+
+#api_doc:hover{
+    text-decoration: underline;
+}
 
 #logo{
     font-family: 'Fira Sans', sans-serif;
