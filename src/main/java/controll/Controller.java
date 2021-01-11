@@ -29,7 +29,6 @@ public class Controller {
     private APIService weatherRetrieval;
     private APIService trackRecommendations;
     private APIService playlistCreation;
-//    private APIService tracksToPlaylistAddition;
     private APIService userProfileRetrieval;
 
     private String latitude;
@@ -37,16 +36,13 @@ public class Controller {
     private float valance;
     private String genre;
     private String tracks;
-    private Playlist playlist;
     private boolean userLoggedIn;
     private boolean userAuthpath;
-//    private boolean generatedTracks;
     private UserProfile userProfile;
 
     public Controller() {
         userLoggedIn = false;
         userAuthpath = false;
-//        generatedTracks = false;
 
         clientCredentials = new ClientCredentials();
         encodedClientCredentials = ClientEncoder.generate(
@@ -58,7 +54,6 @@ public class Controller {
         weatherRetrieval            = new WeatherRetrieval(this);
         trackRecommendations        = new TrackRecommendations(this);
         playlistCreation            = new PlaylistCreation(this);
-//        tracksToPlaylistAddition    = new TracksToPlaylistAddition(this);
     }
 
     public String getStringAuthorizationUrl() {
@@ -85,15 +80,13 @@ public class Controller {
 
     public String getJsonTracks(String weather, String genre) {
         this.genre = genre;
-//        generatedTracks = true;
         valance = MoodInterpreter.weatherToValance(weather);
         return new Gson().toJson(trackRecommendations.apiResponse());
     }
 
     public String getJsonPlaylist(String tracks) {
         this.tracks = tracks;
-        playlist = (Playlist) playlistCreation.apiResponse();
-//        playlist = (Playlist) tracksToPlaylistAddition.apiResponse();
+        Playlist playlist = (Playlist) playlistCreation.apiResponse();
         return new Gson().toJson(playlist);
     }
 
@@ -125,10 +118,6 @@ public class Controller {
         return genre;
     }
 
-    public Playlist getPlaylist() {
-        return playlist;
-    }
-
     public String getUserId() {
         return userProfile.userId;
     }
@@ -149,10 +138,6 @@ public class Controller {
     public boolean userAuthpathIsGenerated() {
         return userAuthpath;
     }
-
-//    public boolean hasGeneratedTracks() {
-//        return generatedTracks;
-//    }
 
     public String getTracks() {
         return tracks;

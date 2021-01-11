@@ -13,3 +13,4 @@
 1. Kompilera och starta servern från main-metoden i klassen APIserver.java.
 2. Öppna en webbläsare och skriv in anslut till adressen http://localhost:8888.
 3. Logga in på Spotify-konto om det behövs och auktorisera REJL för detta.
+4. Du blir omdirigerad till mashup-tjänsten via html, eller har möjlighet att göra API-anrop enligt API-dokumentationen.
