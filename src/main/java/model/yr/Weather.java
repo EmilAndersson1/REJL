@@ -2,6 +2,11 @@ package model.yr;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * A bean representing weather.
+ *
+ * @author Leo Mellberg Holm, Emil Andersson, Joakim Tell, Robert Rosencrantz.
+ */
 public class Weather {
 
     public Weather() {

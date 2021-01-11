@@ -5,7 +5,10 @@ import com.google.gson.annotations.SerializedName;
 import java.util.Arrays;
 
 /**
+ * A bean representing a user profile.
  * https://developer.spotify.com/documentation/web-api/reference/object-model/#user-object-private
+ *
+ * @author Leo Mellberg Holm, Emil Andersson, Joakim Tell, Robert Rosencrantz.
  */
 public class UserProfile {
     public UserProfile() {

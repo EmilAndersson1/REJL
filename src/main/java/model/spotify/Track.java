@@ -5,7 +5,10 @@ import com.google.gson.annotations.SerializedName;
 import java.util.Arrays;
 
 /**
+ * A bean representing a track.
  * https://developer.spotify.com/documentation/web-api/reference/object-model/#track-object-full
+ *
+ * @author Leo Mellberg Holm, Emil Andersson, Joakim Tell, Robert Rosencrantz.
  */
 public class Track {
 

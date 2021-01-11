@@ -90,9 +90,9 @@ public class APIServer {
          * Automatically redirects to logged in main starting page.
          */
         get("/callback/", (req, res) -> {
-            controller.getJsonToken(req.queryMap().get("code").value());
+            String token = controller.getJsonToken(req.queryMap().get("code").value());
             res.redirect("/");
-            return res.status();
+            return token;
         });
 
         /*

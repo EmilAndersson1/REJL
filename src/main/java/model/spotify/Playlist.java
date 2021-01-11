@@ -2,10 +2,11 @@ package model.spotify;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.Arrays;
-
 /**
+ * A bean representing a playlist.
  * https://developer.spotify.com/documentation/web-api/reference/object-model/#playlist-object-full
+ *
+ * @author Leo Mellberg Holm, Emil Andersson, Joakim Tell, Robert Rosencrantz.
  */
 public class Playlist {
 

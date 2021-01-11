@@ -1,7 +1,10 @@
 package model.spotify;
 
 /**
+ * A bean representing an image.
  * https://developer.spotify.com/documentation/web-api/reference/object-model/#image-object
+ *
+ * @author Leo Mellberg Holm, Emil Andersson, Joakim Tell, Robert Rosencrantz.
  */
 public class Image {
 

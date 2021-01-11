@@ -3,7 +3,10 @@ package model.spotify;
 import com.google.gson.annotations.SerializedName;
 
 /**
+ * A bean representing a token.
  * https://developer.spotify.com/documentation/general/guides/authorization-guide/#authorization-code-flow
+ *
+ * @author Leo Mellberg Holm, Emil Andersson, Joakim Tell, Robert Rosencrantz.
  */
 public class Token {
 

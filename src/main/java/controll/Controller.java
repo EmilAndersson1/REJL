@@ -12,12 +12,15 @@ import utils.ClientEncoder;
 import utils.MoodInterpreter;
 
 /**
- * Controller class for API:s.
+ * Controller class for coordination between the servers API endpoints on one side and the
+ * service calls to external API:s.
+ *
+ * @author Leo Mellberg Holm, Emil Andersson, Joakim Tell, Robert Rosencrantz.
  */
 public class Controller {
 
-    private APIService UserLogin;
     private APIService AppAuthentication;
+    private ClientCredentials clientCredentials;
 
     private String encodedClientCredentials;
     private Token authorizationToken;
@@ -45,8 +48,9 @@ public class Controller {
         userAuthpath = false;
         generatedTracks = false;
 
-        ClientCredentials credentials = new ClientCredentials();
-        encodedClientCredentials = ClientEncoder.generate(credentials.getClientID(), credentials.getClientSecret());
+        clientCredentials = new ClientCredentials();
+        encodedClientCredentials = ClientEncoder.generate(
+                clientCredentials.getClientID(), clientCredentials.getClientSecret());
 
         AppAuthentication           = new AppAuthentication(this);
         userProfileRetrieval        = new UserProfileRetrieval(this);
@@ -59,17 +63,14 @@ public class Controller {
 
     public String getStringAuthorizationUrl() {
         userAuthpath = true;
-        return "https://accounts.spotify.com/sv/authorize" +
-                "?client_id=" +     "444dff56b04044f3b091504c069e9954" +
-                "&response_type=" + "code" +
-                "&redirect_uri=" +  "http:%2F%2Flocalhost:8888%2Fcallback%2F" +
-                "&scope=" +         "playlist-modify-public";
+        return clientCredentials.getAuthorizationUrl();
     }
 
-    public void getJsonToken(String authorizationCode) {
+    public String getJsonToken(String authorizationCode) {
         this.authorizationCode = authorizationCode;
         userLoggedIn = true;
         authorizationToken = (Token) AppAuthentication.apiResponse();
+        return new Gson().toJson(authorizationToken);
     }
 
     public void getJsonUserProfile() {
