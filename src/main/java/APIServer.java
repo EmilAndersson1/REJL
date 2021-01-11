@@ -109,11 +109,11 @@ public class APIServer {
          * User has to be logged in.
          * Returns a playlist as json.
          */
-        post("/api/playlist/", (req, res) -> controller.getJsonPlaylist());
+        post("/api/playlist/", (req, res) -> controller.getJsonPlaylist(req.body()));
 
         /*
-            API doc
-        */
+         * API doc
+         */
         get("/apidoc", (req, res) -> {
             return new PebbleTemplateEngine().render(
                     new ModelAndView(null, "templates/apidoc.html"));

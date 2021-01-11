@@ -35,6 +35,7 @@ public class Controller {
     private float valance;
     private String weather;
     private String genre;
+    private String tracks;
     private Playlist playlist;
     private RecommendedTracks recommendedTracks;
     private String userId;
@@ -95,9 +96,10 @@ public class Controller {
         return new Gson().toJson(recommendedTracks);
     }
 
-    public String getJsonPlaylist() {
-        playlist = (Playlist) playlistCreation.apiResponse(); //Create a playlist.
-        playlist = (Playlist) tracksToPlaylistAddition.apiResponse(); //Add tracks to the playlist. (And update playlist)
+    public String getJsonPlaylist(String tracks) {
+        this.tracks = tracks;
+        playlist = (Playlist) playlistCreation.apiResponse();
+        playlist = (Playlist) tracksToPlaylistAddition.apiResponse();
         return new Gson().toJson(playlist);
     }
 
@@ -164,5 +166,9 @@ public class Controller {
 
     public boolean hasGeneratedTracks() {
         return generatedTracks;
+    }
+
+    public String getTracks() {
+        return tracks;
     }
 }
