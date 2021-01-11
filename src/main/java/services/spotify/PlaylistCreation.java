@@ -40,22 +40,31 @@ public class PlaylistCreation extends APIService {
         String userId = controller.getUserId();
         String uris = controller.getTracks();
 
-        String playlistId =
+        HttpResponse<JsonNode> response =
                 Unirest.post("https://api.spotify.com/v1/users/{user_id}/playlists")
-                .header("Authorization", "Bearer " + controller.getAuthorizationToken().accessToken)
-                .header("Content-Type", "application/json")
-                .routeParam("user_id", userId)
-                .body("{ \"name\": \"" + "My REJL Playlist" + "\" }")
-                .asJson()
-                .getBody()
-                .getObject()
-                .getString("id");
+                        .header("Authorization", "Bearer " + controller.getAuthorizationToken().accessToken)
+                        .header("Content-Type", "application/json")
+                        .routeParam("user_id", userId)
+                        .body("{ \"name\": \"" + "My REJL Playlist" + "\" }")
+                        .asJson();
+        JSONObject jsonObject = response.getBody().getObject();
+        Playlist playlist = new Gson().fromJson(jsonObject.toString(), Playlist.class);
 
-        return Unirest.post("https://api.spotify.com/v1/playlists/{playlist_id}/tracks")
+        String playlistId = playlist.id;
+
+        System.out.println("playlist id: " + playlistId);
+
+        Unirest.post("https://api.spotify.com/v1/playlists/{playlist_id}/tracks")
                 .header("Authorization", "Bearer " + controller.getAuthorizationToken().accessToken)
                 .header("Content-Type", "application/json")
                 .routeParam("playlist_id", playlistId)
                 .body(uris)
+                .asJson();
+
+        return Unirest.get("https://api.spotify.com/v1/playlists/{playlist_id}")
+                .header("Authorization", "Bearer " + controller.getAuthorizationToken().accessToken)
+                .header("Content-Type", "application/json")
+                .routeParam("playlist_id", playlistId)
                 .asJson();
     }
 
@@ -67,6 +76,7 @@ public class PlaylistCreation extends APIService {
      */
     @Override
     public Object convertJsonResponseToJava(Gson gson, JSONObject jsonObject) {
+        System.out.println(jsonObject.toString(1));
         return gson.fromJson(jsonObject.toString(), Playlist.class);
     }
 }
